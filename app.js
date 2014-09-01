@@ -47,7 +47,9 @@ var User = Mobware.createModel('user',{
 		last_name: {type:'string'},
 		email: {type:'string'},
 		role: {type:'string'},
-		username: {type:'string'}
+		username: {type:'string'},
+		password: {type: 'string', hidden:true},
+		password_confirmation: {type: 'string', hidden:true}
 	},
 	connector: connector	// a model level connector
 });
