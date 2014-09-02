@@ -51,9 +51,3 @@ var User = Mobware.createModel('ACSUser',{
     }
 });
 ```
-
-## Limitations
-
-This connector doesn't currently support update or delete.
-
-
