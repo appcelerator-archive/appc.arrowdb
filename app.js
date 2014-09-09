@@ -1,5 +1,5 @@
-var Mobware = require('mobware2'),
-	server = new Mobware(),
+var APIBuilder = require('apibuilder'),
+	server = new APIBuilder(),
 	Connector = require('./lib'),
 	connector = new Connector({
 		key: '',
@@ -40,9 +40,8 @@ function APIKeyAuthorization(req, resp, next) {
 
 //--------------------- simple user model ---------------------//
 
-var User = Mobware.createModel('user',{
+var User = APIBuilder.createModel('user',{
 	fields: {
-		id: {type:'string', required: true, primary: true, readonly: true},
 		first_name: {type:'string'},
 		last_name: {type:'string'},
 		email: {type:'string'},
