@@ -96,7 +96,7 @@ describe("Connector", function() {
 				limit: 5,
 				skip: 0
 			};
-			Model.query(options, function(err, coll) {
+			Model.find(options, function(err, coll) {
 				should(err).be.not.ok;
 
 				async.eachSeries(coll, function(obj, next) {
