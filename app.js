@@ -2,9 +2,12 @@ var APIBuilder = require('apibuilder'),
 	server = new APIBuilder(),
 	Connector = require('./lib'),
 	connector = new Connector({
-		key: '',
-		username: '',
-		password: ''
+		// Note: Instead of using the conf files, you can directly specify your ACS credentials right here:
+		/*
+		 key: '',
+		 username: '',
+		 password: ''
+		 */
 	});
 
 // lifecycle examples
@@ -57,7 +60,7 @@ var User = APIBuilder.createModel('user',{
 server.authorization = APIKeyAuthorization;
 
 // create a user api from a user model
-server.api(User);
+server.addModel(User);
 
 // start the server
 server.start(function(){
