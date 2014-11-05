@@ -8,6 +8,7 @@ var should = require('should'),
 	Model;
 
 describe("Connector", function() {
+	this.timeout(10 * 1000);
 
 	before(function(next) {
 
