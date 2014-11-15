@@ -1,14 +1,5 @@
 var APIBuilder = require('apibuilder'),
-	server = new APIBuilder(),
-	Connector = require('./lib'),
-	connector = new Connector({
-		// Note: Instead of using the conf files, you can directly specify your ACS credentials right here:
-		/*
-		 key: '',
-		 username: '',
-		 password: ''
-		 */
-	});
+	server = new APIBuilder();
 
 // lifecycle examples
 server.on('starting', function(){
@@ -53,7 +44,7 @@ var User = APIBuilder.createModel('user',{
 		password: {type: 'string', hidden:true},
 		password_confirmation: {type: 'string', hidden:true}
 	},
-	connector: connector	// a model level connector
+	connector: 'appc.acs'	// a model level connector
 });
 
 // add an authorization policy for all requests at the server log
