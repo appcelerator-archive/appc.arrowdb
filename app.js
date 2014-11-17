@@ -34,7 +34,7 @@ function APIKeyAuthorization(req, resp, next) {
 
 //--------------------- simple user model ---------------------//
 
-var User = APIBuilder.createModel('user',{
+var User = APIBuilder.Model.extend('user',{
 	fields: {
 		first_name: {type:'string'},
 		last_name: {type:'string'},

@@ -24,7 +24,7 @@ var ACS = require('appc.acs'),
 Now reference the connector in your model.
 
 ```javascript
-var User = APIBuilder.createModel('user',{
+var User = APIBuilder.Model.extend('user',{
 	fields: {
 		first_name: {type:'string'},
 		last_name: {type:'string'},
@@ -39,7 +39,7 @@ var User = APIBuilder.createModel('user',{
 If you want to map a specific model to a specific collection name, use metadata.  For example, to map the `user` model to the collection `users`, set it such as:
 
 ```javascript
-var User = APIBuilder.createModel('ACSUser',{
+var User = APIBuilder.Model.extend('ACSUser',{
 	fields: {
 		name: {type:'string', required: false, validator: /[a-zA-Z]{3,}/ }
 	},

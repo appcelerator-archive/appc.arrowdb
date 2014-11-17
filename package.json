@@ -19,7 +19,6 @@
     "appc-cli-core": "*",
     "acs-node": "git://github.com/appcelerator/acs-node-sdk#9e64166e466",
     "async": "^0.9.0",
-    "lodash": "^2.4.1",
     "pkginfo": "^0.3.0"
   },
   "devDependencies": {
