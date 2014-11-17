@@ -3,7 +3,7 @@ var should = require('should'),
 	APIBuilder = require('apibuilder'),
 	Loader = APIBuilder.Loader,
 	config = new Loader('../conf'),
-	connector = new Connector(config),
+	connector = new (Connector.create(APIBuilder))(config),
 	async = require('async'),
 	Model;
 
