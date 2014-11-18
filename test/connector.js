@@ -1,8 +1,9 @@
 var should = require('should'),
-	Connector = require('../'),
+	ConnectorFactory = require('../'),
 	APIBuilder = require('apibuilder'),
 	Loader = APIBuilder.Loader,
 	config = new Loader('../conf'),
+	Connector = ConnectorFactory.create(APIBuilder),
 	connector = new Connector(config),
 	async = require('async'),
 	Model;
