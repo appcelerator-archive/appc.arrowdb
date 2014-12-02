@@ -34,15 +34,15 @@ function APIKeyAuthorization(req, resp, next) {
 
 //--------------------- simple user model ---------------------//
 
-var User = APIBuilder.createModel('user',{
+var User = APIBuilder.Model.extend('user',{
 	fields: {
-		first_name: {type:'string'},
-		last_name: {type:'string'},
-		email: {type:'string'},
-		role: {type:'string'},
-		username: {type:'string', readonly: true},
-		password: {type: 'string', hidden:true},
-		password_confirmation: {type: 'string', hidden:true}
+		first_name: { type: String },
+		last_name: { type: String },
+		email: { type: String },
+		role: { type: String },
+		username: { type: String, readonly: true },
+		password: { type: String, hidden: true },
+		password_confirmation: { type: String, hidden: true }
 	},
 	connector: 'appc.acs'	// a model level connector
 });

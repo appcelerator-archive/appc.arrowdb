@@ -112,5 +112,7 @@ describe("Connector", function() {
 		});
 
 	});
+	
+	// TODO: Add test to check updating data.
 
 });
