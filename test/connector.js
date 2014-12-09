@@ -1,10 +1,7 @@
 var should = require('should'),
-	ConnectorFactory = require('../'),
-	APIBuilder = require('apibuilder'),
-	Loader = APIBuilder.Loader,
-	config = new Loader('../conf'),
-	Connector = ConnectorFactory.create(APIBuilder),
-	connector = new Connector(config),
+	APIBuilder = require('appcelerator').apibuilder,
+	Connector = require('../lib').create(APIBuilder),
+	connector = new Connector(),
 	async = require('async'),
 	Model;
 
@@ -21,7 +18,7 @@ describe("Connector", function() {
 			},
 			connector: connector,
 			metadata: {
-				ACS: {
+				acs: {
 					object: 'Posts'
 				}
 			}

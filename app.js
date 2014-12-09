@@ -1,12 +1,16 @@
-var APIBuilder = require('apibuilder'),
+/**
+ * NOTE: this file is simply for testing your Connector and
+ * not used or packaged with the actual connector when published
+ */
+var APIBuilder = require('appcelerator').apibuilder,
 	server = new APIBuilder();
 
 // lifecycle examples
-server.on('starting', function(){
+server.on('starting', function() {
 	server.logger.info('server is starting!');
 });
 
-server.on('started', function(){
+server.on('started', function() {
 	server.logger.info('server started!');
 });
 
@@ -14,10 +18,12 @@ server.on('started', function(){
 
 // fetch our configured apikey
 var apikey = server.get('apikey');
-server.logger.info('APIKey is:',apikey);
+server.logger.info('APIKey is:', apikey);
 
 function APIKeyAuthorization(req, resp, next) {
-	if (!apikey) return next();
+	if (!apikey) {
+		return next();
+	}
 	if (req.headers['apikey']) {
 		var key = req.headers['apikey'];
 		if (key == apikey) {
@@ -34,7 +40,7 @@ function APIKeyAuthorization(req, resp, next) {
 
 //--------------------- simple user model ---------------------//
 
-var User = APIBuilder.Model.extend('user',{
+var User = APIBuilder.Model.extend('user', {
 	fields: {
 		first_name: { type: String },
 		last_name: { type: String },
@@ -54,6 +60,6 @@ server.authorization = APIKeyAuthorization;
 server.addModel(User);
 
 // start the server
-server.start(function(){
+server.start(function() {
 	server.logger.info('server started on port', server.port);
 });

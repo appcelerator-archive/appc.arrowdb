@@ -1,34 +1,34 @@
 {
-  "name": "appc.acs",
-  "description": "ACS Connector",
-  "version": "1.0.3",
-  "author": "Jeff Haynie",
-  "license": "",
-  "framework": "none",
-  "keywords": [
-    "apibuilder",
-    "apibuilder-connector"
-  ],
-  "repository": {},
-  "scripts": {
-    "test": "grunt",
-    "start": "node ./app.js"
-  },
-  "private": true,
-  "dependencies": {
-    "appcelerator": "*",
-    "acs-node": "git://github.com/appcelerator/acs-node-sdk#9e64166e466",
-    "async": "^0.9.0",
-    "pkginfo": "^0.3.0"
-  },
-  "devDependencies": {
-    "apibuilder": "*",
-    "grunt": "^0.4.5",
-    "grunt-contrib-clean": "^0.6.0",
-    "grunt-contrib-jshint": "^0.10.0",
-    "grunt-kahvesi": "^0.1.0",
-    "grunt-mocha-test": "^0.12.0",
-    "should": "^4.0.4",
-    "wrench": "^1.5.8"
-  }
+	"name": "appc.acs",
+	"description": "ACS Connector",
+	"version": "1.0.3",
+	"author": "Jeff Haynie",
+	"license": "",
+	"framework": "none",
+	"keywords": [
+		"apibuilder",
+		"apibuilder-connector"
+	],
+	"repository": {},
+	"scripts": {
+		"test": "grunt",
+		"start": "node ./app.js"
+	},
+	"private": true,
+	"dependencies": {
+		"acs-node": "git://github.com/appcelerator/acs-node-sdk#9e64166e466",
+		"async": "^0.9.0",
+		"lodash": "^2.4.1",
+		"pkginfo": "^0.3.0"
+	},
+	"devDependencies": {
+		"appcelerator": "*",
+		"grunt": "^0.4.5",
+		"grunt-contrib-clean": "^0.6.0",
+		"grunt-contrib-jshint": "^0.10.0",
+		"grunt-kahvesi": "^0.1.0",
+		"grunt-mocha-test": "^0.12.0",
+		"mocha": "^1.21.4",
+		"should": "^4.0.4"
+	}
 }

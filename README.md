@@ -10,19 +10,7 @@ To install:
 $ appc install appc.acs --save
 ```
 
-Use in your application:
-
-```javascript
-var APIBuilder = require('apibuilder'),
-	ACS = require('appc.acs'),
-	connector = new ACS({
-		key: '1234',
-		username: 'myname',
-		password: 'mypass'
-	});
-```
-
-Now reference the connector in your model.
+Reference the connector in your model.
 
 ```javascript
 var User = APIBuilder.Model.extend('user', {
@@ -33,7 +21,7 @@ var User = APIBuilder.Model.extend('user', {
 		role: { type: String },
 		username: { type: String }
 	},
-	connector: connector
+	connector: 'appc.acs'
 });
 ```
 
@@ -44,9 +32,9 @@ var User = APIBuilder.Model.extend('user',{
 	fields: {
 		name: { type: String, required: false, validator: /[a-zA-Z]{3,}/ }
 	},
-	connector: connector,
+	connector: 'appc.acs',
 	metadata: {
-		ACS: {
+		acs: {
 			object: 'Users'
 		}
 	}
