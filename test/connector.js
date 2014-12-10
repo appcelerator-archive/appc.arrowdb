@@ -57,6 +57,46 @@ describe("Connector", function() {
 		});
 	});
 
+	it('should be able to create a user', function(callback) {
+		var UserModel = APIBuilder.Model.extend('User', {
+				fields: {
+					first_name: { type: String },
+					last_name: { type: String },
+					email: { type: String },
+					role: { type: String },
+					username: { type: String, readonly: true },
+					password: { type: String, hidden: true },
+					password_confirmation: { type: String, hidden: true }
+				},
+				connector: connector,
+				metadata: {
+					'appc.acs': {
+						object: 'Users'
+					}
+				}
+			}),
+			object = {
+				"first_name": "John",
+				"last_name": "Smith",
+				"email": "test@test.com",
+				"password": "password",
+				"password_confirmation": "password",
+				"role": "user"
+			};
+
+		UserModel.create(object, function(err, instance) {
+			should(err).be.not.ok;
+			should(instance).be.an.Object;
+			should(instance.getPrimaryKey()).be.a.String;
+			should(instance.first_name).equal(object.first_name);
+			should(instance.last_name).equal(object.last_name);
+			should(instance.email).equal(object.email);
+			should(instance.password).be.not.ok;
+			callback();
+		});
+
+	});
+
 	it("should be able to create instance", function(callback) {
 
 		var object = {
@@ -109,7 +149,7 @@ describe("Connector", function() {
 		});
 
 	});
-	
+
 	// TODO: Add test to check updating data.
 
 });
