@@ -18,7 +18,7 @@ describe("Connector", function() {
 			},
 			connector: connector,
 			metadata: {
-				acs: {
+				'appc.acs': {
 					object: 'Posts'
 				}
 			}

@@ -34,7 +34,7 @@ var User = APIBuilder.Model.extend('user',{
 	},
 	connector: 'appc.acs',
 	metadata: {
-		acs: {
+		'appc.acs': {
 			object: 'Users'
 		}
 	}
