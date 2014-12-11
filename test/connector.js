@@ -78,7 +78,7 @@ describe("Connector", function() {
 			object = {
 				"first_name": "John",
 				"last_name": "Smith",
-				"email": "test@test.com",
+				"email": "test" + Date.now() + "@test.com",
 				"password": "password",
 				"password_confirmation": "password",
 				"role": "user"
