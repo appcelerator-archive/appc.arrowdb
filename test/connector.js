@@ -34,24 +34,8 @@ describe("Connector", function() {
 		connector.disconnect(next);
 	});
 
-	it("should be able to fetch config", function(callback) {
-		connector.fetchConfig(function(err, config) {
-			should(err).be.not.ok;
-			should(config).be.an.object;
-			callback();
-		});
-	});
-
 	it("should be able to fetch metadata", function(callback) {
 		connector.fetchMetadata(function(err, config) {
-			should(err).be.not.ok;
-			should(config).be.an.object;
-			callback();
-		});
-	});
-
-	it("should be able to fetch schema", function(callback) {
-		connector.fetchSchema(function(err, config) {
 			should(err).be.not.ok;
 			should(config).be.an.object;
 			callback();
