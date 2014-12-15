@@ -60,6 +60,4 @@ server.authorization = APIKeyAuthorization;
 server.addModel(User);
 
 // start the server
-server.start(function() {
-	server.logger.info('server started on port', server.port);
-});
+server.start();
