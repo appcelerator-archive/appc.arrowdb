@@ -16,7 +16,7 @@
 	},
 	"private": true,
 	"dependencies": {
-		"acs-node": "git://github.com/appcelerator/acs-node-sdk#9e64166e466",
+		"acs-node": "git://github.com/cb1kenobi/acs-node-sdk#cloudsrv-4455",
 		"async": "^0.9.0",
 		"lodash": "^2.4.1",
 		"pkginfo": "^0.3.0"
@@ -27,8 +27,8 @@
 		"grunt-contrib-clean": "^0.6.0",
 		"grunt-contrib-jshint": "^0.10.0",
 		"grunt-kahvesi": "^0.1.0",
-		"grunt-mocha-test": "^0.12.0",
-		"mocha": "^1.21.4",
-		"should": "^4.0.4"
+		"grunt-mocha-test": "^0.12.4",
+		"mocha": "^2.0.1",
+		"should": "^4.3.1"
 	}
 }

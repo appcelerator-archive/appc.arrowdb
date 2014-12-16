@@ -2,13 +2,17 @@
 
 This is a API Builder connector to ACS.
 
-> This software is pre-release and not yet ready for usage.  Please don't use this just yet while we're working through testing and finishing it up. Once it's ready, we'll make an announcement about it.
+> This software is pre-release and not yet ready for usage. Please don't use
+  this just yet while we're working through testing and finishing it up. Once
+  it's ready, we'll make an announcement about it.
 
-To install:
+## Installation
 
 ```bash
 $ appc install appc.acs --save
 ```
+
+## Usage
 
 Reference the connector in your model.
 
@@ -25,7 +29,8 @@ var User = APIBuilder.Model.extend('user', {
 });
 ```
 
-If you want to map a specific model to a specific collection name, use metadata.  For example, to map the `user` model to the collection `users`, set it such as:
+If you want to map a specific model to a specific collection name, use metadata.
+For example, to map the `user` model to the collection `users`, set it such as:
 
 ```javascript
 var User = APIBuilder.Model.extend('user',{
@@ -41,6 +46,19 @@ var User = APIBuilder.Model.extend('user',{
 });
 ```
 
-# License
+## Development
 
-This source code is licensed as part of the Appcelerator Enterprise Platform and subject to the End User License Agreement and Enterprise License and Ordering Agreement. Copyright (c) 2014 by Appcelerator, Inc. All Rights Reserved. This source code is Proprietary and Confidential to Appcelerator, Inc.
+> This section is for individuals developing the ACS Connector and not intended
+  for end-users.
+
+```bash
+npm install
+node app.js
+```
+
+## License
+
+This source code is licensed as part of the Appcelerator Enterprise Platform and
+subject to the End User License Agreement and Enterprise License and Ordering
+Agreement. Copyright (c) 2014 by Appcelerator, Inc. All Rights Reserved. This
+source code is Proprietary and Confidential to Appcelerator, Inc.
