@@ -1,14 +1,15 @@
 var should = require('should'),
 	APIBuilder = require('appcelerator').apibuilder,
-	Connector = require('../lib').create(APIBuilder),
-	connector = new Connector(),
+	server = new APIBuilder(),
 	async = require('async'),
-	Model;
+	Model,
+	connector;
 
 describe("Connector", function() {
 	this.timeout(10 * 1000);
-
+	
 	before(function(next) {
+		connector = server.getConnector('appc.acs');
 
 		// define your model
 		Model = APIBuilder.Model.extend('post', {
@@ -16,7 +17,7 @@ describe("Connector", function() {
 				title: { type: String },
 				content: { type: String }
 			},
-			connector: connector,
+			connector: 'appc.acs',
 			metadata: {
 				'appc.acs': {
 					object: 'Posts'
@@ -25,32 +26,16 @@ describe("Connector", function() {
 		});
 
 		should(Model).should.be.an.object;
-
-		connector.connect(next);
+		
+		next();
 	});
 
 	after(function(next) {
 		connector.disconnect(next);
 	});
 
-	it("should be able to fetch config", function(callback) {
-		connector.fetchConfig(function(err, config) {
-			should(err).be.not.ok;
-			should(config).be.an.object;
-			callback();
-		});
-	});
-
 	it("should be able to fetch metadata", function(callback) {
 		connector.fetchMetadata(function(err, config) {
-			should(err).be.not.ok;
-			should(config).be.an.object;
-			callback();
-		});
-	});
-
-	it("should be able to fetch schema", function(callback) {
-		connector.fetchSchema(function(err, config) {
 			should(err).be.not.ok;
 			should(config).be.an.object;
 			callback();
@@ -68,7 +53,7 @@ describe("Connector", function() {
 					password: { type: String, hidden: true },
 					password_confirmation: { type: String, hidden: true }
 				},
-				connector: connector,
+				connector: 'appc.acs',
 				metadata: {
 					'appc.acs': {
 						object: 'Users'
