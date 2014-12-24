@@ -56,6 +56,12 @@ npm install
 node app.js
 ```
 
+### Running Unit Tests
+
+```bash
+npm test
+```
+
 ## License
 
 This source code is licensed as part of the Appcelerator Enterprise Platform and
