@@ -1,3 +1,5 @@
+'use strict';
+
 var APIBuilder = require('apibuilder');
 
 module.exports = APIBuilder.Model.extend('user', {
@@ -20,7 +22,7 @@ module.exports = APIBuilder.Model.extend('user', {
 		stats: { type: Object, readonly: true }
 	},
 
-	translate: function (method, instance, params) {
+	prepareParams: function (method, instance, params) {
 		params || (params = {});
 
 		switch (method) {
@@ -29,6 +31,9 @@ module.exports = APIBuilder.Model.extend('user', {
 					login: instance.username,
 					password: params.password
 				};
+
+			case 'delete':
+				return {};
 		}
 
 		return instance.values(true);

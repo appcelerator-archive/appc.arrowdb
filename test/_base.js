@@ -47,7 +47,7 @@ function init(model, beforeFn) {
 	});
 }
 
-function assertFailure(err, result) {
+function assertFailure(err) {
 	assert(err);
 	should(err).be.an.Error;
 	should(err).have.keys('errorCode', 'docUrl', 'message', 'statusCode', 'reason', 'response', 'body');

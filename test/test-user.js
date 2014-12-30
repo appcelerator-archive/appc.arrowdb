@@ -2,6 +2,7 @@
 require('./_base');
 
 var assert = require('assert'),
+	async = require('async'),
 	should = require('should'),
 	APIBuilder = require('appcelerator').apibuilder;
 
@@ -11,10 +12,13 @@ describe('Users', function () {
 
 	var username = 'userTest' + Math.round(Math.random()*1e5),
 		userCount = 0,
+		initialCount = 0,
 		lastname = '',
 		theUser = null;
 
 	init(function () {
+		// since init() sets up before() and after() which in turn creates a fresh
+		// server and connector, we need to get the user model each time
 		this.UserModel = this.connector.getModel('user');
 	});
 
@@ -52,14 +56,15 @@ describe('Users', function () {
 				}
 
 				userCount = count;
+				initialCount = count;
 
 				done();
 			}.bind(this));
 		});
 
 		it('should fail when trying to query more than 1000 users', function (done) {
-			this.UserModel.query({ limit: 1001 }, function (err, result) {
-				assertFailure(err, result);
+			this.UserModel.query({ limit: 1001 }, function (err) {
+				assertFailure(err);
 				should(err.statusCode).equal(400);
 				should(err.body.meta.code).equal(400);
 				should(err.body.meta.message).equal('Invalid limit parameter; value must be in a valid range of 1~1000');
@@ -151,6 +156,52 @@ describe('Users', function () {
 				should(err.reason).match(/Username is already taken/i);
 				done();
 			}.bind(this));
+		});
+	});
+
+	describe('findAll and findOne', function () {
+		it('should find the user by id', function (done) {
+			assert(theUser);
+			this.UserModel.findOne(theUser.getPrimaryKey(), function (err, user) {
+				assert.ifError(err);
+				assertUser(user);
+				done();
+			});
+		});
+
+		it('should not find any users with a invalid id', function (done) {
+			this.UserModel.findOne('this_id_is_invalid', function (err) {
+				assertFailure(err);
+				should(err.statusCode).equal(400);
+				should(err.body.meta.code).equal(400);
+				should(err.body.meta.message).match(/Invalid object id ?: 'this_id_is_invalid'/i);
+				done();
+			});
+		});
+
+		it('should find our user within all users', function (done) {
+			this.UserModel.findAll(function (err, users) {
+				assert.ifError(err);
+
+				if (users.length < 1000) {
+					// if there are 1000 users, then we can assume that there could be
+					// millions and it's not certain our user will be in the first 999
+
+					var id = theUser.getPrimaryKey(),
+						user = null;
+
+					for (var i = 0; i < users.length; i++) {
+						if (users[i].getPrimaryKey() === id) {
+							user = users[i];
+							break;
+						}
+					}
+
+					assertUser(user);
+				}
+
+				done();
+			});
 		});
 	});
 
@@ -288,18 +339,211 @@ describe('Users', function () {
 	});
 
 	describe('Delete', function () {
-/*
-		it('should delete a user', function (done) {
-			this.UserModel.delete(function (err) {
+		it('should delete the current user', function (done) {
+			assert(theUser);
+			theUser.delete(function (err) {
 				assert.ifError(err);
-				console.log(arguments);
 				done();
 			});
 		});
-*/
+
+		it('should fail to delete the current user again', function (done) {
+			assert(theUser);
+			theUser.delete(function (err) {
+				assert(err);
+				should(err).be.an.Error;
+				should(err.message).match(/instance has already been deleted/i);
+				done();
+			});
+		});
+
+		it('should fail to update deleted user', function (done) {
+			assert(theUser);
+			theUser.set('last_name', 'foo');
+			theUser.update(function (err) {
+				assert(err);
+				should(err).be.an.Error;
+				should(err.message).match(/instance has already been deleted/i);
+				done();
+			});
+		});
+
+		it('should report original user count after deleting all test users', function (done) {
+			this.UserModel.count(function (err, count) {
+				assert.ifError(err);
+				should(count).be.a.Number;
+				should(count).equal(initialCount);
+				done();
+			}.bind(this));
+		});
+
+		it('should fail to delete when an id is omitted', function (done) {
+			this.UserModel.delete(function (err) {
+				assert(err);
+				should(err).be.an.Error;
+				should(err.message).match(/Missing required "id"/);
+				done();
+			});
+		});
+
+		it('should fail to delete when an id does not exist', function (done) {
+			this.UserModel.delete('this_id_is_invalid', function (err) {
+				assertFailure(err);
+				should(err.statusCode).equal(400);
+				should(err.body.meta.code).equal(400);
+				should(err.body.meta.message).match(/Invalid object id ?: 'this_id_is_invalid'/i);
+				done();
+			});
+		});
+
+		it('should create a test user', function (done) {
+			var r = Math.round(Math.random()*1e5),
+				params = {
+					email:                 'Test' + r + '@test.com',
+					username:              'userTest' + r,
+					password:              'password',
+					password_confirmation: 'password',
+					first_name:            'John' + r,
+					last_name:             'Smith' + r,
+					role:                  'user'
+				};
+
+			this.UserModel.create(params, function (err, user) {
+				assert.ifError(err);
+				assertUser(user);
+				this.testUser = user;
+				done();
+			}.bind(this));
+		});
+
+		it('should fail to delete test user because not logged in', function (done) {
+			assert(this.testUser);
+			this.UserModel.delete(this.testUser.getPrimaryKey(), function (err) {
+				assertFailure(err);
+				should(err.statusCode).equal(401);
+				should(err.body.meta.code).equal(401);
+				should(err.body.meta.message).equal('You need to sign in or sign up before continuing.');
+				done();
+			});
+		});
+
+		it('should log the test user in', function (done) {
+			assert(this.testUser);
+			this.testUser.login({
+				password: 'password'
+			}, function (err, user) {
+				assert.ifError(err);
+				assertUser(user);
+				done();
+			});
+		});
+
+		it('should delete the test user by instance', function (done) {
+			assert(this.testUser);
+			this.UserModel.delete(this.testUser, function (err) {
+				assert.ifError(err);
+				this.testUser = null;
+				done();
+			}.bind(this));
+		});
+
+		it.skip('should create a test user', function (done) {
+			var r = Math.round(Math.random()*1e5),
+				params = {
+					email:                 'Test' + r + '@test.com',
+					username:              'userTest' + r,
+					password:              'password',
+					password_confirmation: 'password',
+					first_name:            'John' + r,
+					last_name:             'Smith' + r,
+					role:                  'user'
+				};
+
+			this.UserModel.create(params, function (err, user) {
+				assert.ifError(err);
+				assertUser(user);
+				this.testUser = user;
+				done();
+			}.bind(this));
+		});
+
+		it.skip('should log the test user in', function (done) {
+			assert(this.testUser);
+			this.testUser.login({
+				password: 'password'
+			}, function (err, user) {
+				assert.ifError(err);
+				assertUser(user);
+				done();
+			});
+		});
+
+		it.skip('should delete the test user by primary key', function (done) {
+			assert(this.testUser);
+			this.UserModel.delete(this.testUser.getPrimaryKey(), function (err) {
+				assert.ifError(err);
+				this.testUser = null;
+				done();
+			}.bind(this));
+		});
 	});
 
 	describe('Batch Delete', function () {
+		var users = [],
+			userCount = 0;
+
+		it('should create 3 users', function (done) {
+			this.UserModel.count(function (err, count) {
+				assert.ifError(err);
+				should(count).be.a.Number;
+				userCount = count;
+
+				async.times(3, function (n, next) {
+					var r = Math.round(Math.random()*1e5),
+						params = {
+							email:                 'Test' + r + '@test.com',
+							username:              'userTest' + r,
+							password:              'password',
+							password_confirmation: 'password',
+							first_name:            'John' + r,
+							last_name:             'Smith' + r,
+							role:                  'user'
+						};
+
+					this.UserModel.create(params, function (err, user) {
+						if (err) {
+							next(err);
+						} else {
+							users.push(user);
+							next();
+						}
+					}.bind(this));
+				}.bind(this), function (err) {
+					assert.ifError(err);
+					done();
+				});
+			}.bind(this));
+		});
+
+		it('should delete all 3 users', function (done) {
+			this.UserModel.batchDelete({
+				where: {
+					'$or': users.map(function (u) { return { id: u.getPrimaryKey() }; })
+				}
+			}, function (err) {
+				assert.ifError(err);
+
+				// sometimes the count is dirty and we need to wait for ACS to finish up the deletes
+				setTimeout(function () {
+					this.UserModel.count(function (err, count) {
+						assert.ifError(err);
+						should(count).be.a.Number;
+						should(count).equal(userCount);
+						done();
+					});
+				}.bind(this), 2000);
+			}.bind(this));
+		});
 	});
 });
 
@@ -356,23 +600,3 @@ function assertUser(user) {
 	should(user.friend_counts.requests).be.a.Number;
 	should(user.friend_counts.friends).be.a.Number;
 }
-
-
-/*
-
-	User.findAll(function(err, result) {
-		console.log('findAll() results:');
-		console.log(arguments);
-	});
-
-	User.findOne('548a21e1d3a37bd24a03e4d4', function(err, result) {
-		console.log('good findOne() results:');
-		console.log(arguments);
-	});
-
-	User.findOne('foo', function(err, result) {
-		console.log('bad findOne() results:');
-		console.log(arguments);
-	});
-*/
-
