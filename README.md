@@ -7,7 +7,7 @@ This is a API Builder connector to ACS.
 To install:
 
 ```bash
-$ appc install appc.acs --save
+$ appc install connector/appc.acs --save
 ```
 
 Reference the connector in your model.
