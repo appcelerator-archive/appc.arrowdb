@@ -1,3 +1,7 @@
+'use strict';
+
+process.env.APPC_DISABLE_LONG_STACK_TRACE = 1;
+
 var APIBuilder = require('appcelerator').apibuilder,
 	assert = require('assert'),
 	should = require('should'),
@@ -13,18 +17,9 @@ function dump() {
 	});
 }
 
-function init(model, beforeFn) {
-	if (typeof model === 'function') {
-		beforeFn = model;
-		model = null;
-	}
-
+function init(beforeFn) {
 	before(function (next) {
-		model && (this.model = model);
-
 		this.server = new APIBuilder();
-		model && this.server.addModel(this.model);
-
 		this.connector = this.server.getConnector('appc.acs');
 		this.connector.connect(function () {
 			beforeFn && beforeFn.call(this);
@@ -33,15 +28,17 @@ function init(model, beforeFn) {
 	});
 
 	after(function (next) {
+		var self = this;
+
 		if (this.connector) {
-			this.connector.disconnect(finalize.bind(this));
+			this.connector.disconnect(finalize);
 		} else {
-			finalize.call(this);
+			finalize();
 		}
 
 		function finalize() {
-			this.connector = null;
-			this.server = null;
+			self.connector = null;
+			self.server = null;
 			next();
 		}
 	});

@@ -22,7 +22,59 @@ module.exports = APIBuilder.Model.extend('user', {
 		stats: { type: Object, readonly: true }
 	},
 
-	prepareParams: function (method, instance, params) {
+	methodMeta: {
+		'batchDelete': {
+			authRequired: true
+		},
+		'create': {
+			response: {
+				singleElement: true
+			}
+		},
+		'delete': {
+			authRequired: true,
+			instance: true
+		},
+		'deleteAll': {
+			disabled: true
+		},
+		'login': {
+			skip: true,
+			instance: true,
+			response: {
+				singleElement: true
+			}
+		},
+		'logout': {
+			skip: true,
+			instance: true
+		},
+		'remove': {
+			canonical: 'delete'
+		},
+		'requestResetPassword': {
+			instance: true
+		},
+		'resendConfirmation': {
+			instance: true
+		},
+		'showMe': {
+			authRequired: true,
+			instance: true,
+			response: {
+				singleElement: true
+			}
+		},
+		'update': {
+			authRequired: true,
+			instance: true,
+			response: {
+				singleElement: true
+			}
+		}
+	},
+
+	_prepareParams: function (method, instance, params, defaultValue) {
 		params || (params = {});
 
 		switch (method) {
@@ -32,10 +84,16 @@ module.exports = APIBuilder.Model.extend('user', {
 					password: params.password
 				};
 
+			case 'update':
+				defaultValue.user_id = instance.getPrimaryKey();
+				return defaultValue;
+
 			case 'delete':
-				return {};
+				return {
+					user_id: instance.getPrimaryKey()
+				};
 		}
 
-		return instance.values(true);
+		return defaultValue;
 	}
 });

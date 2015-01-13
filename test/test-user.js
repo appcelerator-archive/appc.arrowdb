@@ -1,16 +1,17 @@
 /* global init, assertFailure, dump */
+'use strict';
+
 require('./_base');
 
 var assert = require('assert'),
 	async = require('async'),
-	should = require('should'),
-	APIBuilder = require('appcelerator').apibuilder;
+	should = require('should');
 
 describe('Users', function () {
 	this.timeout(60000);
 	this.slow(50000);
 
-	var username = 'userTest' + Math.round(Math.random()*1e5),
+	var username = 'UserTester' + Math.round(Math.random()*1e5),
 		userCount = 0,
 		initialCount = 0,
 		lastname = '',
@@ -205,6 +206,7 @@ describe('Users', function () {
 		});
 	});
 
+/*
 	describe('Login and Logout', function () {
 		it('should show user not logged in', function (done) {
 			assert(theUser);
@@ -261,8 +263,10 @@ describe('Users', function () {
 			});
 		});
 	});
+*/
 
 	describe('Update', function () {
+/*
 		it('should fail to update user because not logged in', function (done) {
 			assert(theUser);
 
@@ -292,9 +296,16 @@ describe('Users', function () {
 				done();
 			});
 		});
+*/
 
 		it('should update user\'s last name and add a custom field', function (done) {
 			assert(theUser);
+
+			lastname += '_updated';
+
+			theUser.set('last_name', lastname);
+			theUser.set('custom_fields', { test: true });
+
 			theUser.update(function (err, user) {
 				assert.ifError(err);
 				assertUser(user);
@@ -400,7 +411,7 @@ describe('Users', function () {
 			var r = Math.round(Math.random()*1e5),
 				params = {
 					email:                 'Test' + r + '@test.com',
-					username:              'userTest' + r,
+					username:              'UserTester' + r,
 					password:              'password',
 					password_confirmation: 'password',
 					first_name:            'John' + r,
@@ -416,6 +427,7 @@ describe('Users', function () {
 			}.bind(this));
 		});
 
+/*
 		it('should fail to delete test user because not logged in', function (done) {
 			assert(this.testUser);
 			this.UserModel.delete(this.testUser.getPrimaryKey(), function (err) {
@@ -437,6 +449,7 @@ describe('Users', function () {
 				done();
 			});
 		});
+*/
 
 		it('should delete the test user by instance', function (done) {
 			assert(this.testUser);
@@ -447,11 +460,11 @@ describe('Users', function () {
 			}.bind(this));
 		});
 
-		it.skip('should create a test user', function (done) {
+		it('should create a test user', function (done) {
 			var r = Math.round(Math.random()*1e5),
 				params = {
 					email:                 'Test' + r + '@test.com',
-					username:              'userTest' + r,
+					username:              'UserTester' + r,
 					password:              'password',
 					password_confirmation: 'password',
 					first_name:            'John' + r,
@@ -467,7 +480,8 @@ describe('Users', function () {
 			}.bind(this));
 		});
 
-		it.skip('should log the test user in', function (done) {
+/*
+		it('should log the test user in', function (done) {
 			assert(this.testUser);
 			this.testUser.login({
 				password: 'password'
@@ -477,8 +491,9 @@ describe('Users', function () {
 				done();
 			});
 		});
+*/
 
-		it.skip('should delete the test user by primary key', function (done) {
+		it('should delete the test user by primary key', function (done) {
 			assert(this.testUser);
 			this.UserModel.delete(this.testUser.getPrimaryKey(), function (err) {
 				assert.ifError(err);
@@ -492,7 +507,7 @@ describe('Users', function () {
 		var users = [],
 			userCount = 0;
 
-		it('should create 3 users', function (done) {
+		it('should create and delete 3 users', function (done) {
 			this.UserModel.count(function (err, count) {
 				assert.ifError(err);
 				should(count).be.a.Number;
@@ -502,7 +517,7 @@ describe('Users', function () {
 					var r = Math.round(Math.random()*1e5),
 						params = {
 							email:                 'Test' + r + '@test.com',
-							username:              'userTest' + r,
+							username:              'UserTester' + r,
 							password:              'password',
 							password_confirmation: 'password',
 							first_name:            'John' + r,
@@ -520,29 +535,35 @@ describe('Users', function () {
 					}.bind(this));
 				}.bind(this), function (err) {
 					assert.ifError(err);
-					done();
-				});
+
+					this.UserModel.batchDelete({
+						where: {
+							'$or': users.map(function (u) { return { id: u.getPrimaryKey() }; })
+						}
+					}, function (err) {
+						assert.ifError(err);
+
+						// sometimes the count is dirty and we need to wait for ACS to finish up the deletes
+						setTimeout(function () {
+							this.UserModel.count(function (err, count) {
+								assert.ifError(err);
+								should(count).be.a.Number;
+								should(count).equal(userCount);
+								done();
+							});
+						}.bind(this), 5000);
+					}.bind(this));
+				}.bind(this));
 			}.bind(this));
 		});
 
-		it('should delete all 3 users', function (done) {
-			this.UserModel.batchDelete({
-				where: {
-					'$or': users.map(function (u) { return { id: u.getPrimaryKey() }; })
-				}
-			}, function (err) {
-				assert.ifError(err);
-
-				// sometimes the count is dirty and we need to wait for ACS to finish up the deletes
-				setTimeout(function () {
-					this.UserModel.count(function (err, count) {
-						assert.ifError(err);
-						should(count).be.a.Number;
-						should(count).equal(userCount);
-						done();
-					});
-				}.bind(this), 2000);
-			}.bind(this));
+		it('should fail when trying to call deleteAll()', function (done) {
+			this.UserModel.deleteAll(function (err) {
+				assert(err);
+				should(err).be.an.Error;
+				should(err.message).match(/unsupported method "deleteAll"/i);
+				done();
+			});
 		});
 	});
 });
