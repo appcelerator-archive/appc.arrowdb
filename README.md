@@ -9,7 +9,7 @@ This is a API Builder connector to ACS.
 ## Installation
 
 ```bash
-$ appc install appc.acs --save
+$ appc install connector/appc.acs --save
 ```
 
 ## Usage

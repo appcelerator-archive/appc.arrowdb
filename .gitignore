@@ -3,4 +3,5 @@
 node_modules
 _tmp
 logs
+*.tgz
 conf/local.js
