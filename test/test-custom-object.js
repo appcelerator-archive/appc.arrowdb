@@ -459,7 +459,7 @@ describe('Custom Objects', function () {
 			});
 		});
 
-		it('should create 3 custom objects and d', function (done) {
+		it('should delete multiple custom objects', function (done) {
 			var fruits = [];
 
 			async.eachSeries(['pear', 'pineapple', 'pear'], function (name, next) {
@@ -496,7 +496,7 @@ describe('Custom Objects', function () {
 	});
 
 	describe('Delete All', function () {
-		it('should create 3 custom objects and delete them', function (done) {
+		it('should delete all custom objects', function (done) {
 			var fruits = [];
 
 			async.times(3, function (n, next) {
