@@ -2,21 +2,55 @@
  * NOTE: This file is simply for testing this connector and will not
  * be used or packaged with the actual connector when published.
  */
+
 var APIBuilder = require('appcelerator').apibuilder,
 	server = new APIBuilder();
 
-var User = APIBuilder.Model.extend('user', {
-	fields: {
-		first_name: { type: String },
-		last_name: { type: String },
-		email: { type: String },
-		role: { type: String },
-		username: { type: String, readonly: true },
-		password: { type: String, hidden: true },
-		password_confirmation: { type: String, hidden: true }
-	},
-	connector: 'appc.acs'
+// lifecycle examples
+server.on('starting', function() {
+	server.logger.info('server is starting!');
 });
-server.addModel(User);
 
-server.start();
+server.on('started', function() {
+	server.logger.info('server started!');
+});
+
+//--------------------- implement authorization ---------------------//
+
+// fetch our configured apikey
+var apikey = server.get('apikey');
+server.logger.info('APIKey is:', apikey);
+
+function APIKeyAuthorization(req, resp, next) {
+	if (!apikey) {
+		return next();
+	}
+	if (req.headers['apikey']) {
+		var key = req.headers['apikey'];
+		if (key == apikey) {
+			return next();
+		}
+	}
+	resp.status(401);
+	return resp.json({
+		id: 'com.appcelerator.api.unauthorized',
+		message: 'Unauthorized',
+		url: ''
+	});
+}
+
+server.authorization = APIKeyAuthorization;
+
+// start the server
+server.start(function () {
+	var connector = server.getConnector('appc.acs');
+	var UserModel = connector.getModel('user');
+
+	UserModel.find({
+		where: {
+			username: 'funtester'
+		}
+	}, function (err, users) {
+		console.log(arguments);
+	});
+});
