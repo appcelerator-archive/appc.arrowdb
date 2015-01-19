@@ -120,7 +120,6 @@ describe('Custom Objects', function () {
 				should(customObj.fields.color).equal(params.color);
 
 				testCustomObj = customObj;
-
 				done();
 			});
 		});
