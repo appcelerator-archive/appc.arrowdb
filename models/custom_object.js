@@ -46,7 +46,7 @@ module.exports = APIBuilder.Model.extend('customObject', {
 		}
 	},
 
-	instance: function instance(values, skipNotFound) {
+	instance: function instance(values, skipNotFound, params) {
 		if (values.cname) {
 			values.classname = values.cname;
 			delete values.cname;
@@ -59,6 +59,8 @@ module.exports = APIBuilder.Model.extend('customObject', {
 				delete values[key];
 			}
 		}, this);
+
+		values.classname || (values.classname = params.classname);
 
 		return new APIBuilder.Instance(this, values, skipNotFound);
 	},
