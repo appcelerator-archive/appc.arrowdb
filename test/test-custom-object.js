@@ -243,6 +243,15 @@ describe('Custom Objects', function () {
 				done();
 			});
 		});
+		
+		it('should return default of 1000 custom objects with findAll', function (done) {
+			FruitModel.findAll(function (err, fruits) {
+				assert.ifError(err);
+				should(fruits).be.an.Object;
+				should(fruits.length).be.within(0, 1000);
+				done();
+			});
+		});
 
 		it('should find our custom object within all custom objects', function (done) {
 			FruitModel.findAll(function (err, fruits) {
