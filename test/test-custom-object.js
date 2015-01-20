@@ -49,6 +49,34 @@ describe('Custom Objects', function () {
 				done();
 			});
 		});
+		
+		it('should support sel and unsel', function (done) {
+			FruitModel.create({
+				name: 'apple' + Math.round(Math.random() * 1e5),
+				color: 'red'
+			}, function(err) {
+				assert.ifError(err);
+				FruitModel.query({ sel: { name: 1 } }, function(err, fruits) {
+					assert.ifError(err);
+					should(fruits).be.an.Object;
+					should(fruits.length).be.ok;
+					for (var i = 0; i < fruits.length; i++) {
+						should(fruits[i].name).be.ok;
+						should(fruits[i].color).be.not.ok;
+					}
+					FruitModel.query({ unsel: { color: '1' } }, function(err, fruits) {
+						assert.ifError(err);
+						should(fruits).be.an.Object;
+						should(fruits.length).be.ok;
+						for (var i = 0; i < fruits.length; i++) {
+							should(fruits[i].name).be.ok;
+							should(fruits[i].color).be.not.ok;
+						}
+						done();
+					});
+				});
+			});
+		});
 
 		it('should return no more than 1000 custom objects using a query', function (done) {
 			FruitModel.query({ limit: 1000 }, function (err, fruits) {
