@@ -77,6 +77,35 @@ describe('Custom Objects', function () {
 				});
 			});
 		});
+		
+		it('should support order', function (done) {
+			FruitModel.create([
+				{ name: 'apple', color: 'red' },
+				{ name: 'orange', color: 'orange' },
+				{ name: 'watermelon', color: 'green' },
+				{ name: 'banana', color: 'yellow' },
+				{ name: 'kiwi', color: 'green' }
+			], function(err) {
+				assert.ifError(err);
+				FruitModel.query({ order: { name: 1 } }, function(err, fruits) {
+					assert.ifError(err);
+					should(fruits).be.an.Object;
+					should(fruits.length).be.ok;
+					for (var i = 0; i < fruits.length - 1; i++) {
+						assert(fruits[i].name <= fruits[i + 1].name);
+					}
+					FruitModel.query({ order: { name: -1 } }, function(err, fruits) {
+						assert.ifError(err);
+						should(fruits).be.an.Object;
+						should(fruits.length).be.ok;
+						for (var i = 0; i < fruits.length - 1; i++) {
+							assert(fruits[i].name >= fruits[i + 1].name);
+						}
+						done();
+					});
+				});
+			});
+		});
 
 		it('should return no more than 1000 custom objects using a query', function (done) {
 			FruitModel.query({ limit: 1000 }, function (err, fruits) {
