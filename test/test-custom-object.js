@@ -106,6 +106,34 @@ describe('Custom Objects', function () {
 				});
 			});
 		});
+		
+		it('should support $like', function (done) {
+
+			async.eachSeries([
+				{ insert: 'Hello world', where: 'Hello%' },
+				// Not supported by ACS: { insert: 'Hello world', where: '%world' },
+				// Not supported by ACS: { insert: 'Hello world', where: '%Hello%' },
+				{ insert: '10% Off', where: '10%% %' },
+				{ insert: '10% Off', where: '10\\% %' },
+				{ insert: 'Hello world', where: 'Hello world' },
+				{ insert: 'Hello world', where: 'He%ld' },
+				{ insert: 'We use _.js', where: 'We % \\_._s' },
+				{ insert: 'We use _.js', where: 'We _s_ __._s' }
+			], function(item, next) {
+				FruitModel.create({ name: item.insert, color: 'testing' }, function(err) {
+					if (err) {
+						return next(item.where + ' insert failed: ' + err);
+					}
+					FruitModel.query({ where: { name: { $like: item.where } } }, function(err, coll) {
+						if (err || !coll || !coll.length) {
+							return next(item.where + ' lookup failed: ' + (err || 'none found'));
+						}
+						next();
+					});
+				});
+			}, done);
+		
+		});
 
 		it('should return no more than 1000 custom objects using a query', function (done) {
 			FruitModel.query({ limit: 1000 }, function (err, fruits) {
