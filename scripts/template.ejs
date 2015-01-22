@@ -1,0 +1,87 @@
+<%
+	data.canonicals = [];
+	function printString(val) {
+		return JSON.stringify(val || '');
+	}
+	function printArray(arr, indent) {
+		return JSON.stringify(arr || [], null, '\t')
+				.split('\n').join('\n' + indent);
+	}
+	function camelCase(name) {
+		return name.replace(/_[a-z]/g, function(v) { return v[1].toUpperCase();  });
+	}
+	function isSingleElement(method) {
+		return [ 'query', 'search'].indexOf(method.name) === -1;
+	}
+%>'use strict';
+
+var APIBuilder = require("apibuilder");
+
+/*
+ The <%= data.name %> model.
+ */
+module.exports = APIBuilder.Model.extend("<%= data.fileName %>", {
+	/**
+	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
+	 */
+	generated: true,
+	/*
+	 Fields for this model.
+	 */
+	fields: {<% data.fields && data.fields.forEach(function(field, index, array) { %>
+		"<%= field.name %>": {
+			// "originalType": "<%= field.originalType %>",
+			"type": <%= field.type %>,
+			"description": <%= printString(field.description) %>
+		}<%= index !== array.length - 1 ? ',' : '' %><% }); %>
+	},
+	/*
+	 Methods for this model.
+	 */
+	methodMeta: {<% data.methods && data.methods.forEach(function(method, index, array) {
+		if (method.name === 'delete') {
+			data.canonicals.push({ from: 'remove', to: 'delete' });
+		}
+		else if (method.name !== 'add' && method.name.indexOf('add') === 0) {
+			data.canonicals.push({ from: method.name, to: 'add' });
+		}
+		else if (method.name !== 'check' && method.name.indexOf('check') === 0) {
+			data.canonicals.push({ from: method.name, to: 'check' });
+		}
+		else if (method.name !== 'remove' && method.name.indexOf('remove') === 0) {
+			data.canonicals.push({ from: method.name, to: 'remove' });
+		}
+		%>
+		"<%= camelCase(method.name) %>": {
+			"summary": <%= printString(method.summary) %>,
+			"description": <%= printString(method.description) %>,
+			"authRequired": <%= method['login-required'] === 'yes' || method['login-required'] || false %>,
+			"instance": true,
+			"adminRequired": <%= method['admin-required'] || false %>,<%
+			if (isSingleElement(method)) { %>
+			"response": {
+				"singleElement": true
+			},<% } %>
+			"parameters": <%= printArray(method.parameters, '\t\t\t') %>
+		}<%= index !== array.length - 1 ? ',' : '' %><% });
+		data.canonicals.forEach(function(method) { %>,
+		"<%= method.from %>": {
+			"canonical": "<%= method.to %>"
+		}
+		<% }); %>
+	},
+
+	_prepareParams: function prepareParams(method, instance, params, defaultValue) {
+		params || (params = {});
+		switch (method) {
+			case 'update':
+				defaultValue.<%= data.fileName %>_id = instance.getPrimaryKey();
+				return defaultValue;
+			case 'delete':
+				return {
+					<%= data.fileName %>_id: instance.getPrimaryKey()
+				};
+		}
+		return defaultValue;
+	}
+});
