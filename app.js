@@ -51,6 +51,6 @@ server.start(function () {
 			username: 'funtester'
 		}
 	}, function (err, users) {
-		console.log(arguments);
+		console.log(users.toJSON());
 	});
 });

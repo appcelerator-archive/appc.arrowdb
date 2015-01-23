@@ -1,7 +1,7 @@
 {
 	"name": "appc.acs",
 	"description": "ACS Connector",
-	"version": "1.0.21",
+	"version": "1.0.22",
 	"author": "Jeff Haynie",
 	"license": "",
 	"framework": "none",
@@ -16,7 +16,7 @@
 	},
 	"private": true,
 	"dependencies": {
-		"acs-node": "git://github.com/appcelerator/acs-node-sdk",
+		"acs-node": "git+ssh://git@github.com:appcelerator/acs-node-sdk.git",
 		"async": "^0.9.0",
 		"lodash": "^2.4.1",
 		"pkginfo": "^0.3.0"
