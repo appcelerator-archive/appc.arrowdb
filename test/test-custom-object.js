@@ -5,7 +5,7 @@ require('./_base');
 
 var assert = require('assert'),
 	async = require('async'),
-	Model = require('appcelerator').apibuilder.Model,
+	Model = require('appcelerator').arrow.Model,
 	should = require('should');
 
 describe('Custom Objects', function () {
@@ -20,6 +20,7 @@ describe('Custom Objects', function () {
 
 	init(function () {
 		this.CustomObjectModel = this.connector.getModel('customObject');
+		should(this.CustomObjectModel).be.an.Object;
 	});
 
 	describe('Model', function () {

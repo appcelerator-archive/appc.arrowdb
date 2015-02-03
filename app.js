@@ -3,8 +3,8 @@
  * be used or packaged with the actual connector when published.
  */
 
-var APIBuilder = require('appcelerator').apibuilder,
-	server = new APIBuilder();
+var Arrow = require('appcelerator').arrow,
+	server = new Arrow();
 
 // lifecycle examples
 server.on('starting', function() {

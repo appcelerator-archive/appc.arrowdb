@@ -25,7 +25,9 @@ describe('ACLs', function () {
 
 	init(function () {
 		this.ACLModel = this.connector.getModel('acl');
+		should(this.ACLModel).be.an.Object;
 		this.UserModel = this.connector.getModel('user');
+		should(this.UserModel).be.an.Object;
 	});
 
 	describe('Setup', function () {

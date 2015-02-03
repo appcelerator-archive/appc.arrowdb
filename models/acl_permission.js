@@ -1,8 +1,8 @@
 'use strict';
 
-var APIBuilder = require('apibuilder');
+var Arrow = require('arrow');
 
-module.exports = APIBuilder.Model.extend('acl_permission', {
+module.exports = Arrow.Model.extend('appc.acs/acl_permission', {
 	fields: {
 		read_permission: { type: Boolean },
 		write_permission: { type: Boolean }

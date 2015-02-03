@@ -1,11 +1,11 @@
 'use strict';
 
-var APIBuilder = require("apibuilder");
+var Arrow = require("arrow");
 
 /*
  The PushLogDetails model.
  */
-module.exports = APIBuilder.Model.extend("push_log_detail", {
+module.exports = Arrow.Model.extend("appc.acs/push_log_detail", {
 	/**
 	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
 	 */

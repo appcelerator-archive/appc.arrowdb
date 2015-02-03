@@ -1,11 +1,11 @@
 'use strict';
 
-var APIBuilder = require("apibuilder");
+var Arrow = require("arrow");
 
 /*
  The KeyValues model.
  */
-module.exports = APIBuilder.Model.extend("key_value", {
+module.exports = Arrow.Model.extend("appc.acs/key_value", {
 	/**
 	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
@@ -64,39 +64,6 @@ module.exports = APIBuilder.Model.extend("key_value", {
 				{
 					"name": "user_id",
 					"description": "Update the key-value pair on behalf of the identified user.\n\nLogin user must be an admin to update a key-value on behalf of another user.\n",
-					"type": "String"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
-		"delete": {
-			"summary": "Delete a Key-Value",
-			"description": "Deletes a key-value pair\n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "name",
-					"description": "Name (or key) of the key-value pair to delete.",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "access_private",
-					"description": "Determines whether to delete this key-value in the publically readable store\nor in the user's private store.\n\nDefault is false (publically readable store).\n",
-					"type": "Boolean"
-				},
-				{
-					"name": "user_id",
-					"description": "Delete the key-value pair on behalf of the identified user.\n\nLogin user must be an admin to delete a key-value on behalf of another user.\n",
 					"type": "String"
 				},
 				{
@@ -172,6 +139,39 @@ module.exports = APIBuilder.Model.extend("key_value", {
 				{
 					"name": "user_id",
 					"description": "Update the key-value pair on behalf of the identified user.\n\nLogin user must be an admin to update a key-value on behalf of another user.\n",
+					"type": "String"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
+		"delete": {
+			"summary": "Delete a Key-Value",
+			"description": "Deletes a key-value pair\n",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "name",
+					"description": "Name (or key) of the key-value pair to delete.",
+					"type": "String",
+					"required": true
+				},
+				{
+					"name": "access_private",
+					"description": "Determines whether to delete this key-value in the publically readable store\nor in the user's private store.\n\nDefault is false (publically readable store).\n",
+					"type": "Boolean"
+				},
+				{
+					"name": "user_id",
+					"description": "Delete the key-value pair on behalf of the identified user.\n\nLogin user must be an admin to delete a key-value on behalf of another user.\n",
 					"type": "String"
 				},
 				{

@@ -1,11 +1,11 @@
 'use strict';
 
-var APIBuilder = require("apibuilder");
+var Arrow = require("arrow");
 
 /*
  The Chats model.
  */
-module.exports = APIBuilder.Model.extend("chat", {
+module.exports = Arrow.Model.extend("appc.acs/chat", {
 	/**
 	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
@@ -193,6 +193,73 @@ module.exports = APIBuilder.Model.extend("chat", {
 				}
 			]
 		},
+		"queryChatGroups": {
+			"summary": "Query Chat Groups",
+			"description": "Queries chat groups.\n\nIf user A sends a chat message to users B and C, users A, B and C automatically\nform a chat group. Use this API to get a list of chat groups the current user\nbelongs to.\n\nIn ACS 1.1.5 and later, you can paginate query results using `skip` and `limit` parameters, or by including\na `where` clause to limit the results to objects whose IDs fall within a specified range.\nFor details, see [Query Pagination](#!/guide/search_query-section-query-pagination).        \n\nPrior to ACS 1.1.5 you can use `skip` and `limit` parameters, or `page` and `per_page` but \nnot both in the same query.        \n\nFor details about using the query parameters,\nsee the [Search and Query guide](#!/guide/search_query).\n",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": true,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "participate_ids",
+					"description": "Only available for application admins.\n\nComma-separated list of user ID(s) of the users belonging to a chat group. You can use\nthis field to narrow down the query to a certain chat group. The current user can\nonly query chats that he or she is participating in.\n\nFor example, suppose that users A, B and C form one chat group, and users B and C form a second chat group without A.\nUser A does not have permission to query chats in the chat group that consists of\nonly users B and C.\n\nAlternatively, you can use `chat_group_id` to identify a chat group\ninstead.\n",
+					"type": "String"
+				},
+				{
+					"name": "page",
+					"description": "Request page number, default is 1.\n\nThis parameter is only available to ACS applications created before ACS 1.1.5. \nApplications created with ACS 1.1.5 and later must use ranged-based queries queries\nto paginate their queries.\n",
+					"type": "Number"
+				},
+				{
+					"name": "per_page",
+					"description": "Number of results per page, default is 10.\n\nThis parameter is only available to ACS applications created before ACS 1.1.5. \nApplications created with ACS 1.1.5 and later must use ranged-based queries queries\nto paginate their queries.\n",
+					"type": "Number"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				},
+				{
+					"name": "limit",
+					"description": "The number of records to fetch. The value must be greater than 0, and no greater than \n1000, or an HTTP 400 (Bad Request) error will be returned.            \n",
+					"type": "Number"
+				},
+				{
+					"name": "skip",
+					"description": "Number of records to skip. Must be used together with `limit`.\nThe specified value must not be less than 0 or an HTTP 400 error will be returned.            \n",
+					"type": "Number"
+				},
+				{
+					"name": "where",
+					"description": "Constraint values for fields. `where` should be encoded JSON.\n\nIf `where` is not specified, `query` returns all objects.\n",
+					"type": "Hash"
+				},
+				{
+					"name": "order",
+					"description": "Sort results by one or more fields.\n",
+					"type": "String"
+				},
+				{
+					"name": "sel",
+					"description": "Selects the object fields to display. Do not use this parameter with `unsel`.\n",
+					"type": "Hash"
+				},
+				{
+					"name": "unsel",
+					"description": "Selects the object fields NOT to display. Do not use this parameter with `sel`.\n",
+					"type": "Hash"
+				},
+				{
+					"name": "response_json_depth",
+					"description": "Nested object depth level counts in response json.\nIn order to reduce server API calls from an application, the response json may\ninclude not just the objects that are being queried/searched, but also with\nsome important data related to the returning objects such as object's owner or\nreferencing objects.\n\nDefault is 1, valid range is 1 to 8.\n",
+					"type": "Number"
+				}
+			]
+		},
 		"query": {
 			"summary": "Custom Query Chat Messages",
 			"description": "Performs a custom query of chat messages with sorting and pagination. Currently you can\nnot query or sort data stored inside array or hash in custom fields.\n\nIn ACS 1.1.5 and later, you can paginate query results using `skip` and `limit` parameters, or by including\na `where` clause to limit the results to objects whose IDs fall within a specified range.\nFor details, see [Query Pagination](#!/guide/search_query-section-query-pagination).        \n\nFor details about using the query parameters,\nsee the [Search and Query guide](#!/guide/search_query).\n",
@@ -238,73 +305,6 @@ module.exports = APIBuilder.Model.extend("chat", {
 				{
 					"name": "where",
 					"description": "Constraint values for fields. `where` should be encoded JSON.\n\nYou can query any of the standard values for a Chat object, as well as any\ncustom fields that contain simple values, such as String, Number or Boolean\nvalues.\n\nIf `where` is not specified, `query` returns all objects.\n",
-					"type": "Hash"
-				},
-				{
-					"name": "order",
-					"description": "Sort results by one or more fields.\n",
-					"type": "String"
-				},
-				{
-					"name": "sel",
-					"description": "Selects the object fields to display. Do not use this parameter with `unsel`.\n",
-					"type": "Hash"
-				},
-				{
-					"name": "unsel",
-					"description": "Selects the object fields NOT to display. Do not use this parameter with `sel`.\n",
-					"type": "Hash"
-				},
-				{
-					"name": "response_json_depth",
-					"description": "Nested object depth level counts in response json.\nIn order to reduce server API calls from an application, the response json may\ninclude not just the objects that are being queried/searched, but also with\nsome important data related to the returning objects such as object's owner or\nreferencing objects.\n\nDefault is 1, valid range is 1 to 8.\n",
-					"type": "Number"
-				}
-			]
-		},
-		"queryChatGroups": {
-			"summary": "Query Chat Groups",
-			"description": "Queries chat groups.\n\nIf user A sends a chat message to users B and C, users A, B and C automatically\nform a chat group. Use this API to get a list of chat groups the current user\nbelongs to.\n\nIn ACS 1.1.5 and later, you can paginate query results using `skip` and `limit` parameters, or by including\na `where` clause to limit the results to objects whose IDs fall within a specified range.\nFor details, see [Query Pagination](#!/guide/search_query-section-query-pagination).        \n\nPrior to ACS 1.1.5 you can use `skip` and `limit` parameters, or `page` and `per_page` but \nnot both in the same query.        \n\nFor details about using the query parameters,\nsee the [Search and Query guide](#!/guide/search_query).\n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": true,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "participate_ids",
-					"description": "Only available for application admins.\n\nComma-separated list of user ID(s) of the users belonging to a chat group. You can use\nthis field to narrow down the query to a certain chat group. The current user can\nonly query chats that he or she is participating in.\n\nFor example, suppose that users A, B and C form one chat group, and users B and C form a second chat group without A.\nUser A does not have permission to query chats in the chat group that consists of\nonly users B and C.\n\nAlternatively, you can use `chat_group_id` to identify a chat group\ninstead.\n",
-					"type": "String"
-				},
-				{
-					"name": "page",
-					"description": "Request page number, default is 1.\n\nThis parameter is only available to ACS applications created before ACS 1.1.5. \nApplications created with ACS 1.1.5 and later must use ranged-based queries queries\nto paginate their queries.\n",
-					"type": "Number"
-				},
-				{
-					"name": "per_page",
-					"description": "Number of results per page, default is 10.\n\nThis parameter is only available to ACS applications created before ACS 1.1.5. \nApplications created with ACS 1.1.5 and later must use ranged-based queries queries\nto paginate their queries.\n",
-					"type": "Number"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				},
-				{
-					"name": "limit",
-					"description": "The number of records to fetch. The value must be greater than 0, and no greater than \n1000, or an HTTP 400 (Bad Request) error will be returned.            \n",
-					"type": "Number"
-				},
-				{
-					"name": "skip",
-					"description": "Number of records to skip. Must be used together with `limit`.\nThe specified value must not be less than 0 or an HTTP 400 error will be returned.            \n",
-					"type": "Number"
-				},
-				{
-					"name": "where",
-					"description": "Constraint values for fields. `where` should be encoded JSON.\n\nIf `where` is not specified, `query` returns all objects.\n",
 					"type": "Hash"
 				},
 				{

@@ -1,8 +1,8 @@
 'use strict';
 
-var APIBuilder = require('apibuilder');
+var Arrow = require('arrow');
 
-module.exports = APIBuilder.Model.extend('customObject', {
+module.exports = Arrow.Model.extend('appc.acs/customObject', {
 	fields: {
 		classname: { type: String },
 		created_at: { type: Date },
@@ -62,7 +62,7 @@ module.exports = APIBuilder.Model.extend('customObject', {
 
 		values.classname || (values.classname = params.classname);
 
-		return new APIBuilder.Instance(this, values, skipNotFound);
+		return new Arrow.Instance(this, values, skipNotFound);
 	},
 
 	_getResponseModelName: function (methodInfo, params, results) {

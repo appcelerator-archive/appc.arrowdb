@@ -21,6 +21,7 @@ describe('Users', function () {
 		// since init() sets up before() and after() which in turn creates a fresh
 		// server and connector, we need to get the user model each time
 		this.UserModel = this.connector.getModel('user');
+		should(this.UserModel).be.an.Object;
 	});
 
 	describe('Query and Count', function () {

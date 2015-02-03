@@ -1,11 +1,11 @@
 'use strict';
 
-var APIBuilder = require("apibuilder");
+var Arrow = require("arrow");
 
 /*
  The Files model.
  */
-module.exports = APIBuilder.Model.extend("file", {
+module.exports = Arrow.Model.extend("appc.acs/file", {
 	/**
 	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
@@ -121,10 +121,10 @@ module.exports = APIBuilder.Model.extend("file", {
 				}
 			]
 		},
-		"delete": {
-			"summary": "Delete a File",
-			"description": "Deletes the file. To delete a file, the current user must be one of the following:\n\n*   The file's owner\n*   A user with write priviledges granted by the file's ACL\n*   An application admin\n",
-			"authRequired": true,
+		"show": {
+			"summary": "Show File Info",
+			"description": "Returns information associated with the file.\n",
+			"authRequired": false,
 			"instance": true,
 			"adminRequired": false,
 			"response": {
@@ -133,19 +133,14 @@ module.exports = APIBuilder.Model.extend("file", {
 			"parameters": [
 				{
 					"name": "file_id",
-					"description": "ID of the file to delete.",
+					"description": "ID of the file to retrieve information for.",
 					"type": "String",
 					"required": true
 				},
 				{
-					"name": "user_id",
-					"description": "User to delete the File object on behalf of. The user must be the creator of the object.\n\nThe current user must be an application admin to delete the File object on\nbehalf of another user.\n",
-					"type": "String"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
+					"name": "response_json_depth",
+					"description": "Nested object depth level counts in response json.\nIn order to reduce server API calls from an application, the response json may\ninclude not just the objects that are being queried/searched, but also with\nsome important data related to the returning objects such as object's owner or\nreferencing objects.\n\nDefault is 1, valid range is 1 to 8.\n",
+					"type": "Number"
 				}
 			]
 		},
@@ -208,10 +203,10 @@ module.exports = APIBuilder.Model.extend("file", {
 				}
 			]
 		},
-		"show": {
-			"summary": "Show File Info",
-			"description": "Returns information associated with the file.\n",
-			"authRequired": false,
+		"delete": {
+			"summary": "Delete a File",
+			"description": "Deletes the file. To delete a file, the current user must be one of the following:\n\n*   The file's owner\n*   A user with write priviledges granted by the file's ACL\n*   An application admin\n",
+			"authRequired": true,
 			"instance": true,
 			"adminRequired": false,
 			"response": {
@@ -220,14 +215,19 @@ module.exports = APIBuilder.Model.extend("file", {
 			"parameters": [
 				{
 					"name": "file_id",
-					"description": "ID of the file to retrieve information for.",
+					"description": "ID of the file to delete.",
 					"type": "String",
 					"required": true
 				},
 				{
-					"name": "response_json_depth",
-					"description": "Nested object depth level counts in response json.\nIn order to reduce server API calls from an application, the response json may\ninclude not just the objects that are being queried/searched, but also with\nsome important data related to the returning objects such as object's owner or\nreferencing objects.\n\nDefault is 1, valid range is 1 to 8.\n",
-					"type": "Number"
+					"name": "user_id",
+					"description": "User to delete the File object on behalf of. The user must be the creator of the object.\n\nThe current user must be an application admin to delete the File object on\nbehalf of another user.\n",
+					"type": "String"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
 				}
 			]
 		},

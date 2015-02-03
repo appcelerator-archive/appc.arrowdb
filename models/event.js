@@ -1,11 +1,11 @@
 'use strict';
 
-var APIBuilder = require("apibuilder");
+var Arrow = require("arrow");
 
 /*
  The Events model.
  */
-module.exports = APIBuilder.Model.extend("event", {
+module.exports = Arrow.Model.extend("appc.acs/event", {
 	/**
 	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
 	 */

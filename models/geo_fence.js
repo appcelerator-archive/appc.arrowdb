@@ -1,11 +1,11 @@
 'use strict';
 
-var APIBuilder = require("apibuilder");
+var Arrow = require("arrow");
 
 /*
  The GeoFences model.
  */
-module.exports = APIBuilder.Model.extend("geo_fence", {
+module.exports = Arrow.Model.extend("appc.acs/geo_fence", {
 	/**
 	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
@@ -49,29 +49,6 @@ module.exports = APIBuilder.Model.extend("geo_fence", {
 	 Methods for this model.
 	 */
 	methodMeta: {
-		"create": {
-			"summary": "Creates a Geofence.",
-			"description": "Creates a geo-fence object with an optional start and end time.\n\nAvailable only for Enterprise administrators.\n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": true,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "geo_fence",
-					"description": "JSON object describing the geographic perimeter, data payload, and start and end time\nfor the geo-fence object.  Specify the following propertes:\n\n  * `loc` (Hash): **Required.** Geographic perimeter.  See GeoFences#loc.\n  * `payload` (Hash): **Required.** JSON-encoded data to retrieve if a device intersects\n    the geographic perimeter.\n  * `start_time` (Date): Datetime to start the geo-fence.\n  * `end_time` (Date): Datetime to end the geo-fence.\n",
-					"type": "Hash",
-					"required": true
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
 		"delete": {
 			"summary": "Deletes a Geofence",
 			"description": "Deletes an existing geo-fence object.\n\nAvailable only for Enterprise administrators. \n",
@@ -86,6 +63,29 @@ module.exports = APIBuilder.Model.extend("geo_fence", {
 					"name": "id",
 					"description": "ID of the geo-fence object to delete.",
 					"type": "String",
+					"required": true
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
+		"create": {
+			"summary": "Creates a Geofence.",
+			"description": "Creates a geo-fence object with an optional start and end time.\n\nAvailable only for Enterprise administrators.\n",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": true,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "geo_fence",
+					"description": "JSON object describing the geographic perimeter, data payload, and start and end time\nfor the geo-fence object.  Specify the following propertes:\n\n  * `loc` (Hash): **Required.** Geographic perimeter.  See GeoFences#loc.\n  * `payload` (Hash): **Required.** JSON-encoded data to retrieve if a device intersects\n    the geographic perimeter.\n  * `start_time` (Date): Datetime to start the geo-fence.\n  * `end_time` (Date): Datetime to end the geo-fence.\n",
+					"type": "Hash",
 					"required": true
 				},
 				{

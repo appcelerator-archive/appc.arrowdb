@@ -1,11 +1,11 @@
 'use strict';
 
-var APIBuilder = require("apibuilder");
+var Arrow = require("arrow");
 
 /*
  The Messages model.
  */
-module.exports = APIBuilder.Model.extend("message", {
+module.exports = Arrow.Model.extend("appc.acs/message", {
 	/**
 	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
@@ -103,6 +103,24 @@ module.exports = APIBuilder.Model.extend("message", {
 				}
 			]
 		},
+		"deleteThread": {
+			"summary": "",
+			"description": "Delete all messages in a thread with the given `thread_id`. The thread must be\nin the current user's inbox or sent mail. There is currently no trash folder\nand deletion is permanent.\n",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "thread_id",
+					"description": "Thread ID of the message thread to delete.",
+					"type": "String",
+					"required": true
+				}
+			]
+		},
 		"delete": {
 			"summary": "",
 			"description": "Delete the message with the given `id`. The message must be in the current\nuser's inbox or sent mail. There is currently no trash folder and deletion is\npermanent.\n\nApplication Admin can delete any Message object.\n",
@@ -123,24 +141,6 @@ module.exports = APIBuilder.Model.extend("message", {
 					"name": "user_id",
 					"description": "User to delete the Message object on behalf of. The user needs to be either the sender\nor recipient of the message.\n\nThe current user must be an application admin to delete a Message object on\nbehalf of another user.\n",
 					"type": "String"
-				}
-			]
-		},
-		"deleteThread": {
-			"summary": "",
-			"description": "Delete all messages in a thread with the given `thread_id`. The thread must be\nin the current user's inbox or sent mail. There is currently no trash folder\nand deletion is permanent.\n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "thread_id",
-					"description": "Thread ID of the message thread to delete.",
-					"type": "String",
-					"required": true
 				}
 			]
 		},
@@ -245,9 +245,9 @@ module.exports = APIBuilder.Model.extend("message", {
 				}
 			]
 		},
-		"showInbox": {
+		"showSent": {
 			"summary": "",
-			"description": "Shows messages in the current user's inbox. Messages in the inbox have the\nstatus of `unread`, `read`, or `replied`.\n",
+			"description": "Shows messages in the current user's sent messages.",
 			"authRequired": true,
 			"instance": true,
 			"adminRequired": false,
@@ -267,9 +267,9 @@ module.exports = APIBuilder.Model.extend("message", {
 				}
 			]
 		},
-		"showSent": {
+		"showInbox": {
 			"summary": "",
-			"description": "Shows messages in the current user's sent messages.",
+			"description": "Shows messages in the current user's inbox. Messages in the inbox have the\nstatus of `unread`, `read`, or `replied`.\n",
 			"authRequired": true,
 			"instance": true,
 			"adminRequired": false,

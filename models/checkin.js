@@ -1,11 +1,11 @@
 'use strict';
 
-var APIBuilder = require("apibuilder");
+var Arrow = require("arrow");
 
 /*
  The Checkins model.
  */
-module.exports = APIBuilder.Model.extend("checkin", {
+module.exports = Arrow.Model.extend("appc.acs/checkin", {
 	/**
 	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
@@ -78,6 +78,34 @@ module.exports = APIBuilder.Model.extend("checkin", {
 					"name": "where",
 					"description": "Encoded JSON object that specifies constraint values for Checkins objects to delete.\nIf not specified, all Checkins objects are deleted.\n",
 					"type": "Hash"
+				}
+			]
+		},
+		"delete": {
+			"summary": "Delete a Checkin",
+			"description": "Deletes a checkin. \n\nThe Place, Event, or Photo associated with the checkin\nis not deleted.\n\nAn application admin can delete any Checkin object. \n",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "checkin_id",
+					"description": "ID of the checkin to delete.",
+					"type": "String",
+					"required": true
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				},
+				{
+					"name": "user_id",
+					"description": "User to delete the Checkin object on behalf of. The user must be the creator of the object.\n\nThe current user must be an application admin to delete a Checkin object on\nbehalf of another user.\n",
+					"type": "String"
 				}
 			]
 		},
@@ -156,10 +184,10 @@ module.exports = APIBuilder.Model.extend("checkin", {
 				}
 			]
 		},
-		"delete": {
-			"summary": "Delete a Checkin",
-			"description": "Deletes a checkin. \n\nThe Place, Event, or Photo associated with the checkin\nis not deleted.\n\nAn application admin can delete any Checkin object. \n",
-			"authRequired": true,
+		"show": {
+			"summary": "Show a Checkin",
+			"description": "Returns the contents of the identified checkin.",
+			"authRequired": false,
 			"instance": true,
 			"adminRequired": false,
 			"response": {
@@ -168,19 +196,24 @@ module.exports = APIBuilder.Model.extend("checkin", {
 			"parameters": [
 				{
 					"name": "checkin_id",
-					"description": "ID of the checkin to delete.",
+					"description": "ID of the checkin to show.",
 					"type": "String",
 					"required": true
+				},
+				{
+					"name": "response_json_depth",
+					"description": "Nested object depth level counts in response json.\nIn order to reduce server API calls from an application, the response json may\ninclude not just the objects that are being queried/searched, but also with\nsome important data related to the returning objects such as object's owner or\nreferencing objects.\n",
+					"type": "Number"
+				},
+				{
+					"name": "show_user_like",
+					"description": "If set to **true** the Checkin object in the response will include `\"current_user_liked: true\"`\nif the current user has liked the object. If the user has not liked the object, the\n`current_user_liked` field is not included in the response.\n",
+					"type": "Boolean"
 				},
 				{
 					"name": "pretty_json",
 					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
 					"type": "Boolean"
-				},
-				{
-					"name": "user_id",
-					"description": "User to delete the Checkin object on behalf of. The user must be the creator of the object.\n\nThe current user must be an application admin to delete a Checkin object on\nbehalf of another user.\n",
-					"type": "String"
 				}
 			]
 		},
@@ -240,39 +273,6 @@ module.exports = APIBuilder.Model.extend("checkin", {
 					"name": "response_json_depth",
 					"description": "Nested object depth level counts in response json.\nIn order to reduce server API calls from an application, the response json may\ninclude not just the objects that are being queried/searched, but also with\nsome important data related to the returning objects such as object's owner or\nreferencing objects.\n\nDefault is 1, valid range is 1 to 8.\n",
 					"type": "Number"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
-		"show": {
-			"summary": "Show a Checkin",
-			"description": "Returns the contents of the identified checkin.",
-			"authRequired": false,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "checkin_id",
-					"description": "ID of the checkin to show.",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "response_json_depth",
-					"description": "Nested object depth level counts in response json.\nIn order to reduce server API calls from an application, the response json may\ninclude not just the objects that are being queried/searched, but also with\nsome important data related to the returning objects such as object's owner or\nreferencing objects.\n",
-					"type": "Number"
-				},
-				{
-					"name": "show_user_like",
-					"description": "If set to **true** the Checkin object in the response will include `\"current_user_liked: true\"`\nif the current user has liked the object. If the user has not liked the object, the\n`current_user_liked` field is not included in the response.\n",
-					"type": "Boolean"
 				},
 				{
 					"name": "pretty_json",

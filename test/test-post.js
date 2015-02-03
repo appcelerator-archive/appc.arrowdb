@@ -19,6 +19,7 @@ describe('Posts', function() {
 		// since init() sets up before() and after() which in turn creates a fresh
 		// server and connector, we need to get the post model each time
 		this.PostModel = this.connector.getModel('post');
+		should(this.PostModel).be.an.Object;
 	});
 
 	describe('Query and Count', function() {

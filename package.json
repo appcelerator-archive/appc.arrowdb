@@ -6,8 +6,8 @@
 	"license": "Apache2",
 	"framework": "none",
 	"keywords": [
-		"apibuilder",
-		"apibuilder-connector"
+		"arrow",
+		"arrow-connector"
 	],
 	"repository": {},
 	"scripts": {
@@ -16,7 +16,7 @@
 	},
 	"private": true,
 	"dependencies": {
-		"acs-node": "appcelerator/acs-node-sdk",
+		"acs-node-beta": "^1.0.0",
 		"async": "^0.9.0",
 		"lodash": "^2.4.1",
 		"pkginfo": "^0.3.0"

@@ -15,12 +15,12 @@
 	}
 %>'use strict';
 
-var APIBuilder = require("apibuilder");
+var Arrow = require("arrow");
 
 /*
  The <%= data.name %> model.
  */
-module.exports = APIBuilder.Model.extend("<%= data.fileName %>", {
+module.exports = Arrow.Model.extend("appc.acs/<%= data.fileName %>", {
 	/**
 	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
 	 */

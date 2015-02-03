@@ -17,7 +17,7 @@ $ appc install connector/appc.acs --save
 Reference the connector in your model.
 
 ```javascript
-var User = APIBuilder.Model.extend('user', {
+var User = Arrow.Model.extend('user', {
 	fields: {
 		first_name: { type: String },
 		last_name: { type: String },
@@ -33,7 +33,7 @@ If you want to map a specific model to a specific collection name, use metadata.
 For example, to map the `user` model to the collection `users`, set it such as:
 
 ```javascript
-var User = APIBuilder.Model.extend('user',{
+var User = Arrow.Model.extend('user',{
 	fields: {
 		name: { type: String, required: false, validator: /[a-zA-Z]{3,}/ }
 	},

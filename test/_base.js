@@ -2,7 +2,7 @@
 
 process.env.APPC_DISABLE_LONG_STACK_TRACE = 1;
 
-var APIBuilder = require('appcelerator').apibuilder,
+var Arrow = require('appcelerator').arrow,
 	assert = require('assert'),
 	should = require('should'),
 	util = require('util');
@@ -19,7 +19,7 @@ function dump() {
 
 function init(beforeFn) {
 	before(function (next) {
-		this.server = new APIBuilder();
+		this.server = new Arrow();
 		this.connector = this.server.getConnector('appc.acs');
 		this.connector.connect(function () {
 			beforeFn && beforeFn.call(this);

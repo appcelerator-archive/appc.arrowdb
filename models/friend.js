@@ -1,11 +1,11 @@
 'use strict';
 
-var APIBuilder = require("apibuilder");
+var Arrow = require("arrow");
 
 /*
  The Friends model.
  */
-module.exports = APIBuilder.Model.extend("friend", {
+module.exports = Arrow.Model.extend("appc.acs/friend", {
 	/**
 	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
@@ -139,29 +139,6 @@ module.exports = APIBuilder.Model.extend("friend", {
 				}
 			]
 		},
-		"remove": {
-			"summary": "Remove Friends",
-			"description": "Removes one or more friends from the user's friends list.\n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "user_ids",
-					"description": "Comma-separated list consisting of IDs of one or more users to remove from the current user.\n",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
 		"requests": {
 			"summary": "Show Friend Requests",
 			"description": "View pending friend requests.\n",
@@ -225,6 +202,29 @@ module.exports = APIBuilder.Model.extend("friend", {
 					"name": "response_json_depth",
 					"description": "Nested object depth level counts in response json.\nIn order to reduce server API calls from an application, the response json may\ninclude not just the objects that are being queried/searched, but also with\nsome important data related to the returning objects such as object's owner or\nreferencing objects.\n\nDefault is 1, valid range is 1 to 8.\n",
 					"type": "Number"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
+		"remove": {
+			"summary": "Remove Friends",
+			"description": "Removes one or more friends from the user's friends list.\n",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "user_ids",
+					"description": "Comma-separated list consisting of IDs of one or more users to remove from the current user.\n",
+					"type": "String",
+					"required": true
 				},
 				{
 					"name": "pretty_json",

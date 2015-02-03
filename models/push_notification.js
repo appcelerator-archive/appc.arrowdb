@@ -1,11 +1,11 @@
 'use strict';
 
-var APIBuilder = require("apibuilder");
+var Arrow = require("arrow");
 
 /*
  The PushNotifications model.
  */
-module.exports = APIBuilder.Model.extend("push_notification", {
+module.exports = Arrow.Model.extend("appc.acs/push_notification", {
 	/**
 	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
@@ -358,10 +358,10 @@ module.exports = APIBuilder.Model.extend("push_notification", {
 				}
 			]
 		},
-		"subscriptionUpdate": {
-			"summary": "Update the Subscription",
-			"description": "Updates the device's push channel subscription.\n",
-			"authRequired": true,
+		"unsubscribeToken": {
+			"summary": "unsubscribe_token",
+			"description": "Unsubscribes the specified device from a push notification channel.\nIf `channel` is not defined, unsubscribes the device from all channels.\n",
+			"authRequired": false,
 			"instance": true,
 			"adminRequired": false,
 			"response": {
@@ -369,20 +369,15 @@ module.exports = APIBuilder.Model.extend("push_notification", {
 			},
 			"parameters": [
 				{
-					"name": "device_token",
-					"description": "Apple or Android Device Token.",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "user_id",
-					"description": "User ID to update the subscription on behalf of. You must be logged in as an application administrator\nto update another user's notification subscription.\n",
+					"name": "channel",
+					"description": "Name of the push notification channel.\n\nThe name of the push channel cannot start with a hash symbol ('#').\n",
 					"type": "String"
 				},
 				{
-					"name": "loc",
-					"description": "The device's current location specified as an array with longitude as the first element, and latitude\nas the second element (`[longitude,latitude]`).\n",
-					"type": "Array"
+					"name": "device_token",
+					"description": "Android or iOS device token.",
+					"type": "String",
+					"required": true
 				},
 				{
 					"name": "pretty_json",
@@ -424,10 +419,10 @@ module.exports = APIBuilder.Model.extend("push_notification", {
 				}
 			]
 		},
-		"unsubscribeToken": {
-			"summary": "unsubscribe_token",
-			"description": "Unsubscribes the specified device from a push notification channel.\nIf `channel` is not defined, unsubscribes the device from all channels.\n",
-			"authRequired": false,
+		"subscriptionUpdate": {
+			"summary": "Update the Subscription",
+			"description": "Updates the device's push channel subscription.\n",
+			"authRequired": true,
 			"instance": true,
 			"adminRequired": false,
 			"response": {
@@ -435,15 +430,20 @@ module.exports = APIBuilder.Model.extend("push_notification", {
 			},
 			"parameters": [
 				{
-					"name": "channel",
-					"description": "Name of the push notification channel.\n\nThe name of the push channel cannot start with a hash symbol ('#').\n",
+					"name": "device_token",
+					"description": "Apple or Android Device Token.",
+					"type": "String",
+					"required": true
+				},
+				{
+					"name": "user_id",
+					"description": "User ID to update the subscription on behalf of. You must be logged in as an application administrator\nto update another user's notification subscription.\n",
 					"type": "String"
 				},
 				{
-					"name": "device_token",
-					"description": "Android or iOS device token.",
-					"type": "String",
-					"required": true
+					"name": "loc",
+					"description": "The device's current location specified as an array with longitude as the first element, and latitude\nas the second element (`[longitude,latitude]`).\n",
+					"type": "Array"
 				},
 				{
 					"name": "pretty_json",

@@ -1,8 +1,8 @@
 'use strict';
 
-var APIBuilder = require('apibuilder');
+var Arrow = require('arrow');
 
-module.exports = APIBuilder.Model.extend('acl', {
+module.exports = Arrow.Model.extend('appc.acs/acl', {
 	fields: {
 		created_at: { type: Date },
 		name: { type: String },

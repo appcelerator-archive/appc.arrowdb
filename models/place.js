@@ -1,11 +1,11 @@
 'use strict';
 
-var APIBuilder = require("apibuilder");
+var Arrow = require("arrow");
 
 /*
  The Places model.
  */
-module.exports = APIBuilder.Model.extend("place", {
+module.exports = Arrow.Model.extend("appc.acs/place", {
 	/**
 	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
