@@ -6,3 +6,4 @@ logs
 *.log
 *.tgz
 conf/local.js
+undefined.metadata
