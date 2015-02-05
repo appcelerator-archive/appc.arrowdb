@@ -1,8 +1,8 @@
 'use strict';
 
-var Arrow = require('arrow');
+var Arrow = require('arrow.js');
 
-module.exports = Arrow.Model.extend('appc.acs/user', {
+module.exports = Arrow.Model.extend('appc.arrowdb/user', {
 	fields: {
 		admin: { type: Boolean },
 		created_at: { type: Date },

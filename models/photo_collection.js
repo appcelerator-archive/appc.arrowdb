@@ -1,11 +1,11 @@
 'use strict';
 
-var Arrow = require("arrow");
+var Arrow = require("arrow.js");
 
 /*
  The PhotoCollections model.
  */
-module.exports = Arrow.Model.extend("appc.acs/photo_collection", {
+module.exports = Arrow.Model.extend("appc.arrowdb/photo_collection", {
 	/**
 	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
@@ -48,6 +48,16 @@ module.exports = Arrow.Model.extend("appc.acs/photo_collection", {
 			// "originalType": "Users",
 			"type": Array,
 			"description": "Owner of this collection."
+		},
+		"custom_fields": {
+			// "originalType": "",
+			"type": Object,
+			"description": "User defined fields."
+		},
+		"user_id": {
+			// "originalType": "",
+			"type": String,
+			"description": "Specifies the owner of object."
 		}
 	},
 	/*
@@ -126,34 +136,6 @@ module.exports = Arrow.Model.extend("appc.acs/photo_collection", {
 				}
 			]
 		},
-		"delete": {
-			"summary": "Delete a Photo Collection",
-			"description": "Delete an empty collection. An error will be returned if a collection contains\nany photos or subcollections.\n\nAn application admin can delete any photo collection. The #cover_photo associated \nwith the collection is not deleted.\n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "collection_id",
-					"description": "ID of the collection to delete.",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "user_id",
-					"description": "User ID to delete the collection on behalf of. The user must be the creator of the collection.\n\nThe current login user must be an application admin to delete a collection on\nbehalf of another user.\n",
-					"type": "String"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
 		"showPhotos": {
 			"summary": "Show Photos in a Collection",
 			"description": "Show photos in a collection.\n",
@@ -184,6 +166,34 @@ module.exports = Arrow.Model.extend("appc.acs/photo_collection", {
 					"name": "response_json_depth",
 					"description": "Nested object depth level counts in the response JSON.\n\nIn order to reduce server API calls from an application, the response JSON may\ninclude not just the objects that are being queried/searched, but also\nsome important data related to the returned objects such as the object's owner or\nreferenced objects.\n\nDefault is 1, valid range is 1 to 8.\n",
 					"type": "Number"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
+		"delete": {
+			"summary": "Delete a Photo Collection",
+			"description": "Delete an empty collection. An error will be returned if a collection contains\nany photos or subcollections.\n\nAn application admin can delete any photo collection. The #cover_photo associated \nwith the collection is not deleted.\n",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "collection_id",
+					"description": "ID of the collection to delete.",
+					"type": "String",
+					"required": true
+				},
+				{
+					"name": "user_id",
+					"description": "User ID to delete the collection on behalf of. The user must be the creator of the collection.\n\nThe current login user must be an application admin to delete a collection on\nbehalf of another user.\n",
+					"type": "String"
 				},
 				{
 					"name": "pretty_json",

@@ -43,7 +43,7 @@ server.authorization = APIKeyAuthorization;
 
 // start the server
 server.start(function () {
-	var connector = server.getConnector('appc.acs');
+	var connector = server.getConnector('appc.arrowdb');
 	var UserModel = connector.getModel('user');
 
 	UserModel.find({

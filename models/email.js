@@ -1,11 +1,11 @@
 'use strict';
 
-var Arrow = require("arrow");
+var Arrow = require("arrow.js");
 
 /*
  The Emails model.
  */
-module.exports = Arrow.Model.extend("appc.acs/email", {
+module.exports = Arrow.Model.extend("appc.arrowdb/email", {
 	/**
 	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
 	 */

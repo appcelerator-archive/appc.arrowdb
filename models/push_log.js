@@ -1,11 +1,11 @@
 'use strict';
 
-var Arrow = require("arrow");
+var Arrow = require("arrow.js");
 
 /*
  The PushLogs model.
  */
-module.exports = Arrow.Model.extend("appc.acs/push_log", {
+module.exports = Arrow.Model.extend("appc.arrowdb/push_log", {
 	/**
 	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
@@ -58,6 +58,16 @@ module.exports = Arrow.Model.extend("appc.acs/push_log", {
 			// "originalType": "Date",
 			"type": Date,
 			"description": "Date that push notification was updated."
+		},
+		"custom_fields": {
+			// "originalType": "",
+			"type": Object,
+			"description": "User defined fields."
+		},
+		"user_id": {
+			// "originalType": "",
+			"type": String,
+			"description": "Specifies the owner of object."
 		}
 	},
 	/*

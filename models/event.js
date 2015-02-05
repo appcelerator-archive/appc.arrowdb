@@ -1,11 +1,11 @@
 'use strict';
 
-var Arrow = require("arrow");
+var Arrow = require("arrow.js");
 
 /*
  The Events model.
  */
-module.exports = Arrow.Model.extend("appc.acs/event", {
+module.exports = Arrow.Model.extend("appc.arrowdb/event", {
 	/**
 	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
@@ -93,6 +93,16 @@ module.exports = Arrow.Model.extend("appc.acs/event", {
 			// "originalType": "Array",
 			"type": Array,
 			"description": "Array of ACLs associated with this object.\n"
+		},
+		"custom_fields": {
+			// "originalType": "",
+			"type": Object,
+			"description": "User defined fields."
+		},
+		"user_id": {
+			// "originalType": "",
+			"type": String,
+			"description": "Specifies the owner of object."
 		}
 	},
 	/*
@@ -113,6 +123,34 @@ module.exports = Arrow.Model.extend("appc.acs/event", {
 					"name": "where",
 					"description": "Encoded JSON object that specifies constraint values for Events objects to delete.\nIf not specified, all Events objects are deleted.\n",
 					"type": "Hash"
+				}
+			]
+		},
+		"delete": {
+			"summary": "Delete an Event",
+			"description": "Delete the event with the given `id`. Only the original submitter can delete\nthe event.\n\nThe Place or Event associated with the object is not deleted.        \n\nApplication Admin can delete any Event object.\n",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "event_id",
+					"description": "ID of the event to delete.",
+					"type": "String",
+					"required": true
+				},
+				{
+					"name": "user_id",
+					"description": "User to delete the Event object on behalf of. The user must be the creator of the object.\n\nThe current user must be an application admin to delete an Event object on\nbehalf of another user.\n",
+					"type": "String"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
 				}
 			]
 		},
@@ -204,34 +242,6 @@ module.exports = Arrow.Model.extend("appc.acs/event", {
 				{
 					"name": "user_id",
 					"description": "User ID to create the event on behalf of.\n\nThe current login user must be an application admin to create an event on\nbehalf of another user.\n",
-					"type": "String"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
-		"delete": {
-			"summary": "Delete an Event",
-			"description": "Delete the event with the given `id`. Only the original submitter can delete\nthe event.\n\nThe Place or Event associated with the object is not deleted.        \n\nApplication Admin can delete any Event object.\n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "event_id",
-					"description": "ID of the event to delete.",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "user_id",
-					"description": "User to delete the Event object on behalf of. The user must be the creator of the object.\n\nThe current user must be an application admin to delete an Event object on\nbehalf of another user.\n",
 					"type": "String"
 				},
 				{
@@ -503,43 +513,6 @@ module.exports = Arrow.Model.extend("appc.acs/event", {
 				}
 			]
 		},
-		"show": {
-			"summary": "Show Event",
-			"description": "Show event(s) with the given IDs.\n",
-			"authRequired": false,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "event_id",
-					"description": "ID of the event to delete.\n\nEither `event_id` or `event_ids` must be specified.\n",
-					"type": "String"
-				},
-				{
-					"name": "event_ids",
-					"description": "Comma-separated list of event IDs to show.",
-					"type": "String"
-				},
-				{
-					"name": "response_json_depth",
-					"description": "Nested object depth level counts in response JSON.\n\nIn order to reduce server API calls from an application, the response JSON may\ninclude not just the identified objects, but also some important data related\nto the returning objects such as object's owner or referenced objects.\n\nDefault is 1, valid range is 1 to 8.\n",
-					"type": "Number"
-				},
-				{
-					"name": "show_user_like",
-					"description": "If set to **true** the Event object in the response will include `\"current_user_liked: true\"`\nif the current user has liked the object. If the user has not liked the object, the \n`current_user_liked` field is not included in the response.\n",
-					"type": "Boolean"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
 		"showOccurrences": {
 			"summary": "Show Event Occurrences",
 			"description": "Show the event occurrences of an event with the given `event_id`.\n",
@@ -570,6 +543,43 @@ module.exports = Arrow.Model.extend("appc.acs/event", {
 					"name": "response_json_depth",
 					"description": "Nested object depth level counts in response json.\nIn order to reduce server API calls from an application, the response json may\ninclude not just the objects that are being queried/searched, but also with\nsome important data related to the returning objects such as object's owner or\nreferencing objects.\n\nDefault is 1, valid range is 1 to 8.\n",
 					"type": "Number"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
+		"show": {
+			"summary": "Show Event",
+			"description": "Show event(s) with the given IDs.\n",
+			"authRequired": false,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "event_id",
+					"description": "ID of the event to delete.\n\nEither `event_id` or `event_ids` must be specified.\n",
+					"type": "String"
+				},
+				{
+					"name": "event_ids",
+					"description": "Comma-separated list of event IDs to show.",
+					"type": "String"
+				},
+				{
+					"name": "response_json_depth",
+					"description": "Nested object depth level counts in response JSON.\n\nIn order to reduce server API calls from an application, the response JSON may\ninclude not just the identified objects, but also some important data related\nto the returning objects such as object's owner or referenced objects.\n\nDefault is 1, valid range is 1 to 8.\n",
+					"type": "Number"
+				},
+				{
+					"name": "show_user_like",
+					"description": "If set to **true** the Event object in the response will include `\"current_user_liked: true\"`\nif the current user has liked the object. If the user has not liked the object, the \n`current_user_liked` field is not included in the response.\n",
+					"type": "Boolean"
 				},
 				{
 					"name": "pretty_json",

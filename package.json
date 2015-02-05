@@ -1,9 +1,9 @@
 {
-	"name": "appc.acs",
-	"description": "ACS Connector",
-	"version": "1.0.25",
+	"name": "appc.arrowdb",
+	"description": "ArrowDB Connector",
+	"version": "1.0.26",
 	"author": "Jeff Haynie",
-	"license": "Apache2",
+	"license": "Appcelerator Proprietary",
 	"framework": "none",
 	"keywords": [
 		"arrow",

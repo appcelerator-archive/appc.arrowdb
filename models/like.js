@@ -1,11 +1,11 @@
 'use strict';
 
-var Arrow = require("arrow");
+var Arrow = require("arrow.js");
 
 /*
  The Likes model.
  */
-module.exports = Arrow.Model.extend("appc.acs/like", {
+module.exports = Arrow.Model.extend("appc.arrowdb/like", {
 	/**
 	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
@@ -38,6 +38,16 @@ module.exports = Arrow.Model.extend("appc.acs/like", {
 			// "originalType": "Users",
 			"type": Array,
 			"description": "User who generated the like."
+		},
+		"custom_fields": {
+			// "originalType": "",
+			"type": Object,
+			"description": "User defined fields."
+		},
+		"user_id": {
+			// "originalType": "",
+			"type": String,
+			"description": "Specifies the owner of object."
 		}
 	},
 	/*

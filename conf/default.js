@@ -17,7 +17,7 @@ module.exports = {
 		activeDuration: 1000 * 60 * 5 // if expiresIn < activeDuration, the session will be extended by activeDuration milliseconds
 	},
 	connectors: {
-		'appc.acs': {
+		'appc.arrowdb': {
 			key: '',
 			username: '',
 			password: ''

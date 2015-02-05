@@ -1,11 +1,11 @@
 'use strict';
 
-var Arrow = require("arrow");
+var Arrow = require("arrow.js");
 
 /*
  The Files model.
  */
-module.exports = Arrow.Model.extend("appc.acs/file", {
+module.exports = Arrow.Model.extend("appc.arrowdb/file", {
 	/**
 	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
@@ -43,6 +43,16 @@ module.exports = Arrow.Model.extend("appc.acs/file", {
 			// "originalType": "Users",
 			"type": Array,
 			"description": "Owner of this object."
+		},
+		"custom_fields": {
+			// "originalType": "",
+			"type": Object,
+			"description": "User defined fields."
+		},
+		"user_id": {
+			// "originalType": "",
+			"type": String,
+			"description": "Specifies the owner of object."
 		}
 	},
 	/*
@@ -118,29 +128,6 @@ module.exports = Arrow.Model.extend("appc.acs/file", {
 					"name": "pretty_json",
 					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
 					"type": "Boolean"
-				}
-			]
-		},
-		"show": {
-			"summary": "Show File Info",
-			"description": "Returns information associated with the file.\n",
-			"authRequired": false,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "file_id",
-					"description": "ID of the file to retrieve information for.",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "response_json_depth",
-					"description": "Nested object depth level counts in response json.\nIn order to reduce server API calls from an application, the response json may\ninclude not just the objects that are being queried/searched, but also with\nsome important data related to the returning objects such as object's owner or\nreferencing objects.\n\nDefault is 1, valid range is 1 to 8.\n",
-					"type": "Number"
 				}
 			]
 		},
@@ -228,6 +215,29 @@ module.exports = Arrow.Model.extend("appc.acs/file", {
 					"name": "pretty_json",
 					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
 					"type": "Boolean"
+				}
+			]
+		},
+		"show": {
+			"summary": "Show File Info",
+			"description": "Returns information associated with the file.\n",
+			"authRequired": false,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "file_id",
+					"description": "ID of the file to retrieve information for.",
+					"type": "String",
+					"required": true
+				},
+				{
+					"name": "response_json_depth",
+					"description": "Nested object depth level counts in response json.\nIn order to reduce server API calls from an application, the response json may\ninclude not just the objects that are being queried/searched, but also with\nsome important data related to the returning objects such as object's owner or\nreferencing objects.\n\nDefault is 1, valid range is 1 to 8.\n",
+					"type": "Number"
 				}
 			]
 		},

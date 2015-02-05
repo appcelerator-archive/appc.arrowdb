@@ -20,7 +20,7 @@ function dump() {
 function init(beforeFn) {
 	before(function (next) {
 		this.server = new Arrow();
-		this.connector = this.server.getConnector('appc.acs');
+		this.connector = this.server.getConnector('appc.arrowdb');
 		this.connector.connect(function () {
 			beforeFn && beforeFn.call(this);
 			next();

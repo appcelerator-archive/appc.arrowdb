@@ -23,7 +23,17 @@ var yaml = require('js-yaml'),
  Configuration.
  */
 var excludedFields = ['id'],
-	excludedMethods = ['count'];
+	excludedMethods = ['count'],
+	// fields that aren't in our documentation but should exist in the data model
+	includeFields = [{
+		name: 'custom_fields',
+		type: 'Object',
+		description: 'User defined fields.'
+	},{
+		name: 'user_id',
+		type: 'String',
+		description: 'Specifies the owner of object.'
+	}];
 
 /*
  State.
@@ -105,7 +115,7 @@ function downloadedYAML(body) {
 			var field = doc.fields[i];
 			field.type = translateType(String(field.originalType = field.type));
 		}
-		object.fields = (object.fields || []).concat(doc.fields).filter(excludeCertainFields);
+		object.fields = (object.fields || []).concat(doc.fields).concat(includeFields).filter(excludeCertainFields);
 	}
 
 	// Check if its private (such as "Reviewable" and other future mixins).

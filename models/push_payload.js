@@ -1,11 +1,11 @@
 'use strict';
 
-var Arrow = require("arrow");
+var Arrow = require("arrow.js");
 
 /*
  The PushPayload model.
  */
-module.exports = Arrow.Model.extend("appc.acs/push_payload", {
+module.exports = Arrow.Model.extend("appc.arrowdb/push_payload", {
 	/**
 	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
@@ -53,6 +53,16 @@ module.exports = Arrow.Model.extend("appc.acs/push_payload", {
 			// "originalType": "String",
 			"type": String,
 			"description": "If true, the device vibrates for one second. **Android only.**"
+		},
+		"custom_fields": {
+			// "originalType": "",
+			"type": Object,
+			"description": "User defined fields."
+		},
+		"user_id": {
+			// "originalType": "",
+			"type": String,
+			"description": "Specifies the owner of object."
 		}
 	},
 	/*

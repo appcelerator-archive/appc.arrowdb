@@ -1,11 +1,11 @@
 'use strict';
 
-var Arrow = require("arrow");
+var Arrow = require("arrow.js");
 
 /*
  The Posts model.
  */
-module.exports = Arrow.Model.extend("appc.acs/post", {
+module.exports = Arrow.Model.extend("appc.arrowdb/post", {
 	/**
 	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
@@ -64,6 +64,16 @@ module.exports = Arrow.Model.extend("appc.acs/post", {
 			"type": String,
 			"description": "User who created this post."
 		},
+		"custom_fields": {
+			// "originalType": "",
+			"type": Object,
+			"description": "User defined fields."
+		},
+		"user_id": {
+			// "originalType": "",
+			"type": String,
+			"description": "Specifies the owner of object."
+		},
 		"reviews": {
 			// "originalType": "Array",
 			"type": Array,
@@ -88,6 +98,16 @@ module.exports = Arrow.Model.extend("appc.acs/post", {
 			// "originalType": "Hash",
 			"type": Object,
 			"description": "Breakdown of the number of reviews that specified a given rating value. For\nexample, if your ratings range from 1-5, the ratings summary might look like this:\n\n    ratings_summary: {\n        \"1\" : 1,\n        \"2\" : 0,\n        \"3\" : 5,\n        \"4\" : 50,\n        \"5\" : 12\n    }\n\nOnly present if the object has been reviewed.\n"
+		},
+		"custom_fields": {
+			// "originalType": "",
+			"type": Object,
+			"description": "User defined fields."
+		},
+		"user_id": {
+			// "originalType": "",
+			"type": String,
+			"description": "Specifies the owner of object."
 		}
 	},
 	/*

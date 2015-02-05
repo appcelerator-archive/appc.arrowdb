@@ -1,11 +1,11 @@
 'use strict';
 
-var Arrow = require("arrow");
+var Arrow = require("arrow.js");
 
 /*
  The SocialIntegrations model.
  */
-module.exports = Arrow.Model.extend("appc.acs/social_integration", {
+module.exports = Arrow.Model.extend("appc.arrowdb/social_integration", {
 	/**
 	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
@@ -71,35 +71,6 @@ module.exports = Arrow.Model.extend("appc.acs/social_integration", {
 				}
 			]
 		},
-		"externalAccountUnlink": {
-			"summary": "Unlink an external account",
-			"description": "Disassociate an external account from a Appcelerator Cloud Services user\naccount.\n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "id",
-					"description": "External account's user ID.\n",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "type",
-					"description": "Type of the external account, for example, \"facebook\", \"linkedin\", or\n\"twitter\".\n",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
 		"externalAccountLogin": {
 			"summary": "Login with external account",
 			"description": "Users can login using an external account such as Facebook, Twitter,\nLinkedin, etc without creating an account with Appcelerator Cloud Services\nahead of time. The external account login creates a Appcelerator Cloud\nServices account if it hasn't been created, otherwise, it will login using the\nuser who has the matching external account info.\n",
@@ -137,6 +108,35 @@ module.exports = Arrow.Model.extend("appc.acs/social_integration", {
 					"name": "acl_id",
 					"description": "ID of an ACLs to associate with this object.\n\nAn ACL can be specified using `acl_name` or `acl_id`. The two parameters are\nmutually exclusive.\n",
 					"type": "String"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
+		"externalAccountUnlink": {
+			"summary": "Unlink an external account",
+			"description": "Disassociate an external account from a Appcelerator Cloud Services user\naccount.\n",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"description": "External account's user ID.\n",
+					"type": "String",
+					"required": true
+				},
+				{
+					"name": "type",
+					"description": "Type of the external account, for example, \"facebook\", \"linkedin\", or\n\"twitter\".\n",
+					"type": "String",
+					"required": true
 				},
 				{
 					"name": "pretty_json",

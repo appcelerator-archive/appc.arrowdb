@@ -1,11 +1,11 @@
 'use strict';
 
-var Arrow = require("arrow");
+var Arrow = require("arrow.js");
 
 /*
  The Statuses model.
  */
-module.exports = Arrow.Model.extend("appc.acs/status", {
+module.exports = Arrow.Model.extend("appc.arrowdb/status", {
 	/**
 	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
@@ -58,6 +58,16 @@ module.exports = Arrow.Model.extend("appc.acs/status", {
 			// "originalType": "Array",
 			"type": Array,
 			"description": "Single-element array containing the ACLs associated with this status object, if any.\n"
+		},
+		"custom_fields": {
+			// "originalType": "",
+			"type": Object,
+			"description": "User defined fields."
+		},
+		"user_id": {
+			// "originalType": "",
+			"type": String,
+			"description": "Specifies the owner of object."
 		}
 	},
 	/*

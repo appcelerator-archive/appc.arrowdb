@@ -1,6 +1,6 @@
-# API Builder ACS Connector
+# ArrowDB Connector
 
-This is a API Builder connector to ACS.
+This is a Arrow connector to ArrowDB.
 
 > This software is pre-release and not yet ready for usage. Please don't use
   this just yet while we're working through testing and finishing it up. Once
@@ -9,7 +9,7 @@ This is a API Builder connector to ACS.
 ## Installation
 
 ```bash
-$ appc install connector/appc.acs --save
+$ appc install connector/appc.arrowdb --save
 ```
 
 ## Usage
@@ -25,7 +25,7 @@ var User = Arrow.Model.extend('user', {
 		role: { type: String },
 		username: { type: String }
 	},
-	connector: 'appc.acs'
+	connector: 'appc.arrowdb'
 });
 ```
 
@@ -37,9 +37,9 @@ var User = Arrow.Model.extend('user',{
 	fields: {
 		name: { type: String, required: false, validator: /[a-zA-Z]{3,}/ }
 	},
-	connector: 'appc.acs',
+	connector: 'appc.arrowdb',
 	metadata: {
-		'appc.acs': {
+		'appc.arrowdb': {
 			object: 'Users'
 		}
 	}
@@ -48,7 +48,7 @@ var User = Arrow.Model.extend('user',{
 
 ## Development
 
-> This section is for individuals developing the ACS Connector and not intended
+> This section is for individuals developing the ArrowDB Connector and not intended
   for end-users.
 
 ```bash

@@ -30,7 +30,7 @@ describe('Custom Objects', function () {
 					name: { type: String },
 					color: { type: String }
 				},
-				connector: 'appc.acs'
+				connector: 'appc.arrowdb'
 			});
 
 			should(FruitModel.getConnector()).equal(this.connector);

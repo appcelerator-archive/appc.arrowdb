@@ -1,11 +1,11 @@
 'use strict';
 
-var Arrow = require("arrow");
+var Arrow = require("arrow.js");
 
 /*
  The Places model.
  */
-module.exports = Arrow.Model.extend("appc.acs/place", {
+module.exports = Arrow.Model.extend("appc.arrowdb/place", {
 	/**
 	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
@@ -94,6 +94,16 @@ module.exports = Arrow.Model.extend("appc.acs/place", {
 			"type": Array,
 			"description": "Owner of this place object."
 		},
+		"custom_fields": {
+			// "originalType": "",
+			"type": Object,
+			"description": "User defined fields."
+		},
+		"user_id": {
+			// "originalType": "",
+			"type": String,
+			"description": "Specifies the owner of object."
+		},
 		"reviews": {
 			// "originalType": "Array",
 			"type": Array,
@@ -118,6 +128,16 @@ module.exports = Arrow.Model.extend("appc.acs/place", {
 			// "originalType": "Hash",
 			"type": Object,
 			"description": "Breakdown of the number of reviews that specified a given rating value. For\nexample, if your ratings range from 1-5, the ratings summary might look like this:\n\n    ratings_summary: {\n        \"1\" : 1,\n        \"2\" : 0,\n        \"3\" : 5,\n        \"4\" : 50,\n        \"5\" : 12\n    }\n\nOnly present if the object has been reviewed.\n"
+		},
+		"custom_fields": {
+			// "originalType": "",
+			"type": Object,
+			"description": "User defined fields."
+		},
+		"user_id": {
+			// "originalType": "",
+			"type": String,
+			"description": "Specifies the owner of object."
 		}
 	},
 	/*
@@ -280,6 +300,55 @@ module.exports = Arrow.Model.extend("appc.acs/place", {
 				}
 			]
 		},
+		"search": {
+			"summary": "Search Places",
+			"description": "Returns the list of places that have been added to the app, sorted by search\nrelevancy.\n\nOptionally, `latitude` and `longitude` can be given to return the list of\nplaces starting from a particular location. To bound the results within a\ncertain radius (in km) from the starting coordinates, add the `distance`\nparameter. `q` can be given to search by place name.\n\nIf you have provided a starting latitude and longitude for place search, each\nresult will return a distance to the starting point in km.\n",
+			"authRequired": false,
+			"instance": true,
+			"adminRequired": false,
+			"parameters": [
+				{
+					"name": "page",
+					"description": "Request page number, default is 1.",
+					"type": "Number"
+				},
+				{
+					"name": "per_page",
+					"description": "Number of results per page, default is 10.",
+					"type": "Number"
+				},
+				{
+					"name": "response_json_depth",
+					"description": "Nested object depth level counts in the response JSON.\n\nIn order to reduce server API calls from an application, the response JSON may\ninclude not just the objects that are being queried/searched, but also\nsome important data related to the returned objects, such as owners and\nreferenced objects.\n\nDefault is 1, valid range is 1 to 8.\n",
+					"type": "Number"
+				},
+				{
+					"name": "latitude",
+					"description": "Latitude to center search on.",
+					"type": "Number"
+				},
+				{
+					"name": "longitude",
+					"description": "Longitude to center search on.",
+					"type": "Number"
+				},
+				{
+					"name": "distance",
+					"description": "Distance in km to search from the identified center point.",
+					"type": "Number"
+				},
+				{
+					"name": "q",
+					"description": "Space-separated list of keywords used to perform full text search on place name and tags.",
+					"type": "String"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
 		"query": {
 			"summary": "Custom Query Places",
 			"description": "Performs custom query of places with sorting and paginating. Currently you can\nnot query or sort data stored inside array or hash in custom fields.\n\nThe following fields can be used for querying and sorting places:\n\n*   `address` : String.  Place address.\n*   `city` : String.  Place city.\n*   `state` : String. Place state.\n*   `country` : String.  Country.\n*   `user_id` : String. ID of the user who created this place.\n*   `google_cid` : Google Customer ID (CID) associated with this place.\n*   `tags_array` : String. Search tags.\n*   `lnglat` : `[longitude, latitude]`. The Place's default coordinates. You can also store\n     custom coordinates in a custom field and query for those coordinates separately \n     (see [Geographic Coordinates in Custom Fields](#!/guide/customfields-section-geographic-coordinates-in-custom-fields)).\n*   `ratings_average:  Number`.  Place's average rating (see Reviews).\n*   `ratings_count: Number`. Place's total number of ratings (see Reviews).\n*   `reviews_count: Number`. Place's total number of reviews (see Reviews).\n*   `created_at: Date`. Timestamp when the photo was created.\n*   `updated_at: Date`. Timestamp when the photo was updated.\n\nIn ACS 1.1.5 and later, you can paginate query results using `skip` and `limit` parameters, or by including\na `where` clause to limit the results to objects whose IDs fall within a specified range.\nFor details, see [Query Pagination](#!/guide/search_query-section-query-pagination).\n\nFor details about using the query parameters,\nsee the [Search and Query guide](#!/guide/search_query).\n",
@@ -336,55 +405,6 @@ module.exports = Arrow.Model.extend("appc.acs/place", {
 					"name": "response_json_depth",
 					"description": "Nested object depth level counts in the response JSON.\n\nIn order to reduce server API calls from an application, the response JSON may\ninclude not just the objects that are being queried/searched, but also\nsome important data related to the returned objects, such as owners and\nreferenced objects.\n\nDefault is 1, valid range is 1 to 8.\n",
 					"type": "Number"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
-		"search": {
-			"summary": "Search Places",
-			"description": "Returns the list of places that have been added to the app, sorted by search\nrelevancy.\n\nOptionally, `latitude` and `longitude` can be given to return the list of\nplaces starting from a particular location. To bound the results within a\ncertain radius (in km) from the starting coordinates, add the `distance`\nparameter. `q` can be given to search by place name.\n\nIf you have provided a starting latitude and longitude for place search, each\nresult will return a distance to the starting point in km.\n",
-			"authRequired": false,
-			"instance": true,
-			"adminRequired": false,
-			"parameters": [
-				{
-					"name": "page",
-					"description": "Request page number, default is 1.",
-					"type": "Number"
-				},
-				{
-					"name": "per_page",
-					"description": "Number of results per page, default is 10.",
-					"type": "Number"
-				},
-				{
-					"name": "response_json_depth",
-					"description": "Nested object depth level counts in the response JSON.\n\nIn order to reduce server API calls from an application, the response JSON may\ninclude not just the objects that are being queried/searched, but also\nsome important data related to the returned objects, such as owners and\nreferenced objects.\n\nDefault is 1, valid range is 1 to 8.\n",
-					"type": "Number"
-				},
-				{
-					"name": "latitude",
-					"description": "Latitude to center search on.",
-					"type": "Number"
-				},
-				{
-					"name": "longitude",
-					"description": "Longitude to center search on.",
-					"type": "Number"
-				},
-				{
-					"name": "distance",
-					"description": "Distance in km to search from the identified center point.",
-					"type": "Number"
-				},
-				{
-					"name": "q",
-					"description": "Space-separated list of keywords used to perform full text search on place name and tags.",
-					"type": "String"
 				},
 				{
 					"name": "pretty_json",

@@ -1,11 +1,11 @@
 'use strict';
 
-var Arrow = require("arrow");
+var Arrow = require("arrow.js");
 
 /*
  The PushNotifications model.
  */
-module.exports = Arrow.Model.extend("appc.acs/push_notification", {
+module.exports = Arrow.Model.extend("appc.arrowdb/push_notification", {
 	/**
 	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
@@ -126,6 +126,23 @@ module.exports = Arrow.Model.extend("appc.acs/push_notification", {
 				}
 			]
 		},
+		"resetBadgeGet": {
+			"summary": "reset_badge",
+			"description": "Sets the internally stored value of the badge to zero for all devices.\n\n**Only available to application admins.**\n\nThis method only updates the internally stored value of the badge.  To update the badge value\non the iOS icon or Android notification center, send a push notification with the `badge` field defined.\n\nTo send this command to a specific device, use the [PUT version](#!/api/PushNotifications-method-reset_badge_put)\nof this method.\n",
+			"authRequired": false,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
 		"notifyTokens": {
 			"summary": "notify_tokens",
 			"description": "Sends push notifications to one or more users who are subscribed to a channel.\n\nApplication admins can set the `to_tokens` parameter to `everyone` to send to all devices\nsubscribed to the identified channel.\n\nIf you use the `to_tokens` parameter, you **cannot** specify a location query using the `where`\nparameter in the same API call.\n",
@@ -221,23 +238,6 @@ module.exports = Arrow.Model.extend("appc.acs/push_notification", {
 					"description": "Number of records to skip. Must be used together with `limit`. The specified value must not\nbe less than 0 or an HTTP 400 error will be returned.\n",
 					"type": "Number"
 				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
-		"resetBadgeGet": {
-			"summary": "reset_badge",
-			"description": "Sets the internally stored value of the badge to zero for all devices.\n\n**Only available to application admins.**\n\nThis method only updates the internally stored value of the badge.  To update the badge value\non the iOS icon or Android notification center, send a push notification with the `badge` field defined.\n\nTo send this command to a specific device, use the [PUT version](#!/api/PushNotifications-method-reset_badge_put)\nof this method.\n",
-			"authRequired": false,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
 				{
 					"name": "pretty_json",
 					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
@@ -358,34 +358,6 @@ module.exports = Arrow.Model.extend("appc.acs/push_notification", {
 				}
 			]
 		},
-		"unsubscribeToken": {
-			"summary": "unsubscribe_token",
-			"description": "Unsubscribes the specified device from a push notification channel.\nIf `channel` is not defined, unsubscribes the device from all channels.\n",
-			"authRequired": false,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "channel",
-					"description": "Name of the push notification channel.\n\nThe name of the push channel cannot start with a hash symbol ('#').\n",
-					"type": "String"
-				},
-				{
-					"name": "device_token",
-					"description": "Android or iOS device token.",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
 		"unsubscribe": {
 			"summary": "unsubscribe",
 			"description": "Unsubscribes one of the current user's devices from a push notification channel. If channel name is not\nprovided, unsubscribe the device from all channels.\n\nWhen a user logs out from a device, you can cancel all subscriptions for the\ndevice by passing the device's token to the Users#logout method.\n",
@@ -411,6 +383,34 @@ module.exports = Arrow.Model.extend("appc.acs/push_notification", {
 					"name": "user_id",
 					"description": "User ID to unsubscribe from push notifications.\n\nOnly application admins can unsubscribe another user from push notifications.\n",
 					"type": "String"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
+		"unsubscribeToken": {
+			"summary": "unsubscribe_token",
+			"description": "Unsubscribes the specified device from a push notification channel.\nIf `channel` is not defined, unsubscribes the device from all channels.\n",
+			"authRequired": false,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "channel",
+					"description": "Name of the push notification channel.\n\nThe name of the push channel cannot start with a hash symbol ('#').\n",
+					"type": "String"
+				},
+				{
+					"name": "device_token",
+					"description": "Android or iOS device token.",
+					"type": "String",
+					"required": true
 				},
 				{
 					"name": "pretty_json",

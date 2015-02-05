@@ -1,11 +1,11 @@
 'use strict';
 
-var Arrow = require("arrow");
+var Arrow = require("arrow.js");
 
 /*
  The Reviews model.
  */
-module.exports = Arrow.Model.extend("appc.acs/review", {
+module.exports = Arrow.Model.extend("appc.arrowdb/review", {
 	/**
 	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
@@ -89,6 +89,16 @@ module.exports = Arrow.Model.extend("appc.acs/review", {
 			"type": Array,
 			"description": "User who created the review."
 		},
+		"custom_fields": {
+			// "originalType": "",
+			"type": Object,
+			"description": "User defined fields."
+		},
+		"user_id": {
+			// "originalType": "",
+			"type": String,
+			"description": "Specifies the owner of object."
+		},
 		"reviews": {
 			// "originalType": "Array",
 			"type": Array,
@@ -113,6 +123,16 @@ module.exports = Arrow.Model.extend("appc.acs/review", {
 			// "originalType": "Hash",
 			"type": Object,
 			"description": "Breakdown of the number of reviews that specified a given rating value. For\nexample, if your ratings range from 1-5, the ratings summary might look like this:\n\n    ratings_summary: {\n        \"1\" : 1,\n        \"2\" : 0,\n        \"3\" : 5,\n        \"4\" : 50,\n        \"5\" : 12\n    }\n\nOnly present if the object has been reviewed.\n"
+		},
+		"custom_fields": {
+			// "originalType": "",
+			"type": Object,
+			"description": "User defined fields."
+		},
+		"user_id": {
+			// "originalType": "",
+			"type": String,
+			"description": "Specifies the owner of object."
 		}
 	},
 	/*
@@ -233,6 +253,39 @@ module.exports = Arrow.Model.extend("appc.acs/review", {
 					"name": "user_id",
 					"description": "ID of the Users object to create the review on behalf of.\n\nThe currently logged-in user must be an application admin to create a review on\nbehalf of another user.\n",
 					"type": "String"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
+		"show": {
+			"summary": "Show a review",
+			"description": "Shows the review with the given `id`. \n",
+			"authRequired": false,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "review_id",
+					"description": "Review object to show.",
+					"type": "String",
+					"required": true
+				},
+				{
+					"name": "show_user_like",
+					"description": "If set to **true** the Review object in the response will include `\"current_user_liked: true\"`\nif the current user has liked the object. If the user has not liked the object, the \n`current_user_liked` field is not included in the response.\n",
+					"type": "Boolean"
+				},
+				{
+					"name": "response_json_depth",
+					"description": "Nested object depth level counts in response JSON.\n\nIn order to reduce server API calls from an application, the response JSON may\ninclude not just the objects that are being queried/searched, but also\nsome important data related to the returned objects such as object's owner or\nreferenced objects.\n\nDefault is 1, valid range is 1 to 8.\n",
+					"type": "Number"
 				},
 				{
 					"name": "pretty_json",
@@ -369,39 +422,6 @@ module.exports = Arrow.Model.extend("appc.acs/review", {
 				{
 					"name": "response_json_depth",
 					"description": "Nested object depth level counts in the response JSON.\n\nIn order to reduce server API calls from an application, the response JSON may\ninclude not just the objects that are being queried/searched, but also\nsome important data related to the returned objects, such as owners and\nreferenced objects.\n\nDefault is 1, valid range is 1 to 8.\n",
-					"type": "Number"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
-		"show": {
-			"summary": "Show a review",
-			"description": "Shows the review with the given `id`. \n",
-			"authRequired": false,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "review_id",
-					"description": "Review object to show.",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "show_user_like",
-					"description": "If set to **true** the Review object in the response will include `\"current_user_liked: true\"`\nif the current user has liked the object. If the user has not liked the object, the \n`current_user_liked` field is not included in the response.\n",
-					"type": "Boolean"
-				},
-				{
-					"name": "response_json_depth",
-					"description": "Nested object depth level counts in response JSON.\n\nIn order to reduce server API calls from an application, the response JSON may\ninclude not just the objects that are being queried/searched, but also\nsome important data related to the returned objects such as object's owner or\nreferenced objects.\n\nDefault is 1, valid range is 1 to 8.\n",
 					"type": "Number"
 				},
 				{

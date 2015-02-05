@@ -1,11 +1,11 @@
 'use strict';
 
-var Arrow = require("arrow");
+var Arrow = require("arrow.js");
 
 /*
  The PushSchedules model.
  */
-module.exports = Arrow.Model.extend("appc.acs/push_schedule", {
+module.exports = Arrow.Model.extend("appc.arrowdb/push_schedule", {
 	/**
 	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
@@ -33,6 +33,16 @@ module.exports = Arrow.Model.extend("appc.acs/push_schedule", {
 			// "originalType": "Hash",
 			"type": Object,
 			"description": "Schedules the recurrence of the push notification.\n\n  * *interval* (Number/String): Value in minutes to repeat the notification or `daily`, `weekly` or `monthly`.\n  * *end_time* (Date): Datetime to end the push notifications in ISO 8601 format. Must occur after `start_time`.\n"
+		},
+		"custom_fields": {
+			// "originalType": "",
+			"type": Object,
+			"description": "User defined fields."
+		},
+		"user_id": {
+			// "originalType": "",
+			"type": String,
+			"description": "Specifies the owner of object."
 		}
 	},
 	/*

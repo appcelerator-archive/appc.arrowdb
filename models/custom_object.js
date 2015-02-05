@@ -1,8 +1,8 @@
 'use strict';
 
-var Arrow = require('arrow');
+var Arrow = require('arrow.js');
 
-module.exports = Arrow.Model.extend('appc.acs/customObject', {
+module.exports = Arrow.Model.extend('appc.arrowdb/customObject', {
 	fields: {
 		classname: { type: String },
 		created_at: { type: Date },
