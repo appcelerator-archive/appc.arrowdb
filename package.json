@@ -6,6 +6,8 @@
 	"license": "Appcelerator Proprietary",
 	"framework": "none",
 	"keywords": [
+        "appcelerator",
+        "appc-package-connector",
 		"arrow",
 		"arrow-connector"
 	],
