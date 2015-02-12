@@ -1,8 +1,6 @@
 'use strict';
 
-process.env.APPC_DISABLE_LONG_STACK_TRACE = 1;
-
-var Arrow = require('appcelerator').arrow,
+var Arrow = require('arrow.js'),
 	assert = require('assert'),
 	should = require('should'),
 	util = require('util');
@@ -19,7 +17,8 @@ function dump() {
 
 function init(beforeFn) {
 	before(function (next) {
-		this.server = new Arrow();
+		Arrow.resetGlobal();
+		this.server = new Arrow({ignoreDuplicateModels:true});
 		this.connector = this.server.getConnector('appc.arrowdb');
 		this.connector.connect(function () {
 			beforeFn && beforeFn.call(this);

@@ -8,7 +8,7 @@ module.exports = function(grunt) {
 				reporter: 'spec',
 				ignoreLeaks: true
 			},
-			src: ['test/**/test-*.js']
+			src: ['test/**/test-*.js','!test/**/test-acl.js']
 		},
 		jshint: {
 			options: {
