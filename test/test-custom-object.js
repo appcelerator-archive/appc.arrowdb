@@ -647,6 +647,30 @@ describe('Custom Objects', function () {
 			});
 		});
 	});
+
+	describe('Invalid primary key', function(){
+		it('should return 404 on invalid id', function(done){
+			if (!FruitModel) {
+				FruitModel = Model.extend('fruit', {
+					fields: {
+						name: { type: String },
+						color: { type: String }
+					},
+					connector: 'appc.arrowdb'
+				});
+
+				should(FruitModel.getConnector()).equal(this.connector);
+
+				this.server.addModel(FruitModel);
+			}
+
+			FruitModel.find('12345', function(err,resp){
+				should(err).not.be.ok;
+				should(resp).not.be.ok;
+				done();
+			});
+		});
+	});
 });
 
 function assertFruit(fruit) {
