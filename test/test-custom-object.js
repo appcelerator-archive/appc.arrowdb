@@ -5,7 +5,7 @@ require('./_base');
 
 var assert = require('assert'),
 	async = require('async'),
-	Model = require('arrow.js').Model,
+	Model = require('arrow').Model,
 	should = require('should');
 
 describe('Custom Objects', function () {

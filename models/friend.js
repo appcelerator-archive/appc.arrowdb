@@ -1,6 +1,6 @@
 'use strict';
 
-var Arrow = require("arrow.js");
+var Arrow = require("arrow");
 
 /*
  The Friends model.

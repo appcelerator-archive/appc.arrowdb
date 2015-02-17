@@ -3,7 +3,7 @@
  * be used or packaged with the actual connector when published.
  */
 
-var Arrow = require('arrow.js'),
+var Arrow = require('arrow'),
 	server = new Arrow({ignoreDuplicateModels:true});
 
 // lifecycle examples
