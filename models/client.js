@@ -55,5 +55,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/client", {
 				};
 		}
 		return defaultValue;
-	}
+	},
+
+	actions: []
 });

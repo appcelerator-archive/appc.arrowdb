@@ -54,68 +54,6 @@ module.exports = Arrow.Model.extend("appc.arrowdb/like", {
 	 Methods for this model.
 	 */
 	methodMeta: {
-		"create": {
-			"summary": "Create Like",
-			"description": "Adds a \"like\" to an object. Currently, likes can only be associated with one of\nthe following object types, and a user can only like an object once:\n\n*   Posts\n*   Photos\n*   Users\n*   Events\n*   Checkins\n*   Places\n*   CustomObjects\n*   Statuses\n*   Reviews\n\nOnce an object has one or more likes attached to it, it will return a\ntotal like count with the object:\n\n    \"likes_count\": 2\n\nYou should specify one, and only one, ACS object ID parameter to identify the target object.\n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "post_id",
-					"description": "Post object to like.",
-					"type": "String"
-				},
-				{
-					"name": "photo_id",
-					"description": "Photo object to like.",
-					"type": "String"
-				},
-				{
-					"name": "user_id",
-					"description": "User object to like.",
-					"type": "String"
-				},
-				{
-					"name": "event_id",
-					"description": "Event object to like.",
-					"type": "String"
-				},
-				{
-					"name": "place_id",
-					"description": "Place object to like.",
-					"type": "String"
-				},
-				{
-					"name": "checkin_id",
-					"description": "Checkin object to like.",
-					"type": "String"
-				},
-				{
-					"name": "status_id",
-					"description": "Status object to like.",
-					"type": "String"
-				},
-				{
-					"name": "review_id",
-					"description": "Review object to like.",
-					"type": "String"
-				},
-				{
-					"name": "custom_object_id",
-					"description": "Custom object to like.",
-					"type": "String"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
 		"delete": {
 			"summary": "Delete a Like",
 			"description": "Delete the like from the target object. Only the original submitter can delete\nthe like.\n\nSpecify one and only one of the ID parameters to identify  the target object.\n",
@@ -169,6 +107,68 @@ module.exports = Arrow.Model.extend("appc.arrowdb/like", {
 				{
 					"name": "custom_object_id",
 					"description": "Custom object to delete \"like\" from.",
+					"type": "String"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
+		"create": {
+			"summary": "Create Like",
+			"description": "Adds a \"like\" to an object. Currently, likes can only be associated with one of\nthe following object types, and a user can only like an object once:\n\n*   Posts\n*   Photos\n*   Users\n*   Events\n*   Checkins\n*   Places\n*   CustomObjects\n*   Statuses\n*   Reviews\n\nOnce an object has one or more likes attached to it, it will return a\ntotal like count with the object:\n\n    \"likes_count\": 2\n\nYou should specify one, and only one, ACS object ID parameter to identify the target object.\n",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "post_id",
+					"description": "Post object to like.",
+					"type": "String"
+				},
+				{
+					"name": "photo_id",
+					"description": "Photo object to like.",
+					"type": "String"
+				},
+				{
+					"name": "user_id",
+					"description": "User object to like.",
+					"type": "String"
+				},
+				{
+					"name": "event_id",
+					"description": "Event object to like.",
+					"type": "String"
+				},
+				{
+					"name": "place_id",
+					"description": "Place object to like.",
+					"type": "String"
+				},
+				{
+					"name": "checkin_id",
+					"description": "Checkin object to like.",
+					"type": "String"
+				},
+				{
+					"name": "status_id",
+					"description": "Status object to like.",
+					"type": "String"
+				},
+				{
+					"name": "review_id",
+					"description": "Review object to like.",
+					"type": "String"
+				},
+				{
+					"name": "custom_object_id",
+					"description": "Custom object to like.",
 					"type": "String"
 				},
 				{
@@ -300,5 +300,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/like", {
 				};
 		}
 		return defaultValue;
-	}
+	},
+
+	actions: ["delete","create","read"]
 });

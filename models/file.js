@@ -59,26 +59,9 @@ module.exports = Arrow.Model.extend("appc.arrowdb/file", {
 	 Methods for this model.
 	 */
 	methodMeta: {
-		"batchDelete": {
-			"summary": "Deletes multiple Files objects.",
-			"description": "Deletes Files objects that match the query constraints provided in the `where` parameter.\nIf no `where` parameter is provided, all Files objects are deleted. \nNote that an HTTP 200 code (success)\nis returned if the call completed successfully but the query matched no objects.\n\nFor performance reasons, the number of objects that can be deleted in a single batch delete \noperation is limited to 100,000. \n\nThe matched objects are deleted asynchronously in a separate process.      \n\nYou must be an application admin to run this command.        \n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": true,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "where",
-					"description": "Encoded JSON object that specifies constraint values for Files objects to delete.\nIf not specified, all Files objects are deleted.\n",
-					"type": "Hash"
-				}
-			]
-		},
-		"create": {
-			"summary": "",
-			"description": "Creates a new file object with a binary attachment or contents of a URL.\nThe size of the file can be up to 25 MB. The response includes a `processed` flag which indicates\nif the file has been stored reliably in the Appcelerator Cloud Services\nstorage engine. This will initially be `false`. Once the file is available in\nthe storage engine, the `processed` flag will be `true`, and file `url` will\nbe available.\n",
+		"delete": {
+			"summary": "Delete a File",
+			"description": "Deletes the file. To delete a file, the current user must be one of the following:\n\n*   The file's owner\n*   A user with write priviledges granted by the file's ACL\n*   An application admin\n",
 			"authRequired": true,
 			"instance": true,
 			"adminRequired": false,
@@ -87,41 +70,14 @@ module.exports = Arrow.Model.extend("appc.arrowdb/file", {
 			},
 			"parameters": [
 				{
-					"name": "name",
-					"description": "File name.",
-					"type": "String"
-				},
-				{
-					"name": "file",
-					"description": "The attached binary file to upload to ACS. You can specify either `file` or `url`, but not both.",
-					"type": "FileUpload"
-				},
-				{
-					"name": "url",
-					"description": "URL of file to upload to ACS. You can specify either `file` or `url`, but not both.",
-					"type": "String"
-				},
-				{
-					"name": "custom_fields",
-					"description": "User defined fields. See [Custom Data Fields](#!/guide/customfields).",
-					"type": [
-						"String",
-						"Hash"
-					]
-				},
-				{
-					"name": "acl_name",
-					"description": "Name of an ACLs to associate with this file object.\n\nAn ACL can be specified using `acl_name` or `acl_id`. The two parameters are\nmutually exclusive.\n",
-					"type": "String"
-				},
-				{
-					"name": "acl_id",
-					"description": "ID of an ACLs to associate with this file object.\n\nAn ACL can be specified using `acl_name` or `acl_id`. The two parameters are\nmutually exclusive.\n",
-					"type": "String"
+					"name": "file_id",
+					"description": "ID of the file to delete.",
+					"type": "String",
+					"required": true
 				},
 				{
 					"name": "user_id",
-					"description": "User ID to create the file on behalf of.\n\nThe current login user must be an application admin to create a file on\nbehalf of another user.\n",
+					"description": "User to delete the File object on behalf of. The user must be the creator of the object.\n\nThe current user must be an application admin to delete the File object on\nbehalf of another user.\n",
 					"type": "String"
 				},
 				{
@@ -190,9 +146,9 @@ module.exports = Arrow.Model.extend("appc.arrowdb/file", {
 				}
 			]
 		},
-		"delete": {
-			"summary": "Delete a File",
-			"description": "Deletes the file. To delete a file, the current user must be one of the following:\n\n*   The file's owner\n*   A user with write priviledges granted by the file's ACL\n*   An application admin\n",
+		"create": {
+			"summary": "",
+			"description": "Creates a new file object with a binary attachment or contents of a URL.\nThe size of the file can be up to 25 MB. The response includes a `processed` flag which indicates\nif the file has been stored reliably in the Appcelerator Cloud Services\nstorage engine. This will initially be `false`. Once the file is available in\nthe storage engine, the `processed` flag will be `true`, and file `url` will\nbe available.\n",
 			"authRequired": true,
 			"instance": true,
 			"adminRequired": false,
@@ -201,43 +157,47 @@ module.exports = Arrow.Model.extend("appc.arrowdb/file", {
 			},
 			"parameters": [
 				{
-					"name": "file_id",
-					"description": "ID of the file to delete.",
-					"type": "String",
-					"required": true
+					"name": "name",
+					"description": "File name.",
+					"type": "String"
+				},
+				{
+					"name": "file",
+					"description": "The attached binary file to upload to ACS. You can specify either `file` or `url`, but not both.",
+					"type": "FileUpload"
+				},
+				{
+					"name": "url",
+					"description": "URL of file to upload to ACS. You can specify either `file` or `url`, but not both.",
+					"type": "String"
+				},
+				{
+					"name": "custom_fields",
+					"description": "User defined fields. See [Custom Data Fields](#!/guide/customfields).",
+					"type": [
+						"String",
+						"Hash"
+					]
+				},
+				{
+					"name": "acl_name",
+					"description": "Name of an ACLs to associate with this file object.\n\nAn ACL can be specified using `acl_name` or `acl_id`. The two parameters are\nmutually exclusive.\n",
+					"type": "String"
+				},
+				{
+					"name": "acl_id",
+					"description": "ID of an ACLs to associate with this file object.\n\nAn ACL can be specified using `acl_name` or `acl_id`. The two parameters are\nmutually exclusive.\n",
+					"type": "String"
 				},
 				{
 					"name": "user_id",
-					"description": "User to delete the File object on behalf of. The user must be the creator of the object.\n\nThe current user must be an application admin to delete the File object on\nbehalf of another user.\n",
+					"description": "User ID to create the file on behalf of.\n\nThe current login user must be an application admin to create a file on\nbehalf of another user.\n",
 					"type": "String"
 				},
 				{
 					"name": "pretty_json",
 					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
 					"type": "Boolean"
-				}
-			]
-		},
-		"show": {
-			"summary": "Show File Info",
-			"description": "Returns information associated with the file.\n",
-			"authRequired": false,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "file_id",
-					"description": "ID of the file to retrieve information for.",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "response_json_depth",
-					"description": "Nested object depth level counts in response json.\nIn order to reduce server API calls from an application, the response json may\ninclude not just the objects that are being queried/searched, but also with\nsome important data related to the returning objects such as object's owner or\nreferencing objects.\n\nDefault is 1, valid range is 1 to 8.\n",
-					"type": "Number"
 				}
 			]
 		},
@@ -302,6 +262,46 @@ module.exports = Arrow.Model.extend("appc.arrowdb/file", {
 				}
 			]
 		},
+		"show": {
+			"summary": "Show File Info",
+			"description": "Returns information associated with the file.\n",
+			"authRequired": false,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "file_id",
+					"description": "ID of the file to retrieve information for.",
+					"type": "String",
+					"required": true
+				},
+				{
+					"name": "response_json_depth",
+					"description": "Nested object depth level counts in response json.\nIn order to reduce server API calls from an application, the response json may\ninclude not just the objects that are being queried/searched, but also with\nsome important data related to the returning objects such as object's owner or\nreferencing objects.\n\nDefault is 1, valid range is 1 to 8.\n",
+					"type": "Number"
+				}
+			]
+		},
+		"batchDelete": {
+			"summary": "Deletes multiple Files objects.",
+			"description": "Deletes Files objects that match the query constraints provided in the `where` parameter.\nIf no `where` parameter is provided, all Files objects are deleted. \nNote that an HTTP 200 code (success)\nis returned if the call completed successfully but the query matched no objects.\n\nFor performance reasons, the number of objects that can be deleted in a single batch delete \noperation is limited to 100,000. \n\nThe matched objects are deleted asynchronously in a separate process.      \n\nYou must be an application admin to run this command.        \n",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": true,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "where",
+					"description": "Encoded JSON object that specifies constraint values for Files objects to delete.\nIf not specified, all Files objects are deleted.\n",
+					"type": "Hash"
+				}
+			]
+		},
 		"remove": {
 			"canonical": "delete"
 		}
@@ -320,5 +320,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/file", {
 				};
 		}
 		return defaultValue;
-	}
+	},
+
+	actions: ["delete","read","create","update"]
 });

@@ -69,6 +69,11 @@ module.exports = Arrow.Model.extend("appc.arrowdb/review", {
 			"type": Array,
 			"description": "Status object associated with this review."
 		},
+		"reviewed_object": {
+			// "originalType": "Hash",
+			"type": Object,
+			"description": "Object whose `type` and `id` fields identify, respectively, the type (Status or Photo, for example) and \nthe ID of the reviewed object.\n"
+		},
 		"review": {
 			// "originalType": "Reviews",
 			"type": Array,
@@ -139,23 +144,6 @@ module.exports = Arrow.Model.extend("appc.arrowdb/review", {
 	 Methods for this model.
 	 */
 	methodMeta: {
-		"batchDelete": {
-			"summary": "Deletes multiple Reviews objects.",
-			"description": "Deletes Reviews objects that match the query constraints provided in the `where` parameter.\nIf no `where` parameter is provided, all Reviews objects are deleted. \nNote that an HTTP 200 code (success)\nis returned if the call completed successfully but the query matched no objects.\n\nFor performance reasons, the number of objects that can be deleted in a single batch delete \noperation is limited to 100,000.\n\nThe matched objects are deleted asynchronously in a separate process.              \n\nThe reviewed object (Post, Photo, User, Event, \nCheckin, Place, CustomObject, \nStatus, or Review) of each matched object is not deleted.\n\nYou must be an application admin to run this command.        \n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": true,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "where",
-					"description": "Encoded JSON object that specifies constraint values for Reviews objects to delete.\nIf not specified, all Reviews objects are deleted.\n",
-					"type": "Hash"
-				}
-			]
-		},
 		"create": {
 			"summary": "Create Review/Comment/Rating/Like",
 			"description": "Adds a review with an optional integer rating. You can also use this API to add\ncomments or likes.\n\nOnce an object has one or more reviews (comments) attached to it, it will\nreturn a total review count, rating_count, average rating and a breakdown of\neach rating value:\n\n    \"reviews_count\": 2,\n    \"ratings_count\": 2,\n    \"ratings_average\": 150.0,\n    \"ratings_summary\": {\n      \"100\": 1,\n      \"200\": 1\n    },\n\nTo create a review, you must specify a target object using one of the `_id` parameters, \nsuch as `photo_id` or `post_id`. Only one `_id` parameter may be specified in a request.\nTo specify a User to review, use the the `user_object_id` parameter.\n\nAn application admin can create a review on behalf of another user by \nspecifying that user's ID in the `user_id` method parameter. \n\nA review must include either `content` or `rating`. It can also include both. \n",
@@ -294,9 +282,9 @@ module.exports = Arrow.Model.extend("appc.arrowdb/review", {
 				}
 			]
 		},
-		"delete": {
-			"summary": "",
-			"description": "Delete the review (comment) with the given `id`. Only the original submitter\ncan delete the review. If the review has a rating attached to\nit, deleting the review will update the average rating and rating summary.\n\nTo delete a review, you must specify **both** the ID of the review and the ID of\nthe reviewed object (Post, Photo, User, Event, \nCheckin, Place, CustomObject, \nStatus, or Review. The reviewed object is not deleted, however.\n\nAn application admin can delete any Review object.\n",
+		"update": {
+			"summary": "Update a Review/Comment/Rating/Like",
+			"description": "Updates the review with the given `id`.\n\nOrdinary users can update reviews they own or have update access to.\n\nAn application admin can update a Review on behalf of another user by \nspecifying that user's ID in the `user_id` method parameter.\n",
 			"authRequired": true,
 			"instance": true,
 			"adminRequired": false,
@@ -305,10 +293,98 @@ module.exports = Arrow.Model.extend("appc.arrowdb/review", {
 			},
 			"parameters": [
 				{
+					"name": "post_id",
+					"description": "ID of the Posts object to review.\n",
+					"type": "String"
+				},
+				{
+					"name": "photo_id",
+					"description": "ID of the Photos object to review.\n",
+					"type": "String"
+				},
+				{
+					"name": "user_object_id",
+					"description": "ID of the Users object to review.\n",
+					"type": "String"
+				},
+				{
+					"name": "event_id",
+					"description": "ID of the Events object to review.\n",
+					"type": "String"
+				},
+				{
+					"name": "place_id",
+					"description": "ID of the Places object to review.\n",
+					"type": "String"
+				},
+				{
+					"name": "checkin_id",
+					"description": "ID of the Checkins object to review.\n",
+					"type": "String"
+				},
+				{
+					"name": "review_object_id",
+					"description": "ID of the Reviews object to review.\n",
+					"type": "String"
+				},
+				{
+					"name": "custom_object_id",
+					"description": "ID of the CustomObjects object to review.\n",
+					"type": "String"
+				},
+				{
+					"name": "status_id",
+					"description": "ID of the Statuses object to review.\n",
+					"type": "String"
+				},
+				{
 					"name": "review_id",
-					"description": "Review object to delete.",
+					"description": "ID of the Review object to update.",
 					"type": "String",
 					"required": true
+				},
+				{
+					"name": "content",
+					"description": "Review or comment text.",
+					"type": "String"
+				},
+				{
+					"name": "rating",
+					"description": "Rating to be associated with review. You can use \"1\" to represent one Like.",
+					"type": "String"
+				},
+				{
+					"name": "user_id",
+					"description": "ID of the Users object to update the review on behalf of. The currently \nlogged-in user must be an application admin to create a review on\nbehalf of another user.        \n",
+					"type": "String"
+				},
+				{
+					"name": "allow_duplicate",
+					"description": "By default, the same user can only submit one review/comment per object.\nSet this flag to `true` to allow the user to add multiple  reviews or comments to\nthe same object.\n",
+					"type": "Boolean"
+				},
+				{
+					"name": "tags",
+					"description": "Comma separated list of tags for this review.\n",
+					"type": "String"
+				},
+				{
+					"name": "custom_fields",
+					"description": "User defined fields. See [Custom Data Fields](#!/guide/customfields).",
+					"type": [
+						"String",
+						"Hash"
+					]
+				},
+				{
+					"name": "acl_name",
+					"description": "Name of an ACLs to associate with this object.\n\nAn ACL can be specified using `acl_name` or `acl_id`. The two parameters are\nmutually exclusive.\n",
+					"type": "String"
+				},
+				{
+					"name": "acl_id",
+					"description": "ID of an ACLs to associate with this object.\n\nAn ACL can be specified using `acl_name` or `acl_id`. The two parameters are\nmutually exclusive.\n",
+					"type": "String"
 				},
 				{
 					"name": "pretty_json",
@@ -431,9 +507,26 @@ module.exports = Arrow.Model.extend("appc.arrowdb/review", {
 				}
 			]
 		},
-		"update": {
-			"summary": "Update a Review/Comment/Rating/Like",
-			"description": "Updates the review with the given `id`.\n\nOrdinary users can update reviews they own or have update access to.\n\nAn application admin can update a Review on behalf of another user by \nspecifying that user's ID in the `user_id` method parameter.\n",
+		"batchDelete": {
+			"summary": "Deletes multiple Reviews objects.",
+			"description": "Deletes Reviews objects that match the query constraints provided in the `where` parameter.\nIf no `where` parameter is provided, all Reviews objects are deleted. \nNote that an HTTP 200 code (success)\nis returned if the call completed successfully but the query matched no objects.\n\nFor performance reasons, the number of objects that can be deleted in a single batch delete \noperation is limited to 100,000.\n\nThe matched objects are deleted asynchronously in a separate process.              \n\nThe reviewed object (Post, Photo, User, Event, \nCheckin, Place, CustomObject, \nStatus, or Review) of each matched object is not deleted.\n\nYou must be an application admin to run this command.        \n",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": true,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "where",
+					"description": "Encoded JSON object that specifies constraint values for Reviews objects to delete.\nIf not specified, all Reviews objects are deleted.\n",
+					"type": "Hash"
+				}
+			]
+		},
+		"delete": {
+			"summary": "",
+			"description": "Delete the review (comment) with the given `id`. Only the original submitter\ncan delete the review. If the review has a rating attached to\nit, deleting the review will update the average rating and rating summary.\n\nTo delete a review, you must specify **both** the ID of the review and the ID of\nthe reviewed object (Post, Photo, User, Event, \nCheckin, Place, CustomObject, \nStatus, or Review. The reviewed object is not deleted, however.\n\nAn application admin can delete any Review object.\n",
 			"authRequired": true,
 			"instance": true,
 			"adminRequired": false,
@@ -442,98 +535,10 @@ module.exports = Arrow.Model.extend("appc.arrowdb/review", {
 			},
 			"parameters": [
 				{
-					"name": "post_id",
-					"description": "ID of the Posts object to review.\n",
-					"type": "String"
-				},
-				{
-					"name": "photo_id",
-					"description": "ID of the Photos object to review.\n",
-					"type": "String"
-				},
-				{
-					"name": "user_object_id",
-					"description": "ID of the Users object to review.\n",
-					"type": "String"
-				},
-				{
-					"name": "event_id",
-					"description": "ID of the Events object to review.\n",
-					"type": "String"
-				},
-				{
-					"name": "place_id",
-					"description": "ID of the Places object to review.\n",
-					"type": "String"
-				},
-				{
-					"name": "checkin_id",
-					"description": "ID of the Checkins object to review.\n",
-					"type": "String"
-				},
-				{
-					"name": "review_object_id",
-					"description": "ID of the Reviews object to review.\n",
-					"type": "String"
-				},
-				{
-					"name": "custom_object_id",
-					"description": "ID of the CustomObjects object to review.\n",
-					"type": "String"
-				},
-				{
-					"name": "status_id",
-					"description": "ID of the Statuses object to review.\n",
-					"type": "String"
-				},
-				{
 					"name": "review_id",
-					"description": "ID of the Review object to update.",
+					"description": "Review object to delete.",
 					"type": "String",
 					"required": true
-				},
-				{
-					"name": "content",
-					"description": "Review or comment text.",
-					"type": "String"
-				},
-				{
-					"name": "rating",
-					"description": "Rating to be associated with review. You can use \"1\" to represent one Like.",
-					"type": "String"
-				},
-				{
-					"name": "user_id",
-					"description": "ID of the Users object to update the review on behalf of. The currently \nlogged-in user must be an application admin to create a review on\nbehalf of another user.        \n",
-					"type": "String"
-				},
-				{
-					"name": "allow_duplicate",
-					"description": "By default, the same user can only submit one review/comment per object.\nSet this flag to `true` to allow the user to add multiple  reviews or comments to\nthe same object.\n",
-					"type": "Boolean"
-				},
-				{
-					"name": "tags",
-					"description": "Comma separated list of tags for this review.\n",
-					"type": "String"
-				},
-				{
-					"name": "custom_fields",
-					"description": "User defined fields. See [Custom Data Fields](#!/guide/customfields).",
-					"type": [
-						"String",
-						"Hash"
-					]
-				},
-				{
-					"name": "acl_name",
-					"description": "Name of an ACLs to associate with this object.\n\nAn ACL can be specified using `acl_name` or `acl_id`. The two parameters are\nmutually exclusive.\n",
-					"type": "String"
-				},
-				{
-					"name": "acl_id",
-					"description": "ID of an ACLs to associate with this object.\n\nAn ACL can be specified using `acl_name` or `acl_id`. The two parameters are\nmutually exclusive.\n",
-					"type": "String"
 				},
 				{
 					"name": "pretty_json",
@@ -560,5 +565,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/review", {
 				};
 		}
 		return defaultValue;
-	}
+	},
+
+	actions: ["create","update","read","delete"]
 });

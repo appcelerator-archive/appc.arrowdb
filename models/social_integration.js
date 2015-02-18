@@ -19,9 +19,9 @@ module.exports = Arrow.Model.extend("appc.arrowdb/social_integration", {
 	 Methods for this model.
 	 */
 	methodMeta: {
-		"facebookSearchFriends": {
-			"summary": "Find Facebook Friends",
-			"description": "Find the current user's Facebook Friends who also registered in the same App.\n",
+		"externalAccountUnlink": {
+			"summary": "Unlink an external account",
+			"description": "Disassociate an external account from a Appcelerator Cloud Services user\naccount.\n",
 			"authRequired": true,
 			"instance": true,
 			"adminRequired": false,
@@ -29,6 +29,18 @@ module.exports = Arrow.Model.extend("appc.arrowdb/social_integration", {
 				"singleElement": true
 			},
 			"parameters": [
+				{
+					"name": "id",
+					"description": "External account's user ID.\n",
+					"type": "String",
+					"required": true
+				},
+				{
+					"name": "type",
+					"description": "Type of the external account, for example, \"facebook\", \"linkedin\", or\n\"twitter\".\n",
+					"type": "String",
+					"required": true
+				},
 				{
 					"name": "pretty_json",
 					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
@@ -64,6 +76,23 @@ module.exports = Arrow.Model.extend("appc.arrowdb/social_integration", {
 					"type": "String",
 					"required": true
 				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
+		"facebookSearchFriends": {
+			"summary": "Find Facebook Friends",
+			"description": "Find the current user's Facebook Friends who also registered in the same App.\n",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
 				{
 					"name": "pretty_json",
 					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
@@ -115,35 +144,6 @@ module.exports = Arrow.Model.extend("appc.arrowdb/social_integration", {
 					"type": "Boolean"
 				}
 			]
-		},
-		"externalAccountUnlink": {
-			"summary": "Unlink an external account",
-			"description": "Disassociate an external account from a Appcelerator Cloud Services user\naccount.\n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "id",
-					"description": "External account's user ID.\n",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "type",
-					"description": "Type of the external account, for example, \"facebook\", \"linkedin\", or\n\"twitter\".\n",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
 		}
 	},
 
@@ -159,5 +159,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/social_integration", {
 				};
 		}
 		return defaultValue;
-	}
+	},
+
+	actions: []
 });

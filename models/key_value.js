@@ -44,9 +44,9 @@ module.exports = Arrow.Model.extend("appc.arrowdb/key_value", {
 	 Methods for this model.
 	 */
 	methodMeta: {
-		"append": {
-			"summary": "Append to a Key-Value",
-			"description": "Add the given `value` to end of the existing one. Not allowed on key-values\nwith binary data.\n",
+		"incrby": {
+			"summary": "Increment a Key-Value",
+			"description": "Increment the `value` by the given integer value. Not allowed on key-value pairs with binary\ndata.\n\nIf the current value in the key-value is not convertable to an integer, the new\nvalue replaces the existing value.\n",
 			"authRequired": true,
 			"instance": true,
 			"adminRequired": false,
@@ -62,8 +62,11 @@ module.exports = Arrow.Model.extend("appc.arrowdb/key_value", {
 				},
 				{
 					"name": "value",
-					"description": "Value to append to the current value.",
-					"type": "String",
+					"description": "Integer value to add to the current value. If a floating point number is\nspecified, any fractional portion is dropped.\n\nIf this value cannot be converted to an integer, the existing value is not\nchanged.\n",
+					"type": [
+						"String",
+						"Number"
+					],
 					"required": true
 				},
 				{
@@ -74,39 +77,6 @@ module.exports = Arrow.Model.extend("appc.arrowdb/key_value", {
 				{
 					"name": "user_id",
 					"description": "Update the key-value pair on behalf of the identified user.\n\nLogin user must be an admin to update a key-value on behalf of another user.\n",
-					"type": "String"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
-		"delete": {
-			"summary": "Delete a Key-Value",
-			"description": "Deletes a key-value pair\n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "name",
-					"description": "Name (or key) of the key-value pair to delete.",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "access_private",
-					"description": "Determines whether to delete this key-value in the publically readable store\nor in the user's private store.\n\nDefault is false (publically readable store).\n",
-					"type": "Boolean"
-				},
-				{
-					"name": "user_id",
-					"description": "Delete the key-value pair on behalf of the identified user.\n\nLogin user must be an admin to delete a key-value on behalf of another user.\n",
 					"type": "String"
 				},
 				{
@@ -149,9 +119,9 @@ module.exports = Arrow.Model.extend("appc.arrowdb/key_value", {
 				}
 			]
 		},
-		"incrby": {
-			"summary": "Increment a Key-Value",
-			"description": "Increment the `value` by the given integer value. Not allowed on key-value pairs with binary\ndata.\n\nIf the current value in the key-value is not convertable to an integer, the new\nvalue replaces the existing value.\n",
+		"delete": {
+			"summary": "Delete a Key-Value",
+			"description": "Deletes a key-value pair\n",
 			"authRequired": true,
 			"instance": true,
 			"adminRequired": false,
@@ -161,27 +131,18 @@ module.exports = Arrow.Model.extend("appc.arrowdb/key_value", {
 			"parameters": [
 				{
 					"name": "name",
-					"description": "Name (or key) for the key-value pair.",
+					"description": "Name (or key) of the key-value pair to delete.",
 					"type": "String",
 					"required": true
 				},
 				{
-					"name": "value",
-					"description": "Integer value to add to the current value. If a floating point number is\nspecified, any fractional portion is dropped.\n\nIf this value cannot be converted to an integer, the existing value is not\nchanged.\n",
-					"type": [
-						"String",
-						"Number"
-					],
-					"required": true
-				},
-				{
 					"name": "access_private",
-					"description": "Determines whether to update this key-value in the publically readable store\nor in the user's private store.\n\nDefault is false (publically readable).\n",
+					"description": "Determines whether to delete this key-value in the publically readable store\nor in the user's private store.\n\nDefault is false (publically readable store).\n",
 					"type": "Boolean"
 				},
 				{
 					"name": "user_id",
-					"description": "Update the key-value pair on behalf of the identified user.\n\nLogin user must be an admin to update a key-value on behalf of another user.\n",
+					"description": "Delete the key-value pair on behalf of the identified user.\n\nLogin user must be an admin to delete a key-value on behalf of another user.\n",
 					"type": "String"
 				},
 				{
@@ -250,6 +211,45 @@ module.exports = Arrow.Model.extend("appc.arrowdb/key_value", {
 				}
 			]
 		},
+		"append": {
+			"summary": "Append to a Key-Value",
+			"description": "Add the given `value` to end of the existing one. Not allowed on key-values\nwith binary data.\n",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "name",
+					"description": "Name (or key) for the key-value pair.",
+					"type": "String",
+					"required": true
+				},
+				{
+					"name": "value",
+					"description": "Value to append to the current value.",
+					"type": "String",
+					"required": true
+				},
+				{
+					"name": "access_private",
+					"description": "Determines whether to update this key-value in the publically readable store\nor in the user's private store.\n\nDefault is false (publically readable).\n",
+					"type": "Boolean"
+				},
+				{
+					"name": "user_id",
+					"description": "Update the key-value pair on behalf of the identified user.\n\nLogin user must be an admin to update a key-value on behalf of another user.\n",
+					"type": "String"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
 		"set": {
 			"summary": "Set a string or binary value",
 			"description": "Sets a string or binary value referenced by the key name. The size of the\nvalue can be up to 2M, and the key name length can be up to 256 characters.\nThe default value type is String.\n",
@@ -315,5 +315,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/key_value", {
 				};
 		}
 		return defaultValue;
-	}
+	},
+
+	actions: ["delete","read"]
 });

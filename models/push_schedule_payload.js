@@ -63,5 +63,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/push_schedule_payload", {
 				};
 		}
 		return defaultValue;
-	}
+	},
+
+	actions: []
 });

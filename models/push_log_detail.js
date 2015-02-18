@@ -103,5 +103,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/push_log_detail", {
 				};
 		}
 		return defaultValue;
-	}
+	},
+
+	actions: []
 });

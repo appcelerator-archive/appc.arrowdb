@@ -151,10 +151,10 @@ module.exports = Arrow.Model.extend("appc.arrowdb/photo", {
 				}
 			]
 		},
-		"create": {
-			"summary": "Create (Upload) a Photo",
-			"description": "Create a photo using the given `photo` binary attachment. A `collection_name`\nor `collection_id` is optional. The response includes a `processed` flag which\nindicates if the photo has been resized and stored reliably in the\nAppcelerator Cloud Services storage engine. This will initially be `false`.\nThe `md5` field gives the md5 sum of the file which can be used to verify file\nintegrity.\n",
-			"authRequired": true,
+		"show": {
+			"summary": "Show Photo Info",
+			"description": "Returns the information for the identified photo.\n",
+			"authRequired": false,
 			"instance": true,
 			"adminRequired": false,
 			"response": {
@@ -162,66 +162,20 @@ module.exports = Arrow.Model.extend("appc.arrowdb/photo", {
 			},
 			"parameters": [
 				{
-					"name": "photo",
-					"description": "The attached binary file.\n",
-					"type": "FileUpload",
+					"name": "photo_id",
+					"description": "ID of the photo to show.",
+					"type": "String",
 					"required": true
 				},
 				{
-					"name": "title",
-					"description": "Photo title.",
-					"type": "String"
+					"name": "response_json_depth",
+					"description": "Nested object depth level counts in response JSON.\n\nIn order to reduce server API calls from an application, the response JSON may\ninclude not just the objects that are being queried/searched, but also\nsome important data related to the returned objects such as object's owner or\nreferenced objects.\n\nDefault is 1, valid range is 1 to 8.\n",
+					"type": "Number"
 				},
 				{
-					"name": "collection_name",
-					"description": "Name of the PhotoCollections to add this photo to.",
-					"type": "String"
-				},
-				{
-					"name": "collection_id",
-					"description": "ID of the PhotoCollections to add this photo to.",
-					"type": "String"
-				},
-				{
-					"name": "tags",
-					"description": "Comma separated list of tags to associate with this photo.\n",
-					"type": "String"
-				},
-				{
-					"name": "custom_fields",
-					"description": "User-defined fields to add to this photo. See [Custom Data Fields](#!/guide/customfields).",
-					"type": [
-						"String",
-						"Hash"
-					]
-				},
-				{
-					"name": "acl_name",
-					"description": "Name of an ACLs to associate with this photo object.\n\nAn ACL can be specified using `acl_name` or `acl_id`. The two parameters are\nmutually exclusive.\n",
-					"type": "String"
-				},
-				{
-					"name": "acl_id",
-					"description": "ID of an ACLs to associate with this photo object.\n\nAn ACL can be specified using `acl_name` or `acl_id`. The two parameters are\nmutually exclusive.\n",
-					"type": "String"
-				},
-				{
-					"name": "user_id",
-					"description": "User ID to create the photo on behalf of.\n\nThe current login user must be an application admin to create a photo on\nbehalf of another user.\n",
-					"type": "String"
-				},
-				{
-					"name": "photo_sizes",
-					"description": "User-defined photo sizes. See [Photo Uploading &\nSizes](#!/guide/photosizes#custom).  Sizes be specified as a JSON object, or using a separate parameter for each\nsize. To specify a photo size called \"preview\" using JSON:\n\n    photo_size : { \"preview\" : \"120x120#\" }\n\nTo pass each size as a separate parameter, do *not* use the literal parameter name `photo_sizes`,\nbut add a parameter named `photo_sizes[`_sizeName_`]` for each custom photo\nsize. The previous example in this format looks like this:\n\n    \"photo_size[preview]\" : \"120x120#\"\n",
-					"type": [
-						"String",
-						"Hash"
-					]
-				},
-				{
-					"name": "photo_sync_sizes[]",
-					"description": "Synchronous photo sizes to upload. See [Photo Uploading & Resizing](#!/guide/photosizes).\n\nThe literal name for this parameter is `photo_sync_sizes[]`. This parameter can be specified\nmultiple times, once for each photo size that must be created before the request returns.\n\nFor example:\n\n    \"photo_sync_sizes[]=preview\"\n",
-					"type": "String"
+					"name": "show_user_like",
+					"description": "If set to **true** the Photo object in the response will include `\"current_user_liked: true\"`\nif the current user has liked the object. If the user has not liked the object, the \n`current_user_liked` field is not included in the response.\n",
+					"type": "Boolean"
 				},
 				{
 					"name": "pretty_json",
@@ -258,70 +212,6 @@ module.exports = Arrow.Model.extend("appc.arrowdb/photo", {
 				}
 			]
 		},
-		"query": {
-			"summary": "Custom Query Photos",
-			"description": "Perform custom query of photos with sorting and paginating. Currently you can\nnot query or sort data stored inside array or hash in custom fields.\n\nIn addition to custom fields, here is a list of pre-defined fields\nthat can be queried and sorted:\n\n*   `user_id: String`. Photo owner's user ID.\n*   `title:  String`.  Photo title.\n*   `tags_array: String`. Photo tags.\n*   `ratings_average:  Number`.  Photo's average rating (see Reviews).\n*   `ratings_count: Number`. Photo's total number of ratings (see Reviews).\n*   `reviews_count: Number`. Photo's total number of reviews (see Reviews).\n*   `created_at: Date`. Timestamp when the photo was created.\n*   `updated_at: Date`. Timestamp when the photo was updated.\n\nIn ACS 1.1.5 and later, you can paginate query results using `skip` and `limit` parameters, or by including\na `where` clause to limit the results to objects whose IDs fall within a specified range.\nFor details, see [Query Pagination](#!/guide/search_query-section-query-pagination).\n\nFor details about using the query parameters,\nsee the [Search and Query guide](#!/guide/search_query).\n",
-			"authRequired": false,
-			"instance": true,
-			"adminRequired": false,
-			"parameters": [
-				{
-					"name": "page",
-					"description": "\nStarting in ACS 1.1.5, page and per_page are no longer supported in query operations. \nApplications should instead use skip and limit \nquery parameters.\n",
-					"type": "Number"
-				},
-				{
-					"name": "per_page",
-					"description": "\nStarting in ACS 1.1.5, page and per_page are no longer supported in query operations. \nApplications should instead use skip and limit \nquery parameters.\n",
-					"type": "Number"
-				},
-				{
-					"name": "limit",
-					"description": "The number of records to fetch. The value must be greater than 0, and no greater than \n1000, or an HTTP 400 (Bad Request) error will be returned. Default value of `limit` is 10.\n",
-					"type": "Number"
-				},
-				{
-					"name": "skip",
-					"description": "The number of records to skip. The value must be greater than or equal to 0, and no greater \nthan 4999, or an HTTP 400 error will be returned. To skip 5000 records or more \nyou need to perform a range-based query. See \nQuery Pagination for more information.\n",
-					"type": "Number"
-				},
-				{
-					"name": "where",
-					"description": "Constraint values for fields. `where` should be encoded JSON.\n\nIf `where` is not specified, `query` returns all objects.\n",
-					"type": "Hash"
-				},
-				{
-					"name": "order",
-					"description": "Sort results by one or more fields.\n",
-					"type": "String"
-				},
-				{
-					"name": "sel",
-					"description": "Selects the object fields to display. Do not use this parameter with `unsel`.\n",
-					"type": "Hash"
-				},
-				{
-					"name": "show_user_like",
-					"description": "If set to **true**, each Photo object in the response includes `\"current_user_liked: true\"`\n if the current user has liked the object. If the user has not liked the object, the \n`current_user_liked` field is not included in the response.\n",
-					"type": "Boolean"
-				},
-				{
-					"name": "unsel",
-					"description": "Selects the object fields NOT to display. Do not use this parameter with `sel`.\n",
-					"type": "Hash"
-				},
-				{
-					"name": "response_json_depth",
-					"description": "Nested object depth level counts in response json.\nIn order to reduce server API calls from an application, the response json may\ninclude not just the objects that are being queried/searched, but also with\nsome important data related to the returning objects such as object's owner or\nreferencing objects.\n\nDefault is 1, valid range is 1 to 8.\n",
-					"type": "Number"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
 		"search": {
 			"summary": "Seach for Photos",
 			"description": "Searches for photos with sorting and paginating.\n",
@@ -343,39 +233,6 @@ module.exports = Arrow.Model.extend("appc.arrowdb/photo", {
 					"name": "response_json_depth",
 					"description": "Nested object depth level counts in response JSON.\n\nIn order to reduce server API calls from an application, the response JSON may\ninclude not just the objects that are being queried/searched, but also\nsome important data related to the returned objects such as object's owner or\nreferenced objects.\n\nDefault is 1, valid range is 1 to 8.\n",
 					"type": "Number"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
-		"show": {
-			"summary": "Show Photo Info",
-			"description": "Returns the information for the identified photo.\n",
-			"authRequired": false,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "photo_id",
-					"description": "ID of the photo to show.",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "response_json_depth",
-					"description": "Nested object depth level counts in response JSON.\n\nIn order to reduce server API calls from an application, the response JSON may\ninclude not just the objects that are being queried/searched, but also\nsome important data related to the returned objects such as object's owner or\nreferenced objects.\n\nDefault is 1, valid range is 1 to 8.\n",
-					"type": "Number"
-				},
-				{
-					"name": "show_user_like",
-					"description": "If set to **true** the Photo object in the response will include `\"current_user_liked: true\"`\nif the current user has liked the object. If the user has not liked the object, the \n`current_user_liked` field is not included in the response.\n",
-					"type": "Boolean"
 				},
 				{
 					"name": "pretty_json",
@@ -469,6 +326,149 @@ module.exports = Arrow.Model.extend("appc.arrowdb/photo", {
 				}
 			]
 		},
+		"create": {
+			"summary": "Create (Upload) a Photo",
+			"description": "Create a photo using the given `photo` binary attachment. A `collection_name`\nor `collection_id` is optional. The response includes a `processed` flag which\nindicates if the photo has been resized and stored reliably in the\nAppcelerator Cloud Services storage engine. This will initially be `false`.\nThe `md5` field gives the md5 sum of the file which can be used to verify file\nintegrity.\n",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "photo",
+					"description": "The attached binary file.\n",
+					"type": "FileUpload",
+					"required": true
+				},
+				{
+					"name": "title",
+					"description": "Photo title.",
+					"type": "String"
+				},
+				{
+					"name": "collection_name",
+					"description": "Name of the PhotoCollections to add this photo to.",
+					"type": "String"
+				},
+				{
+					"name": "collection_id",
+					"description": "ID of the PhotoCollections to add this photo to.",
+					"type": "String"
+				},
+				{
+					"name": "tags",
+					"description": "Comma separated list of tags to associate with this photo.\n",
+					"type": "String"
+				},
+				{
+					"name": "custom_fields",
+					"description": "User-defined fields to add to this photo. See [Custom Data Fields](#!/guide/customfields).",
+					"type": [
+						"String",
+						"Hash"
+					]
+				},
+				{
+					"name": "acl_name",
+					"description": "Name of an ACLs to associate with this photo object.\n\nAn ACL can be specified using `acl_name` or `acl_id`. The two parameters are\nmutually exclusive.\n",
+					"type": "String"
+				},
+				{
+					"name": "acl_id",
+					"description": "ID of an ACLs to associate with this photo object.\n\nAn ACL can be specified using `acl_name` or `acl_id`. The two parameters are\nmutually exclusive.\n",
+					"type": "String"
+				},
+				{
+					"name": "user_id",
+					"description": "User ID to create the photo on behalf of.\n\nThe current login user must be an application admin to create a photo on\nbehalf of another user.\n",
+					"type": "String"
+				},
+				{
+					"name": "photo_sizes",
+					"description": "User-defined photo sizes. See [Photo Uploading &\nSizes](#!/guide/photosizes#custom).  Sizes be specified as a JSON object, or using a separate parameter for each\nsize. To specify a photo size called \"preview\" using JSON:\n\n    photo_size : { \"preview\" : \"120x120#\" }\n\nTo pass each size as a separate parameter, do *not* use the literal parameter name `photo_sizes`,\nbut add a parameter named `photo_sizes[`_sizeName_`]` for each custom photo\nsize. The previous example in this format looks like this:\n\n    \"photo_size[preview]\" : \"120x120#\"\n",
+					"type": [
+						"String",
+						"Hash"
+					]
+				},
+				{
+					"name": "photo_sync_sizes[]",
+					"description": "Synchronous photo sizes to upload. See [Photo Uploading & Resizing](#!/guide/photosizes).\n\nThe literal name for this parameter is `photo_sync_sizes[]`. This parameter can be specified\nmultiple times, once for each photo size that must be created before the request returns.\n\nFor example:\n\n    \"photo_sync_sizes[]=preview\"\n",
+					"type": "String"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
+		"query": {
+			"summary": "Custom Query Photos",
+			"description": "Perform custom query of photos with sorting and paginating. Currently you can\nnot query or sort data stored inside array or hash in custom fields.\n\nIn addition to custom fields, here is a list of pre-defined fields\nthat can be queried and sorted:\n\n*   `user_id: String`. Photo owner's user ID.\n*   `title:  String`.  Photo title.\n*   `tags_array: String`. Photo tags.\n*   `ratings_average:  Number`.  Photo's average rating (see Reviews).\n*   `ratings_count: Number`. Photo's total number of ratings (see Reviews).\n*   `reviews_count: Number`. Photo's total number of reviews (see Reviews).\n*   `created_at: Date`. Timestamp when the photo was created.\n*   `updated_at: Date`. Timestamp when the photo was updated.\n\nIn ACS 1.1.5 and later, you can paginate query results using `skip` and `limit` parameters, or by including\na `where` clause to limit the results to objects whose IDs fall within a specified range.\nFor details, see [Query Pagination](#!/guide/search_query-section-query-pagination).\n\nFor details about using the query parameters,\nsee the [Search and Query guide](#!/guide/search_query).\n",
+			"authRequired": false,
+			"instance": true,
+			"adminRequired": false,
+			"parameters": [
+				{
+					"name": "page",
+					"description": "\nStarting in ACS 1.1.5, page and per_page are no longer supported in query operations. \nApplications should instead use skip and limit \nquery parameters.\n",
+					"type": "Number"
+				},
+				{
+					"name": "per_page",
+					"description": "\nStarting in ACS 1.1.5, page and per_page are no longer supported in query operations. \nApplications should instead use skip and limit \nquery parameters.\n",
+					"type": "Number"
+				},
+				{
+					"name": "limit",
+					"description": "The number of records to fetch. The value must be greater than 0, and no greater than \n1000, or an HTTP 400 (Bad Request) error will be returned. Default value of `limit` is 10.\n",
+					"type": "Number"
+				},
+				{
+					"name": "skip",
+					"description": "The number of records to skip. The value must be greater than or equal to 0, and no greater \nthan 4999, or an HTTP 400 error will be returned. To skip 5000 records or more \nyou need to perform a range-based query. See \nQuery Pagination for more information.\n",
+					"type": "Number"
+				},
+				{
+					"name": "where",
+					"description": "Constraint values for fields. `where` should be encoded JSON.\n\nIf `where` is not specified, `query` returns all objects.\n",
+					"type": "Hash"
+				},
+				{
+					"name": "order",
+					"description": "Sort results by one or more fields.\n",
+					"type": "String"
+				},
+				{
+					"name": "sel",
+					"description": "Selects the object fields to display. Do not use this parameter with `unsel`.\n",
+					"type": "Hash"
+				},
+				{
+					"name": "show_user_like",
+					"description": "If set to **true**, each Photo object in the response includes `\"current_user_liked: true\"`\n if the current user has liked the object. If the user has not liked the object, the \n`current_user_liked` field is not included in the response.\n",
+					"type": "Boolean"
+				},
+				{
+					"name": "unsel",
+					"description": "Selects the object fields NOT to display. Do not use this parameter with `sel`.\n",
+					"type": "Hash"
+				},
+				{
+					"name": "response_json_depth",
+					"description": "Nested object depth level counts in response json.\nIn order to reduce server API calls from an application, the response json may\ninclude not just the objects that are being queried/searched, but also with\nsome important data related to the returning objects such as object's owner or\nreferencing objects.\n\nDefault is 1, valid range is 1 to 8.\n",
+					"type": "Number"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
 		"remove": {
 			"canonical": "delete"
 		}
@@ -487,5 +487,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/photo", {
 				};
 		}
 		return defaultValue;
-	}
+	},
+
+	actions: ["delete","update","create","read"]
 });

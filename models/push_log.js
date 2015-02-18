@@ -88,5 +88,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/push_log", {
 				};
 		}
 		return defaultValue;
-	}
+	},
+
+	actions: []
 });

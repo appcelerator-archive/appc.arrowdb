@@ -81,6 +81,72 @@ module.exports = Arrow.Model.extend("appc.arrowdb/photo_collection", {
 				}
 			]
 		},
+		"delete": {
+			"summary": "Delete a Photo Collection",
+			"description": "Delete an empty collection. An error will be returned if a collection contains\nany photos or subcollections.\n\nAn application admin can delete any photo collection. The #cover_photo associated \nwith the collection is not deleted.\n",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "collection_id",
+					"description": "ID of the collection to delete.",
+					"type": "String",
+					"required": true
+				},
+				{
+					"name": "user_id",
+					"description": "User ID to delete the collection on behalf of. The user must be the creator of the collection.\n\nThe current login user must be an application admin to delete a collection on\nbehalf of another user.\n",
+					"type": "String"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
+		"showPhotos": {
+			"summary": "Show Photos in a Collection",
+			"description": "Show photos in a collection.\n",
+			"authRequired": false,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "collection_id",
+					"description": "ID of the collection to retrieve photos from.",
+					"type": "String",
+					"required": true
+				},
+				{
+					"name": "page",
+					"description": "Request page number, default is 1.",
+					"type": "Number"
+				},
+				{
+					"name": "per_page",
+					"description": "Number of results per page, default is 10.",
+					"type": "Number"
+				},
+				{
+					"name": "response_json_depth",
+					"description": "Nested object depth level counts in the response JSON.\n\nIn order to reduce server API calls from an application, the response JSON may\ninclude not just the objects that are being queried/searched, but also\nsome important data related to the returned objects such as the object's owner or\nreferenced objects.\n\nDefault is 1, valid range is 1 to 8.\n",
+					"type": "Number"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
 		"create": {
 			"summary": "Create a Photo Collection",
 			"description": "Collections contain one or more photos and/or sub-collections. These can be\nused as photo albums for a user. To create a subcollection,\nspecify a `parent_collection_id` when creating a collection. If the collection has been\ncreated or updated with a `cover_photo_id`, photo details will be returned\nwith collection information. If a `cover_photo_id` has not been assigned, the\nfirst photo found in the collection or its sub-collections will be returned as\nthe cover photo.\n",
@@ -136,9 +202,9 @@ module.exports = Arrow.Model.extend("appc.arrowdb/photo_collection", {
 				}
 			]
 		},
-		"showPhotos": {
-			"summary": "Show Photos in a Collection",
-			"description": "Show photos in a collection.\n",
+		"showSubcollections": {
+			"summary": "Show Subcollections",
+			"description": "Show subcollections of a collection.\n",
 			"authRequired": false,
 			"instance": true,
 			"adminRequired": false,
@@ -166,34 +232,6 @@ module.exports = Arrow.Model.extend("appc.arrowdb/photo_collection", {
 					"name": "response_json_depth",
 					"description": "Nested object depth level counts in the response JSON.\n\nIn order to reduce server API calls from an application, the response JSON may\ninclude not just the objects that are being queried/searched, but also\nsome important data related to the returned objects such as the object's owner or\nreferenced objects.\n\nDefault is 1, valid range is 1 to 8.\n",
 					"type": "Number"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
-		"delete": {
-			"summary": "Delete a Photo Collection",
-			"description": "Delete an empty collection. An error will be returned if a collection contains\nany photos or subcollections.\n\nAn application admin can delete any photo collection. The #cover_photo associated \nwith the collection is not deleted.\n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "collection_id",
-					"description": "ID of the collection to delete.",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "user_id",
-					"description": "User ID to delete the collection on behalf of. The user must be the creator of the collection.\n\nThe current login user must be an application admin to delete a collection on\nbehalf of another user.\n",
-					"type": "String"
 				},
 				{
 					"name": "pretty_json",
@@ -252,44 +290,6 @@ module.exports = Arrow.Model.extend("appc.arrowdb/photo_collection", {
 					"description": "ID of the collection to retrieve photos from.",
 					"type": "String",
 					"required": true
-				},
-				{
-					"name": "response_json_depth",
-					"description": "Nested object depth level counts in the response JSON.\n\nIn order to reduce server API calls from an application, the response JSON may\ninclude not just the objects that are being queried/searched, but also\nsome important data related to the returned objects such as the object's owner or\nreferenced objects.\n\nDefault is 1, valid range is 1 to 8.\n",
-					"type": "Number"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
-		"showSubcollections": {
-			"summary": "Show Subcollections",
-			"description": "Show subcollections of a collection.\n",
-			"authRequired": false,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "collection_id",
-					"description": "ID of the collection to retrieve photos from.",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "page",
-					"description": "Request page number, default is 1.",
-					"type": "Number"
-				},
-				{
-					"name": "per_page",
-					"description": "Number of results per page, default is 10.",
-					"type": "Number"
 				},
 				{
 					"name": "response_json_depth",
@@ -376,5 +376,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/photo_collection", {
 				};
 		}
 		return defaultValue;
-	}
+	},
+
+	actions: ["delete","create","update"]
 });

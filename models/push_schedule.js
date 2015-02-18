@@ -49,56 +49,6 @@ module.exports = Arrow.Model.extend("appc.arrowdb/push_schedule", {
 	 Methods for this model.
 	 */
 	methodMeta: {
-		"create": {
-			"summary": "create",
-			"description": "Creates a scheduled push notification.  At minimum, you must specify the `start_time`,\nand `payload` parameters. A push schedule can optionally define a location query so that\nonly devices in the specified geographic region will receive the push notification.\n\nThis feature is only available for Enterprise users, and the current user must be an application admin.\n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": true,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "schedule",
-					"description": "Push notification to schedule.",
-					"type": "PushSchedulePayload",
-					"required": true
-				},
-				{
-					"name": "where",
-					"description": "A JSON-encoded object that defines a location query used to select the devices\nthat will receive the scheduled notification. Up to 1000 users can be returned by the query. To specify a location query, set the `loc` field to a\n[MongoDB Geospatial Query](http://docs.mongodb.org/manual/reference/operator/query-geospatial/).\nThe following query searches for all users within 2 km of Oakland, CA, USA:\n\n    where={\n      \"loc\": {\n        \"$nearSphere\" : { \n          \"$geometry\" : { \n            \"type\" : \"Point\" , \n            \"coordinates\" : [-122.2708,37.8044] } , \n            \"$maxDistance\" : 2000 \n          }\n        }\n      }\n\nFor details about using the `where` parameter, see the [Search and Query guide](#!/guide/search_query).\n",
-					"type": "Hash"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
-		"delete": {
-			"summary": "delete",
-			"description": "Deletes a scheduled push notification.\n\nThis feature is only available for Enterprise users.\n\nThe current user must be an application admin.\n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": true,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "ids",
-					"description": "Array of push schedule IDs to delete.",
-					"type": "Array"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
 		"query": {
 			"summary": "query",
 			"description": "Queries the list of scheduled push notifications.\n\nThis feature is only available for Enterprise users, and the current logged-in user must be an \napplication admin.\n\nIn ACS 1.1.5 and later, you can paginate query results using `skip` and `limit` parameters, or by including\na `where` clause to limit the results to objects whose IDs fall within a specified range.\nFor details, see [Query Pagination](#!/guide/search_query-section-query-pagination).\n",
@@ -130,6 +80,56 @@ module.exports = Arrow.Model.extend("appc.arrowdb/push_schedule", {
 					"name": "skip",
 					"description": "The number of records to skip. The value must be greater than or equal to 0, and no greater \nthan 4999, or an HTTP 400 error will be returned. To skip 5000 records or more \nyou need to perform a range-based query. See \nQuery Pagination for more information.\n",
 					"type": "Number"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
+		"delete": {
+			"summary": "delete",
+			"description": "Deletes a scheduled push notification.\n\nThis feature is only available for Enterprise users.\n\nThe current user must be an application admin.\n",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": true,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "ids",
+					"description": "Array of push schedule IDs to delete.",
+					"type": "Array"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
+		"create": {
+			"summary": "create",
+			"description": "Creates a scheduled push notification.  At minimum, you must specify the `start_time`,\nand `payload` parameters. A push schedule can optionally define a location query so that\nonly devices in the specified geographic region will receive the push notification.\n\nThis feature is only available for Enterprise users, and the current user must be an application admin.\n",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": true,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "schedule",
+					"description": "Push notification to schedule.",
+					"type": "PushSchedulePayload",
+					"required": true
+				},
+				{
+					"name": "where",
+					"description": "A JSON-encoded object that defines a location query used to select the devices\nthat will receive the scheduled notification. Up to 1000 users can be returned by the query. To specify a location query, set the `loc` field to a\n[MongoDB Geospatial Query](http://docs.mongodb.org/manual/reference/operator/query-geospatial/).\nThe following query searches for all users within 2 km of Oakland, CA, USA:\n\n    where={\n      \"loc\": {\n        \"$nearSphere\" : { \n          \"$geometry\" : { \n            \"type\" : \"Point\" , \n            \"coordinates\" : [-122.2708,37.8044] } , \n            \"$maxDistance\" : 2000 \n          }\n        }\n      }\n\nFor details about using the `where` parameter, see the [Search and Query guide](#!/guide/search_query).\n",
+					"type": "Hash"
 				},
 				{
 					"name": "pretty_json",
@@ -190,5 +190,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/push_schedule", {
 				};
 		}
 		return defaultValue;
-	}
+	},
+
+	actions: ["read","delete","create","update"]
 });

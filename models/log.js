@@ -19,6 +19,17 @@ module.exports = Arrow.Model.extend("appc.arrowdb/log", {
 	 Methods for this model.
 	 */
 	methodMeta: {
+		"querypushlogs": {
+			"summary": "Query ACS push notification logs.",
+			"description": "Performs a custom query of ACS push notification logs with sorting and pagination. Returns\na list of PushLogs objects that matched the query parameters.\n\nTo get additional details about a specific PushLogs item, pass the value of PushLogs#_id to\na Logs#querypushlogdetails query.\n",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": true,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": []
+		},
 		"querypushlogdetails": {
 			"summary": "Query details about a specific push notification log item.",
 			"description": "Performs a custom query for details about a specific ACS push notification log item specified\nin the query's `where` clause. Returns a PushLogDetails object for the specified log item.\n",
@@ -36,17 +47,6 @@ module.exports = Arrow.Model.extend("appc.arrowdb/log", {
 					"required": true
 				}
 			]
-		},
-		"querypushlogs": {
-			"summary": "Query ACS push notification logs.",
-			"description": "Performs a custom query of ACS push notification logs with sorting and pagination. Returns\na list of PushLogs objects that matched the query parameters.\n\nTo get additional details about a specific PushLogs item, pass the value of PushLogs#_id to\na Logs#querypushlogdetails query.\n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": true,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": []
 		}
 	},
 
@@ -62,5 +62,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/log", {
 				};
 		}
 		return defaultValue;
-	}
+	},
+
+	actions: []
 });

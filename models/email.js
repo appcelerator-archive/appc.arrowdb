@@ -72,5 +72,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/email", {
 				};
 		}
 		return defaultValue;
-	}
+	},
+
+	actions: []
 });
