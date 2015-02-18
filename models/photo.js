@@ -7,7 +7,7 @@ var Arrow = require("arrow");
  */
 module.exports = Arrow.Model.extend("appc.arrowdb/photo", {
 	/**
-	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
+	 * Remove generated property or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
 	generated: true,
 	/*
@@ -151,67 +151,6 @@ module.exports = Arrow.Model.extend("appc.arrowdb/photo", {
 				}
 			]
 		},
-		"show": {
-			"summary": "Show Photo Info",
-			"description": "Returns the information for the identified photo.\n",
-			"authRequired": false,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "photo_id",
-					"description": "ID of the photo to show.",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "response_json_depth",
-					"description": "Nested object depth level counts in response JSON.\n\nIn order to reduce server API calls from an application, the response JSON may\ninclude not just the objects that are being queried/searched, but also\nsome important data related to the returned objects such as object's owner or\nreferenced objects.\n\nDefault is 1, valid range is 1 to 8.\n",
-					"type": "Number"
-				},
-				{
-					"name": "show_user_like",
-					"description": "If set to **true** the Photo object in the response will include `\"current_user_liked: true\"`\nif the current user has liked the object. If the user has not liked the object, the \n`current_user_liked` field is not included in the response.\n",
-					"type": "Boolean"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
-		"delete": {
-			"summary": "Delete a Photo",
-			"description": "Deletes a photo to which you have update access.\n\nAn application admin can delete any photo object.\n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "photo_id",
-					"description": "ID of the photo to delete.",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "user_id",
-					"description": "User ID to delete the Photo object on behalf of. The user must be the creator of the object.\n\nThe current login user must be an application admin to delete a Photo object on\nbehalf of another user.\n",
-					"type": "String"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
 		"search": {
 			"summary": "Seach for Photos",
 			"description": "Searches for photos with sorting and paginating.\n",
@@ -317,6 +256,67 @@ module.exports = Arrow.Model.extend("appc.arrowdb/photo", {
 				{
 					"name": "user_id",
 					"description": "User ID to update the Photo object on behalf of. The user must be the creator of the object.\n\nThe current login user must be an application admin to update a Photo object on\nbehalf of another user.\n",
+					"type": "String"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
+		"show": {
+			"summary": "Show Photo Info",
+			"description": "Returns the information for the identified photo.\n",
+			"authRequired": false,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "photo_id",
+					"description": "ID of the photo to show.",
+					"type": "String",
+					"required": true
+				},
+				{
+					"name": "response_json_depth",
+					"description": "Nested object depth level counts in response JSON.\n\nIn order to reduce server API calls from an application, the response JSON may\ninclude not just the objects that are being queried/searched, but also\nsome important data related to the returned objects such as object's owner or\nreferenced objects.\n\nDefault is 1, valid range is 1 to 8.\n",
+					"type": "Number"
+				},
+				{
+					"name": "show_user_like",
+					"description": "If set to **true** the Photo object in the response will include `\"current_user_liked: true\"`\nif the current user has liked the object. If the user has not liked the object, the \n`current_user_liked` field is not included in the response.\n",
+					"type": "Boolean"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
+		"delete": {
+			"summary": "Delete a Photo",
+			"description": "Deletes a photo to which you have update access.\n\nAn application admin can delete any photo object.\n",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "photo_id",
+					"description": "ID of the photo to delete.",
+					"type": "String",
+					"required": true
+				},
+				{
+					"name": "user_id",
+					"description": "User ID to delete the Photo object on behalf of. The user must be the creator of the object.\n\nThe current login user must be an application admin to delete a Photo object on\nbehalf of another user.\n",
 					"type": "String"
 				},
 				{

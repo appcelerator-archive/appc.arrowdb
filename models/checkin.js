@@ -7,7 +7,7 @@ var Arrow = require("arrow");
  */
 module.exports = Arrow.Model.extend("appc.arrowdb/checkin", {
 	/**
-	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
+	 * Remove generated property or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
 	generated: true,
 	/*
@@ -74,23 +74,6 @@ module.exports = Arrow.Model.extend("appc.arrowdb/checkin", {
 	 Methods for this model.
 	 */
 	methodMeta: {
-		"batchDelete": {
-			"summary": "Deletes multiple Checkin objects.",
-			"description": "Deletes Checkin objects that match the query constraints provided in the `where` parameter.\nIf no `where` parameter is provided, all Checkin objects are deleted. Note that an HTTP 200 code (success)\nis returned if the call completed successfully but the query matched no objects.\n\nFor performance reasons, the number of objects that can be deleted in a single batch delete \noperation is limited to 100,000.\n\nThe matched objects are deleted asynchronously in a separate process. The Place, \nEvent, or Photo associated with any of the matched objects is \nnot deleted.\n\nYou must be an application admin to run this command.        \n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": true,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "where",
-					"description": "Encoded JSON object that specifies constraint values for Checkins objects to delete.\nIf not specified, all Checkins objects are deleted.\n",
-					"type": "Hash"
-				}
-			]
-		},
 		"show": {
 			"summary": "Show a Checkin",
 			"description": "Returns the contents of the identified checkin.",
@@ -124,79 +107,84 @@ module.exports = Arrow.Model.extend("appc.arrowdb/checkin", {
 				}
 			]
 		},
-		"update": {
-			"summary": "",
-			"description": "Updates a checkin for the currenty logged in user.\n\nApplication admins can update another user's checkin on their behalf by including the\n`user_id` field in the request.\n",
+		"batchDelete": {
+			"summary": "Deletes multiple Checkin objects.",
+			"description": "Deletes Checkin objects that match the query constraints provided in the `where` parameter.\nIf no `where` parameter is provided, all Checkin objects are deleted. Note that an HTTP 200 code (success)\nis returned if the call completed successfully but the query matched no objects.\n\nFor performance reasons, the number of objects that can be deleted in a single batch delete \noperation is limited to 100,000.\n\nThe matched objects are deleted asynchronously in a separate process. The Place, \nEvent, or Photo associated with any of the matched objects is \nnot deleted.\n\nYou must be an application admin to run this command.        \n",
 			"authRequired": true,
 			"instance": true,
-			"adminRequired": false,
+			"adminRequired": true,
 			"response": {
 				"singleElement": true
 			},
 			"parameters": [
 				{
-					"name": "checkin_id",
-					"description": "ID of the Checkins to update.\n",
-					"type": "String",
-					"required": true
+					"name": "where",
+					"description": "Encoded JSON object that specifies constraint values for Checkins objects to delete.\nIf not specified, all Checkins objects are deleted.\n",
+					"type": "Hash"
+				}
+			]
+		},
+		"query": {
+			"summary": "Custom Query Checkins",
+			"description": "Performs a custom query of checkins with sorting and pagination. Currently you\ncan not query or sort data stored inside array or hash in custom fields.\n\nIn ACS 1.1.5 and later, you can paginate query results using `skip` and `limit` parameters, or by including\na `where` clause to limit the results to objects whose IDs fall within a specified range.\nFor details, see [Query Pagination](#!/guide/search_query-section-query-pagination).\n\nFor details about using the query parameters,\nsee the [Search and Query guide](#!/guide/search_query).\n",
+			"authRequired": false,
+			"instance": true,
+			"adminRequired": false,
+			"parameters": [
+				{
+					"name": "page",
+					"description": "Request page number, default is 1.\n\nThis parameter is only available to ACS applications created before ACS 1.1.5. \nApplications created with ACS 1.1.5 and later must use ranged-based queries queries\nto paginate their queries.\n",
+					"type": "Number"
 				},
 				{
-					"name": "place_id",
-					"description": "ID of the Places to check in to.\n\nYou can associate a checkin with either a Places or Events object but not both.\n",
+					"name": "per_page",
+					"description": "Number of results per page, default is 10.\n\nThis parameter is only available to ACS applications created before ACS 1.1.5. \nApplications created with ACS 1.1.5 and later must use ranged-based queries queries\nto paginate their queries.        \n",
+					"type": "Number"
+				},
+				{
+					"name": "limit",
+					"description": "The number of records to fetch. The value must be greater than 0, and no greater than \n1000, or an HTTP 400 (Bad Request) error will be returned. Default value of `limit` is 10.\n",
+					"type": "Number"
+				},
+				{
+					"name": "skip",
+					"description": "The number of records to skip. The value must be greater than or equal to 0, and no greater \nthan 4999, or an HTTP 400 error will be returned. To skip 5000 records or more \nyou need to perform a range-based query. See \nQuery Pagination for more information.\n",
+					"type": "Number"
+				},
+				{
+					"name": "where",
+					"description": "Constraint values for fields. `where` should be encoded JSON.\n\nIf `where` is not specified, `query` returns all objects.\n",
+					"type": "Hash"
+				},
+				{
+					"name": "order",
+					"description": "Sort results by one or more fields.\n",
 					"type": "String"
 				},
 				{
-					"name": "event_id",
-					"description": "ID of the Events to check in to.\n\nYou can associate a checkin with either a Places or Events object but not both.\n",
-					"type": "String"
+					"name": "sel",
+					"description": "Selects the object fields to display. Do not use this parameter with `unsel`.\n",
+					"type": "Hash"
 				},
 				{
-					"name": "message",
-					"description": "Message to attach to the checkin.",
-					"type": "String"
+					"name": "show_user_like",
+					"description": "If set to **true**, each Checkin object in the response includes \"current_user_liked: true\"`\nif the current user has liked the object. If the user has not liked the object, the\n`current_user_liked` field is not included in the response.\n",
+					"type": "Boolean"
 				},
 				{
-					"name": "photo",
-					"description": "New Photos object to attach as the primary photo for the checkin.\n\nWhen you use the `photo` parameter to attach a new photo, you can use the\n[custom resize and sync options](#!/guide/photosizes).\n",
-					"type": "Photos"
+					"name": "unsel",
+					"description": "Selects the object fields NOT to display. Do not use this parameter with `sel`.\n",
+					"type": "Hash"
 				},
 				{
-					"name": "photo_id",
-					"description": "ID of an existing Photos object to attach as the primary photo for the checkin.\n",
-					"type": "String"
+					"name": "response_json_depth",
+					"description": "Nested object depth level counts in response json.\nIn order to reduce server API calls from an application, the response json may\ninclude not just the objects that are being queried/searched, but also with\nsome important data related to the returning objects such as object's owner or\nreferencing objects.\n\nDefault is 1, valid range is 1 to 8.\n",
+					"type": "Number"
 				},
 				{
 					"name": "pretty_json",
 					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
 					"type": "Boolean"
-				},
-				{
-					"name": "tags",
-					"description": "Comma-separated list of tags for this checkin.\n",
-					"type": "String"
-				},
-				{
-					"name": "custom_fields",
-					"description": "User defined fields. See [Custom Data Fields](#!/guide/customfields).",
-					"type": [
-						"String",
-						"Hash"
-					]
-				},
-				{
-					"name": "acl_name",
-					"description": "Name of an ACLs to associate with this checkin object.\n\nAn ACL can be specified using `acl_name` or `acl_id`. The two parameters are\nmutually exclusive.\n",
-					"type": "String"
-				},
-				{
-					"name": "acl_id",
-					"description": "ID of an ACLs to associate with this checkin object.\n\nAn ACL can be specified using `acl_name` or `acl_id`. The two parameters are\nmutually exclusive.\n",
-					"type": "String"
-				},
-				{
-					"name": "user_id",
-					"description": "ID of Users to update the checkin on behalf of.\n\nThe current login user must be an application admin to create a checkin on\nbehalf of another user.\n",
-					"type": "String"
 				}
 			]
 		},
@@ -303,67 +291,79 @@ module.exports = Arrow.Model.extend("appc.arrowdb/checkin", {
 				}
 			]
 		},
-		"query": {
-			"summary": "Custom Query Checkins",
-			"description": "Performs a custom query of checkins with sorting and pagination. Currently you\ncan not query or sort data stored inside array or hash in custom fields.\n\nIn ACS 1.1.5 and later, you can paginate query results using `skip` and `limit` parameters, or by including\na `where` clause to limit the results to objects whose IDs fall within a specified range.\nFor details, see [Query Pagination](#!/guide/search_query-section-query-pagination).\n\nFor details about using the query parameters,\nsee the [Search and Query guide](#!/guide/search_query).\n",
-			"authRequired": false,
+		"update": {
+			"summary": "",
+			"description": "Updates a checkin for the currenty logged in user.\n\nApplication admins can update another user's checkin on their behalf by including the\n`user_id` field in the request.\n",
+			"authRequired": true,
 			"instance": true,
 			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
 			"parameters": [
 				{
-					"name": "page",
-					"description": "Request page number, default is 1.\n\nThis parameter is only available to ACS applications created before ACS 1.1.5. \nApplications created with ACS 1.1.5 and later must use ranged-based queries queries\nto paginate their queries.\n",
-					"type": "Number"
+					"name": "checkin_id",
+					"description": "ID of the Checkins to update.\n",
+					"type": "String",
+					"required": true
 				},
 				{
-					"name": "per_page",
-					"description": "Number of results per page, default is 10.\n\nThis parameter is only available to ACS applications created before ACS 1.1.5. \nApplications created with ACS 1.1.5 and later must use ranged-based queries queries\nto paginate their queries.        \n",
-					"type": "Number"
-				},
-				{
-					"name": "limit",
-					"description": "The number of records to fetch. The value must be greater than 0, and no greater than \n1000, or an HTTP 400 (Bad Request) error will be returned. Default value of `limit` is 10.\n",
-					"type": "Number"
-				},
-				{
-					"name": "skip",
-					"description": "The number of records to skip. The value must be greater than or equal to 0, and no greater \nthan 4999, or an HTTP 400 error will be returned. To skip 5000 records or more \nyou need to perform a range-based query. See \nQuery Pagination for more information.\n",
-					"type": "Number"
-				},
-				{
-					"name": "where",
-					"description": "Constraint values for fields. `where` should be encoded JSON.\n\nIf `where` is not specified, `query` returns all objects.\n",
-					"type": "Hash"
-				},
-				{
-					"name": "order",
-					"description": "Sort results by one or more fields.\n",
+					"name": "place_id",
+					"description": "ID of the Places to check in to.\n\nYou can associate a checkin with either a Places or Events object but not both.\n",
 					"type": "String"
 				},
 				{
-					"name": "sel",
-					"description": "Selects the object fields to display. Do not use this parameter with `unsel`.\n",
-					"type": "Hash"
+					"name": "event_id",
+					"description": "ID of the Events to check in to.\n\nYou can associate a checkin with either a Places or Events object but not both.\n",
+					"type": "String"
 				},
 				{
-					"name": "show_user_like",
-					"description": "If set to **true**, each Checkin object in the response includes \"current_user_liked: true\"`\nif the current user has liked the object. If the user has not liked the object, the\n`current_user_liked` field is not included in the response.\n",
-					"type": "Boolean"
+					"name": "message",
+					"description": "Message to attach to the checkin.",
+					"type": "String"
 				},
 				{
-					"name": "unsel",
-					"description": "Selects the object fields NOT to display. Do not use this parameter with `sel`.\n",
-					"type": "Hash"
+					"name": "photo",
+					"description": "New Photos object to attach as the primary photo for the checkin.\n\nWhen you use the `photo` parameter to attach a new photo, you can use the\n[custom resize and sync options](#!/guide/photosizes).\n",
+					"type": "Photos"
 				},
 				{
-					"name": "response_json_depth",
-					"description": "Nested object depth level counts in response json.\nIn order to reduce server API calls from an application, the response json may\ninclude not just the objects that are being queried/searched, but also with\nsome important data related to the returning objects such as object's owner or\nreferencing objects.\n\nDefault is 1, valid range is 1 to 8.\n",
-					"type": "Number"
+					"name": "photo_id",
+					"description": "ID of an existing Photos object to attach as the primary photo for the checkin.\n",
+					"type": "String"
 				},
 				{
 					"name": "pretty_json",
 					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
 					"type": "Boolean"
+				},
+				{
+					"name": "tags",
+					"description": "Comma-separated list of tags for this checkin.\n",
+					"type": "String"
+				},
+				{
+					"name": "custom_fields",
+					"description": "User defined fields. See [Custom Data Fields](#!/guide/customfields).",
+					"type": [
+						"String",
+						"Hash"
+					]
+				},
+				{
+					"name": "acl_name",
+					"description": "Name of an ACLs to associate with this checkin object.\n\nAn ACL can be specified using `acl_name` or `acl_id`. The two parameters are\nmutually exclusive.\n",
+					"type": "String"
+				},
+				{
+					"name": "acl_id",
+					"description": "ID of an ACLs to associate with this checkin object.\n\nAn ACL can be specified using `acl_name` or `acl_id`. The two parameters are\nmutually exclusive.\n",
+					"type": "String"
+				},
+				{
+					"name": "user_id",
+					"description": "ID of Users to update the checkin on behalf of.\n\nThe current login user must be an application admin to create a checkin on\nbehalf of another user.\n",
+					"type": "String"
 				}
 			]
 		},
@@ -387,5 +387,5 @@ module.exports = Arrow.Model.extend("appc.arrowdb/checkin", {
 		return defaultValue;
 	},
 
-	actions: ["delete","update","create","read"]
+	actions: ["delete","read","create","update"]
 });

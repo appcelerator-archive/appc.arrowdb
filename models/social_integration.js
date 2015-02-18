@@ -7,7 +7,7 @@ var Arrow = require("arrow");
  */
 module.exports = Arrow.Model.extend("appc.arrowdb/social_integration", {
 	/**
-	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
+	 * Remove generated property or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
 	generated: true,
 	/*
@@ -38,41 +38,6 @@ module.exports = Arrow.Model.extend("appc.arrowdb/social_integration", {
 				{
 					"name": "type",
 					"description": "Type of the external account, for example, \"facebook\", \"linkedin\", or\n\"twitter\".\n",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
-		"externalAccountLink": {
-			"summary": "Link an external Account",
-			"description": "Associates an external account with an existing Appcelerator Cloud Services\nuser account. Registered and logged in Appcelerator Cloud Services users can\nlink one or more external accounts to their existing account. Once linked, the\nuser can login using either Appcelerator Cloud Services account or any of the\nlinked external accounts.\n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "id",
-					"description": "External account's user ID. Optional for Facebook; if ID is missing and `type`\nis `facebook`, Appcelerator Cloud Services uses the Facebook token to obtain\nthe user ID.\n",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "type",
-					"description": "Type of the external account, for example, \"facebook\", \"linkedin\", or\n\"twitter\".\n",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "token",
-					"description": "Token provided by the external account. Currently only Facebook tokens are\nvalidated  by the Appcelerator Cloud Services server.\n",
 					"type": "String",
 					"required": true
 				},
@@ -137,6 +102,41 @@ module.exports = Arrow.Model.extend("appc.arrowdb/social_integration", {
 					"name": "acl_id",
 					"description": "ID of an ACLs to associate with this object.\n\nAn ACL can be specified using `acl_name` or `acl_id`. The two parameters are\nmutually exclusive.\n",
 					"type": "String"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
+		"externalAccountLink": {
+			"summary": "Link an external Account",
+			"description": "Associates an external account with an existing Appcelerator Cloud Services\nuser account. Registered and logged in Appcelerator Cloud Services users can\nlink one or more external accounts to their existing account. Once linked, the\nuser can login using either Appcelerator Cloud Services account or any of the\nlinked external accounts.\n",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"description": "External account's user ID. Optional for Facebook; if ID is missing and `type`\nis `facebook`, Appcelerator Cloud Services uses the Facebook token to obtain\nthe user ID.\n",
+					"type": "String",
+					"required": true
+				},
+				{
+					"name": "type",
+					"description": "Type of the external account, for example, \"facebook\", \"linkedin\", or\n\"twitter\".\n",
+					"type": "String",
+					"required": true
+				},
+				{
+					"name": "token",
+					"description": "Token provided by the external account. Currently only Facebook tokens are\nvalidated  by the Appcelerator Cloud Services server.\n",
+					"type": "String",
+					"required": true
 				},
 				{
 					"name": "pretty_json",

@@ -7,7 +7,7 @@ var Arrow = require("arrow");
  */
 module.exports = Arrow.Model.extend("appc.arrowdb/chat", {
 	/**
-	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
+	 * Remove generated property or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
 	generated: true,
 	/*
@@ -59,48 +59,6 @@ module.exports = Arrow.Model.extend("appc.arrowdb/chat", {
 	 Methods for this model.
 	 */
 	methodMeta: {
-		"getChatGroups": {
-			"summary": "List Chat Groups",
-			"description": "Lists chat groups.\n\nIf user A sends chat message to user B and C, users A, B and C automatically\nform a chat group. Use this API to get a list of chat groups the current user\nbelongs to.\n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "page",
-					"description": "Request page number, default is 1.",
-					"type": "Number"
-				},
-				{
-					"name": "per_page",
-					"description": "Number of results per page, default is 10.",
-					"type": "Number"
-				},
-				{
-					"name": "where",
-					"description": "Constraint values for fields. `where` should be encoded JSON.\n\nIf `where` is not specified, `query` returns all objects.\nSee the [Search and Query guide](#!/guide/search_query) for more information.\n",
-					"type": "String"
-				},
-				{
-					"name": "order",
-					"description": "Sort results by one or more fields.\nSee the [Search and Query guide](#!/guide/search_query) for more information.\n",
-					"type": "String"
-				},
-				{
-					"name": "response_json_depth",
-					"description": "Nested object depth level counts in JSON response.\nTo reduce server API calls the JSON response may\ninclude, in addition to the objects returned by the query, other important data related \nto the returned objects, such as object's owner or referencing objects.\n\nDefault is 1, valid range is 1 to 8.\n",
-					"type": "Number"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
 		"queryChatGroups": {
 			"summary": "Query Chat Groups",
 			"description": "Queries chat groups.\n\nIf user A sends a chat message to users B and C, users A, B and C automatically\nform a chat group. Use this API to get a list of chat groups the current user\nbelongs to.\n\nIn ACS 1.1.5 and later, you can paginate query results using `skip` and `limit` parameters, or by including\na `where` clause to limit the results to objects whose IDs fall within a specified range.\nFor details, see [Query Pagination](#!/guide/search_query-section-query-pagination).        \n\nPrior to ACS 1.1.5 you can use `skip` and `limit` parameters, or `page` and `per_page` but \nnot both in the same query.        \n\nFor details about using the query parameters,\nsee the [Search and Query guide](#!/guide/search_query).\n",
@@ -242,6 +200,34 @@ module.exports = Arrow.Model.extend("appc.arrowdb/chat", {
 				}
 			]
 		},
+		"delete": {
+			"summary": "Delete a Chat.",
+			"description": "Deletes a chat message.\n",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "chat_id",
+					"description": "ID of the chat message to delete.",
+					"type": "String",
+					"required": true
+				},
+				{
+					"name": "user_id",
+					"description": "User to delete the Chat object on behalf of. The user must be the sender of the chat\nmessage.\n\nCurrent user must be an application admin to send a message on behalf of another user.\n",
+					"type": "String"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
 		"query": {
 			"summary": "Custom Query Chat Messages",
 			"description": "Performs a custom query of chat messages with sorting and pagination. Currently you can\nnot query or sort data stored inside array or hash in custom fields.\n\nIn ACS 1.1.5 and later, you can paginate query results using `skip` and `limit` parameters, or by including\na `where` clause to limit the results to objects whose IDs fall within a specified range.\nFor details, see [Query Pagination](#!/guide/search_query-section-query-pagination).        \n\nFor details about using the query parameters,\nsee the [Search and Query guide](#!/guide/search_query).\n",
@@ -311,9 +297,9 @@ module.exports = Arrow.Model.extend("appc.arrowdb/chat", {
 				}
 			]
 		},
-		"delete": {
-			"summary": "Delete a Chat.",
-			"description": "Deletes a chat message.\n",
+		"getChatGroups": {
+			"summary": "List Chat Groups",
+			"description": "Lists chat groups.\n\nIf user A sends chat message to user B and C, users A, B and C automatically\nform a chat group. Use this API to get a list of chat groups the current user\nbelongs to.\n",
 			"authRequired": true,
 			"instance": true,
 			"adminRequired": false,
@@ -322,15 +308,29 @@ module.exports = Arrow.Model.extend("appc.arrowdb/chat", {
 			},
 			"parameters": [
 				{
-					"name": "chat_id",
-					"description": "ID of the chat message to delete.",
-					"type": "String",
-					"required": true
+					"name": "page",
+					"description": "Request page number, default is 1.",
+					"type": "Number"
 				},
 				{
-					"name": "user_id",
-					"description": "User to delete the Chat object on behalf of. The user must be the sender of the chat\nmessage.\n\nCurrent user must be an application admin to send a message on behalf of another user.\n",
+					"name": "per_page",
+					"description": "Number of results per page, default is 10.",
+					"type": "Number"
+				},
+				{
+					"name": "where",
+					"description": "Constraint values for fields. `where` should be encoded JSON.\n\nIf `where` is not specified, `query` returns all objects.\nSee the [Search and Query guide](#!/guide/search_query) for more information.\n",
 					"type": "String"
+				},
+				{
+					"name": "order",
+					"description": "Sort results by one or more fields.\nSee the [Search and Query guide](#!/guide/search_query) for more information.\n",
+					"type": "String"
+				},
+				{
+					"name": "response_json_depth",
+					"description": "Nested object depth level counts in JSON response.\nTo reduce server API calls the JSON response may\ninclude, in addition to the objects returned by the query, other important data related \nto the returned objects, such as object's owner or referencing objects.\n\nDefault is 1, valid range is 1 to 8.\n",
+					"type": "Number"
 				},
 				{
 					"name": "pretty_json",
@@ -359,5 +359,5 @@ module.exports = Arrow.Model.extend("appc.arrowdb/chat", {
 		return defaultValue;
 	},
 
-	actions: ["create","read","delete"]
+	actions: ["create","delete","read"]
 });

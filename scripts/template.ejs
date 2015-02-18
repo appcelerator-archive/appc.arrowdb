@@ -1,7 +1,7 @@
 <%
 	data.canonicals = [];
 	function printString(val) {
-		return JSON.stringify(val || '');
+		return JSON.stringify(val || '').trim();
 	}
 	function printArray(arr, indent) {
 		return JSON.stringify(arr || [], null, '\t')

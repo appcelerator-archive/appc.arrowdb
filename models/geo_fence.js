@@ -7,7 +7,7 @@ var Arrow = require("arrow");
  */
 module.exports = Arrow.Model.extend("appc.arrowdb/geo_fence", {
 	/**
-	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
+	 * Remove generated property or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
 	generated: true,
 	/*
@@ -59,6 +59,34 @@ module.exports = Arrow.Model.extend("appc.arrowdb/geo_fence", {
 	 Methods for this model.
 	 */
 	methodMeta: {
+		"update": {
+			"summary": "Updates a Geofence",
+			"description": "Updates an existing geo-fence object.\n\nAvailable only for Enterprise administrators. \n",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": true,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"description": "ID of the geo-fence object to update.",
+					"type": "String",
+					"required": true
+				},
+				{
+					"name": "geo_fence",
+					"description": "JSON object describing the geographic perimeter, data payload, and start and end time\nfor the geo-fence object.  Specify the following propertes:\n\n  * `loc` (Hash): **Required.** Geographic perimeter.  See GeoFences#loc.\n  * `payload` (Hash): JSON-encoded data to retrieve if a device intersects the geographic\n    perimeter.\n  * `start_time` (Date): Datetime to start the geo-fence.\n  * `end_time` (Date): Datetime to end the geo-fence.\n \n",
+					"type": "Hash"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
 		"delete": {
 			"summary": "Deletes a Geofence",
 			"description": "Deletes an existing geo-fence object.\n\nAvailable only for Enterprise administrators. \n",
@@ -73,29 +101,6 @@ module.exports = Arrow.Model.extend("appc.arrowdb/geo_fence", {
 					"name": "id",
 					"description": "ID of the geo-fence object to delete.",
 					"type": "String",
-					"required": true
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
-		"create": {
-			"summary": "Creates a Geofence.",
-			"description": "Creates a geo-fence object with an optional start and end time.\n\nAvailable only for Enterprise administrators.\n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": true,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "geo_fence",
-					"description": "JSON object describing the geographic perimeter, data payload, and start and end time\nfor the geo-fence object.  Specify the following propertes:\n\n  * `loc` (Hash): **Required.** Geographic perimeter.  See GeoFences#loc.\n  * `payload` (Hash): **Required.** JSON-encoded data to retrieve if a device intersects\n    the geographic perimeter.\n  * `start_time` (Date): Datetime to start the geo-fence.\n  * `end_time` (Date): Datetime to end the geo-fence.\n",
-					"type": "Hash",
 					"required": true
 				},
 				{
@@ -149,9 +154,9 @@ module.exports = Arrow.Model.extend("appc.arrowdb/geo_fence", {
 				}
 			]
 		},
-		"update": {
-			"summary": "Updates a Geofence",
-			"description": "Updates an existing geo-fence object.\n\nAvailable only for Enterprise administrators. \n",
+		"create": {
+			"summary": "Creates a Geofence.",
+			"description": "Creates a geo-fence object with an optional start and end time.\n\nAvailable only for Enterprise administrators.\n",
 			"authRequired": true,
 			"instance": true,
 			"adminRequired": true,
@@ -160,15 +165,10 @@ module.exports = Arrow.Model.extend("appc.arrowdb/geo_fence", {
 			},
 			"parameters": [
 				{
-					"name": "id",
-					"description": "ID of the geo-fence object to update.",
-					"type": "String",
-					"required": true
-				},
-				{
 					"name": "geo_fence",
-					"description": "JSON object describing the geographic perimeter, data payload, and start and end time\nfor the geo-fence object.  Specify the following propertes:\n\n  * `loc` (Hash): **Required.** Geographic perimeter.  See GeoFences#loc.\n  * `payload` (Hash): JSON-encoded data to retrieve if a device intersects the geographic\n    perimeter.\n  * `start_time` (Date): Datetime to start the geo-fence.\n  * `end_time` (Date): Datetime to end the geo-fence.\n \n",
-					"type": "Hash"
+					"description": "JSON object describing the geographic perimeter, data payload, and start and end time\nfor the geo-fence object.  Specify the following propertes:\n\n  * `loc` (Hash): **Required.** Geographic perimeter.  See GeoFences#loc.\n  * `payload` (Hash): **Required.** JSON-encoded data to retrieve if a device intersects\n    the geographic perimeter.\n  * `start_time` (Date): Datetime to start the geo-fence.\n  * `end_time` (Date): Datetime to end the geo-fence.\n",
+					"type": "Hash",
+					"required": true
 				},
 				{
 					"name": "pretty_json",
@@ -197,5 +197,5 @@ module.exports = Arrow.Model.extend("appc.arrowdb/geo_fence", {
 		return defaultValue;
 	},
 
-	actions: ["delete","create","read","update"]
+	actions: ["update","delete","read","create"]
 });

@@ -24,6 +24,7 @@ var yaml = require('js-yaml'),
  */
 var excludedFields = ['id'],
 	excludedMethods = ['count'],
+	excludedObjects = [],
 	// fields that aren't in our documentation but should exist in the data model
 	includeFields = [{
 		name: 'custom_fields',
@@ -195,6 +196,10 @@ function writeModels() {
 			// Is it private?
 			if (object.private) {
 				console.log('Skipping ' + key + ' because it is flagged "private".');
+				continue;
+			}
+			if (excludedObjects.indexOf(key)!==-1) {
+				console.log('Skipping ' + key + ' because it is marked as excluded.');
 				continue;
 			}
 			// Does it use a mixin?

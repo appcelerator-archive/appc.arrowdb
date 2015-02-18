@@ -7,7 +7,7 @@ var Arrow = require("arrow");
  */
 module.exports = Arrow.Model.extend("appc.arrowdb/key_value", {
 	/**
-	 * Remove generated: true or set it to false if you want to prevent syncModels.js from changing this file.
+	 * Remove generated property or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
 	generated: true,
 	/*
@@ -86,42 +86,9 @@ module.exports = Arrow.Model.extend("appc.arrowdb/key_value", {
 				}
 			]
 		},
-		"get": {
-			"summary": "Get a Value",
-			"description": "Gets the value of a key-value pair.\n\nIf the value is string, the KeyValue object is returned in JSON format. If the value is\nbinary, the value is returned directly **without** a JSON wrapper and the content type\nis set to \"application/octct-stream\".\n",
-			"authRequired": false,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "name",
-					"description": "Name (or key) for the key-value pair to retrieve.",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "access_private",
-					"description": "Determines whether to retrieve this key-value from the publically readable store\nor from the user's private store.\n\nDefault is false (publically readable).\n",
-					"type": "Boolean"
-				},
-				{
-					"name": "user_id",
-					"description": "Retrieve a private key-value pair from the identified user's store.\n\nLogin user must be an application admin to retrieve a key-value from another\nuser's store.\n",
-					"type": "String"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
-		"delete": {
-			"summary": "Delete a Key-Value",
-			"description": "Deletes a key-value pair\n",
+		"set": {
+			"summary": "Set a string or binary value",
+			"description": "Sets a string or binary value referenced by the key name. The size of the\nvalue can be up to 2M, and the key name length can be up to 256 characters.\nThe default value type is String.\n",
 			"authRequired": true,
 			"instance": true,
 			"adminRequired": false,
@@ -131,18 +98,32 @@ module.exports = Arrow.Model.extend("appc.arrowdb/key_value", {
 			"parameters": [
 				{
 					"name": "name",
-					"description": "Name (or key) of the key-value pair to delete.",
+					"description": "The name, or key, for this key-value pair.",
 					"type": "String",
 					"required": true
 				},
 				{
+					"name": "type",
+					"description": "Value type: \"string\" or \"binary\".\n\nDefaults to \"string\".\n",
+					"type": "String"
+				},
+				{
+					"name": "value",
+					"description": "Value to assoicate with the key.\n\nBinary data can be passed as a binary form part. The REST example shows how to\nsend binary data using curl.\n",
+					"type": [
+						"String",
+						"BinaryData"
+					],
+					"required": true
+				},
+				{
 					"name": "access_private",
-					"description": "Determines whether to delete this key-value in the publically readable store\nor in the user's private store.\n\nDefault is false (publically readable store).\n",
+					"description": "Determines whether this key-value is publically readable, or stored in a\nprivate store.\n\nDefault is false (publically readable). If set to true, it sets the key/value stored\nin the current user's private key-value store. Otherwise, it sets the public\nkey-value pair which is readable to everyone.\n",
 					"type": "Boolean"
 				},
 				{
 					"name": "user_id",
-					"description": "Delete the key-value pair on behalf of the identified user.\n\nLogin user must be an admin to delete a key-value on behalf of another user.\n",
+					"description": "User to create the key-value pair on behalf of.\n\nThe current user must be an application admin to set a key-value pair on\nbehalf of another user.\n",
 					"type": "String"
 				},
 				{
@@ -250,9 +231,9 @@ module.exports = Arrow.Model.extend("appc.arrowdb/key_value", {
 				}
 			]
 		},
-		"set": {
-			"summary": "Set a string or binary value",
-			"description": "Sets a string or binary value referenced by the key name. The size of the\nvalue can be up to 2M, and the key name length can be up to 256 characters.\nThe default value type is String.\n",
+		"delete": {
+			"summary": "Delete a Key-Value",
+			"description": "Deletes a key-value pair\n",
 			"authRequired": true,
 			"instance": true,
 			"adminRequired": false,
@@ -262,32 +243,51 @@ module.exports = Arrow.Model.extend("appc.arrowdb/key_value", {
 			"parameters": [
 				{
 					"name": "name",
-					"description": "The name, or key, for this key-value pair.",
+					"description": "Name (or key) of the key-value pair to delete.",
 					"type": "String",
 					"required": true
 				},
 				{
-					"name": "type",
-					"description": "Value type: \"string\" or \"binary\".\n\nDefaults to \"string\".\n",
-					"type": "String"
-				},
-				{
-					"name": "value",
-					"description": "Value to assoicate with the key.\n\nBinary data can be passed as a binary form part. The REST example shows how to\nsend binary data using curl.\n",
-					"type": [
-						"String",
-						"BinaryData"
-					],
-					"required": true
-				},
-				{
 					"name": "access_private",
-					"description": "Determines whether this key-value is publically readable, or stored in a\nprivate store.\n\nDefault is false (publically readable). If set to true, it sets the key/value stored\nin the current user's private key-value store. Otherwise, it sets the public\nkey-value pair which is readable to everyone.\n",
+					"description": "Determines whether to delete this key-value in the publically readable store\nor in the user's private store.\n\nDefault is false (publically readable store).\n",
 					"type": "Boolean"
 				},
 				{
 					"name": "user_id",
-					"description": "User to create the key-value pair on behalf of.\n\nThe current user must be an application admin to set a key-value pair on\nbehalf of another user.\n",
+					"description": "Delete the key-value pair on behalf of the identified user.\n\nLogin user must be an admin to delete a key-value on behalf of another user.\n",
+					"type": "String"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
+		"get": {
+			"summary": "Get a Value",
+			"description": "Gets the value of a key-value pair.\n\nIf the value is string, the KeyValue object is returned in JSON format. If the value is\nbinary, the value is returned directly **without** a JSON wrapper and the content type\nis set to \"application/octct-stream\".\n",
+			"authRequired": false,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "name",
+					"description": "Name (or key) for the key-value pair to retrieve.",
+					"type": "String",
+					"required": true
+				},
+				{
+					"name": "access_private",
+					"description": "Determines whether to retrieve this key-value from the publically readable store\nor from the user's private store.\n\nDefault is false (publically readable).\n",
+					"type": "Boolean"
+				},
+				{
+					"name": "user_id",
+					"description": "Retrieve a private key-value pair from the identified user's store.\n\nLogin user must be an application admin to retrieve a key-value from another\nuser's store.\n",
 					"type": "String"
 				},
 				{
@@ -317,5 +317,5 @@ module.exports = Arrow.Model.extend("appc.arrowdb/key_value", {
 		return defaultValue;
 	},
 
-	actions: ["delete","read"]
+	actions: ["read","delete"]
 });
