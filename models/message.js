@@ -7,9 +7,20 @@ var Arrow = require("arrow");
  */
 module.exports = Arrow.Model.extend("appc.arrowdb/message", {
 	/**
-	 * Remove generated property or set it to false if you want to prevent syncModels.js from changing this file.
+	 * Remove _generated property or set it to false if you want to prevent syncModels.js from changing this file.
+	 */
+	_generated: true,
+
+	/**
+	 * indicate that the model was generated
 	 */
 	generated: true,
+
+	/**
+	 * if this model is visible
+	 */
+	visible: true,
+
 	/*
 	 Fields for this model.
 	 */
@@ -22,7 +33,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/message", {
 		"status": {
 			// "originalType": "String",
 			"type": String,
-			"description": "Status of the message: in-box messages have status of `read`, `unread`, or\n`replied`.\n"
+			"description": "Status of the message: in-box messages have status of `read`, `unread`, or `replied`. "
 		},
 		"subject": {
 			// "originalType": "String",
@@ -69,9 +80,9 @@ module.exports = Arrow.Model.extend("appc.arrowdb/message", {
 	 Methods for this model.
 	 */
 	methodMeta: {
-		"deleteThread": {
+		"reply": {
 			"summary": "",
-			"description": "Delete all messages in a thread with the given `thread_id`. The thread must be\nin the current user's inbox or sent mail. There is currently no trash folder\nand deletion is permanent.\n",
+			"description": "Replies to all recipients of the given message `id`. The status of the message will be changed to `replied`. ",
 			"authRequired": true,
 			"instance": true,
 			"adminRequired": false,
@@ -80,8 +91,14 @@ module.exports = Arrow.Model.extend("appc.arrowdb/message", {
 			},
 			"parameters": [
 				{
-					"name": "thread_id",
-					"description": "Thread ID of the message thread to delete.",
+					"name": "message_id",
+					"description": "ID of the message to reply to.",
+					"type": "String",
+					"required": true
+				},
+				{
+					"name": "body",
+					"description": "Reply message body text.",
 					"type": "String",
 					"required": true
 				}
@@ -89,7 +106,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/message", {
 		},
 		"showInbox": {
 			"summary": "",
-			"description": "Shows messages in the current user's inbox. Messages in the inbox have the\nstatus of `unread`, `read`, or `replied`.\n",
+			"description": "Shows messages in the current user's inbox. Messages in the inbox have the status of `unread`, `read`, or `replied`. ",
 			"authRequired": true,
 			"instance": true,
 			"adminRequired": false,
@@ -109,9 +126,71 @@ module.exports = Arrow.Model.extend("appc.arrowdb/message", {
 				}
 			]
 		},
+		"create": {
+			"summary": "",
+			"description": "Sends a message with an optional subject to one or more specified users. The `thread_id` of the first outgoing message is its own id. Replies to the first or subsequent messages in the thread will all use the id of the first message as their `thread_id`. The output of this API method is the copy of the message saved to the sender's sent mail. ",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "to_ids",
+					"description": "Comma-separated list of one or more IDs of Users to send the message to.",
+					"type": "String",
+					"required": true
+				},
+				{
+					"name": "body",
+					"description": "The body of the message.",
+					"type": "String",
+					"required": true
+				},
+				{
+					"name": "subject",
+					"description": "Message subject.",
+					"type": "String"
+				},
+				{
+					"name": "custom_fields",
+					"description": "User-defined data. See [Custom Objects and Custom Fields](/#!/guide/customfields).",
+					"type": "String"
+				},
+				{
+					"name": "su_id",
+					"type": "String",
+					"description": "ID of the Users to send message on behalf of.\n\nThe current login user must be the application admin, in order to send a\nmessage on behalf of another user.\n"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
+		"deleteThread": {
+			"summary": "",
+			"description": "Delete all messages in a thread with the given `thread_id`. The thread must be in the current user's inbox or sent mail. There is currently no trash folder and deletion is permanent. ",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "thread_id",
+					"description": "Thread ID of the message thread to delete.",
+					"type": "String",
+					"required": true
+				}
+			]
+		},
 		"delete": {
 			"summary": "",
-			"description": "Delete the message with the given `id`. The message must be in the current\nuser's inbox or sent mail. There is currently no trash folder and deletion is\npermanent.\n\nApplication Admin can delete any Message object.\n",
+			"description": "Delete the message with the given `id`. The message must be in the current user's inbox or sent mail. There is currently no trash folder and deletion is permanent.  Application Admin can delete any Message object. ",
 			"authRequired": true,
 			"instance": true,
 			"adminRequired": false,
@@ -126,15 +205,15 @@ module.exports = Arrow.Model.extend("appc.arrowdb/message", {
 					"required": true
 				},
 				{
-					"name": "user_id",
+					"name": "su_id",
 					"description": "User to delete the Message object on behalf of. The user needs to be either the sender\nor recipient of the message.\n\nThe current user must be an application admin to delete a Message object on\nbehalf of another user.\n",
 					"type": "String"
 				}
 			]
 		},
-		"showSent": {
+		"showThreads": {
 			"summary": "",
-			"description": "Shows messages in the current user's sent messages.",
+			"description": "Shows the first message in each of the most recent threads in the user's inbox.",
 			"authRequired": true,
 			"instance": true,
 			"adminRequired": false,
@@ -172,9 +251,31 @@ module.exports = Arrow.Model.extend("appc.arrowdb/message", {
 				}
 			]
 		},
+		"showSent": {
+			"summary": "",
+			"description": "Shows messages in the current user's sent messages.",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "page",
+					"description": "Request page number, default is 1.",
+					"type": "Number"
+				},
+				{
+					"name": "per_page",
+					"description": "Number of results per page, default is 10.",
+					"type": "Number"
+				}
+			]
+		},
 		"query": {
 			"summary": "Performs a custom query of Messages.",
-			"description": "Performs a custom query of Messages. Currently you can not query or sort data stored inside \nan array or hash in custom fields.\n\nIn ACS 1.1.5 and later, you can paginate query results using `skip` and `limit` parameters, or by including\na `where` clause to limit the results to objects whose IDs fall within a specified range.\nFor details, see [Query Pagination](#!/guide/search_query-section-query-pagination).        \n\nFor details about using the query parameters,\nsee the [Search and Query guide](#!/guide/search_query).\n",
+			"description": "Performs a custom query of Messages. Currently you can not query or sort data stored inside  an array or hash in custom fields.  In ACS 1.1.5 and later, you can paginate query results using `skip` and `limit` parameters, or by including a `where` clause to limit the results to objects whose IDs fall within a specified range. For details, see [Query Pagination](#!/guide/search_query-section-query-pagination).          For details about using the query parameters, see the [Search and Query guide](#!/guide/search_query). ",
 			"authRequired": false,
 			"instance": true,
 			"adminRequired": false,
@@ -233,7 +334,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/message", {
 		},
 		"showThread": {
 			"summary": "",
-			"description": "Show messages with the given `thread_id` from the user's inbox. If the status\nof any of the returned messages is `unread`, it will be changed to `read`.\n",
+			"description": "Show messages with the given `thread_id` from the user's inbox. If the status of any of the returned messages is `unread`, it will be changed to `read`. ",
 			"authRequired": true,
 			"instance": true,
 			"adminRequired": false,
@@ -258,96 +359,6 @@ module.exports = Arrow.Model.extend("appc.arrowdb/message", {
 				}
 			]
 		},
-		"showThreads": {
-			"summary": "",
-			"description": "Shows the first message in each of the most recent threads in the user's inbox.",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "page",
-					"description": "Request page number, default is 1.",
-					"type": "Number"
-				},
-				{
-					"name": "per_page",
-					"description": "Number of results per page, default is 10.",
-					"type": "Number"
-				}
-			]
-		},
-		"create": {
-			"summary": "",
-			"description": "Sends a message with an optional subject to one or more specified users. The `thread_id` of\nthe first outgoing message is its own id. Replies to the first or subsequent messages in\nthe thread will all use the id of the first message as their `thread_id`. The output of this\nAPI method is the copy of the message saved to the sender's sent mail.\n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "to_ids",
-					"description": "Comma-separated list of one or more IDs of Users to send the message to.",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "body",
-					"description": "The body of the message.",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "subject",
-					"description": "Message subject.",
-					"type": "String"
-				},
-				{
-					"name": "custom_fields",
-					"description": "User-defined data. See [Custom Objects and Custom Fields](/#!/guide/customfields).",
-					"type": "String"
-				},
-				{
-					"name": "user_id",
-					"type": "String",
-					"description": "ID of the Users to send message on behalf of.\n\nThe current login user must be the application admin, in order to send a\nmessage on behalf of another user.\n"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
-		"reply": {
-			"summary": "",
-			"description": "Replies to all recipients of the given message `id`. The status of the message\nwill be changed to `replied`.\n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "message_id",
-					"description": "ID of the message to reply to.",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "body",
-					"description": "Reply message body text.",
-					"type": "String",
-					"required": true
-				}
-			]
-		},
 		"remove": {
 			"canonical": "delete"
 		}
@@ -368,5 +379,5 @@ module.exports = Arrow.Model.extend("appc.arrowdb/message", {
 		return defaultValue;
 	},
 
-	actions: ["delete","read","create"]
+	actions: ["create","delete","read"]
 });

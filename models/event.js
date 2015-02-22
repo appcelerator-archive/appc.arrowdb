@@ -7,9 +7,20 @@ var Arrow = require("arrow");
  */
 module.exports = Arrow.Model.extend("appc.arrowdb/event", {
 	/**
-	 * Remove generated property or set it to false if you want to prevent syncModels.js from changing this file.
+	 * Remove _generated property or set it to false if you want to prevent syncModels.js from changing this file.
+	 */
+	_generated: true,
+
+	/**
+	 * indicate that the model was generated
 	 */
 	generated: true,
+
+	/**
+	 * if this model is visible
+	 */
+	visible: true,
+
 	/*
 	 Fields for this model.
 	 */
@@ -47,7 +58,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/event", {
 		"recurring": {
 			// "originalType": "String",
 			"type": String,
-			"description": "Recurrence schedule. Can take the following values: \"daily\", \"weekly\", \"monthly\", or \"yearly\".\n"
+			"description": "Recurrence schedule. Can take the following values: \"daily\", \"weekly\", \"monthly\", or \"yearly\". "
 		},
 		"recurring_count": {
 			// "originalType": "Number",
@@ -82,7 +93,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/event", {
 		"tags": {
 			// "originalType": "Array",
 			"type": Array,
-			"description": "Array of tags associated with this event.\n"
+			"description": "Array of tags associated with this event. "
 		},
 		"custom_fields": {
 			// "originalType": "Hash",
@@ -92,7 +103,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/event", {
 		"acls": {
 			// "originalType": "Array",
 			"type": Array,
-			"description": "Array of ACLs associated with this object.\n"
+			"description": "Array of ACLs associated with this object. "
 		},
 		"custom_fields": {
 			// "originalType": "",
@@ -109,9 +120,299 @@ module.exports = Arrow.Model.extend("appc.arrowdb/event", {
 	 Methods for this model.
 	 */
 	methodMeta: {
+		"queryOccurrences": {
+			"summary": "Custom Query Event Occurrences",
+			"description": "Perform custom query of event occurrences with sorting and paginating.  Currently, you can not query or sort data stored inside array or hash in custom fields.  In addition to custom fields, you can query the following fields:                Name     Type         Summary             name     String     Event's name           user_id     String     Event owner's user id           place_id     String     If an event belongs to a place, the associated place_id           start_time     Time     Start time of an event occurrence           end_time     Time     End time of an event occurrence           lnglat     Geo location array - [longitude, latitude]     If an event belongs to a place, you can use lnglat to query events by place location      For details about using the query parameters, see the [Search and Query guide](#!/guide/search_query). ",
+			"authRequired": false,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "page",
+					"description": "Request page number, default is 1.\n\nThis parameter is only available to ACS applications created before ACS 1.1.5. \nApplications created with ACS 1.1.5 and later must use ranged-based queries queries\nto paginate their queries.\n",
+					"type": "Number"
+				},
+				{
+					"name": "per_page",
+					"description": "Number of results per page, default is 10.\n\nThis parameter is only available to ACS applications created before ACS 1.1.5. \nApplications created with ACS 1.1.5 and later must use ranged-based queries queries\nto paginate their queries.\n",
+					"type": "Number"
+				},
+				{
+					"name": "limit",
+					"description": "The number of records to fetch. The value must be greater than 0, and no greater than \n1000, or an HTTP 400 (Bad Request) error will be returned.\n",
+					"type": "Number"
+				},
+				{
+					"name": "skip",
+					"description": "Number of records to skip. Must be used together with `limit`.\nThe specified value must not be less than 0 or an HTTP 400 error will be returned.            \n",
+					"type": "Number"
+				},
+				{
+					"name": "where",
+					"description": "Constraint values for fields. `where` should be encoded JSON.\n\nIf `where` is not specified, `query` returns all objects.\n",
+					"type": "Hash"
+				},
+				{
+					"name": "order",
+					"description": "Sort results by one or more fields.\n",
+					"type": "String"
+				},
+				{
+					"name": "sel",
+					"description": "Selects the object fields to display. Do not use this parameter with `unsel`.\n",
+					"type": "Hash"
+				},
+				{
+					"name": "unsel",
+					"description": "Selects the object fields NOT to display. Do not use this parameter with `sel`.\n",
+					"type": "Hash"
+				},
+				{
+					"name": "response_json_depth",
+					"description": "Nested object depth level counts in response json.\nIn order to reduce server API calls from an application, the response json may\ninclude not just the objects that are being queried/searched, but also with\nsome important data related to the returning objects such as object's owner or\nreferencing objects.\n\nDefault is 1, valid range is 1 to 8.\n",
+					"type": "Number"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
+		"search": {
+			"summary": "",
+			"description": "Full text search of events.  Optionally, `latitude` and `longitude` can be given to return the list of events starting from a particular location (location is retrieved from place if the event is associated with a place). To bound the results within a certain radius (in km) from the starting coordinates, add the `distance` parameter. `q` can be given to search by event name. ",
+			"authRequired": false,
+			"instance": true,
+			"adminRequired": false,
+			"parameters": [
+				{
+					"name": "page",
+					"description": "Request page number, default is 1.",
+					"type": "Number"
+				},
+				{
+					"name": "per_page",
+					"description": "Number of results per page, default is 10.",
+					"type": "Number"
+				},
+				{
+					"name": "place_id",
+					"description": "Restrict search results to events located in the identified Places.",
+					"type": "String"
+				},
+				{
+					"name": "user_id",
+					"description": "Restrict search results to events owned by the identified Users.",
+					"type": "String"
+				},
+				{
+					"name": "latitude",
+					"description": "Latitude of the search starting point.",
+					"type": "Number"
+				},
+				{
+					"name": "longitude",
+					"description": "Longitude of the search starting point.",
+					"type": "Number"
+				},
+				{
+					"name": "distance",
+					"description": "Maximum distance in km from the starting point identified by\n`longitude`, latitude`.\n",
+					"type": "Number"
+				},
+				{
+					"name": "start_time",
+					"description": "Only return events that start on or after `start_time`.",
+					"type": "Date"
+				},
+				{
+					"name": "q",
+					"description": "Space-separated list of keywords, used to perform full text search on event\nname and tags.\n",
+					"type": "String"
+				},
+				{
+					"name": "response_json_depth",
+					"description": "Nested object depth level counts in response json.\nIn order to reduce server API calls from an application, the response json may\ninclude not just the objects that are being queried/searched, but also with\nsome important data related to the returning objects such as object's owner or\nreferencing objects.\n\nDefault is 1, valid range is 1 to 8.\n",
+					"type": "Number"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
+		"batchDelete": {
+			"summary": "Deletes multiple Events objects.",
+			"description": "Deletes Events objects that match the query constraints provided in the `where` parameter. If no `where` parameter is provided, all Events objects are deleted.  Note that an HTTP 200 code (success) is returned if the call completed successfully but the query matched no objects.  For performance reasons, the number of objects that can be deleted in a single batch delete  operation is limited to 100,000.  The matched objects are deleted asynchronously in a separate process.  Any Place or Event associated with the matched objects are not deleted.          You must be an application admin to run this command.         ",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": true,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "where",
+					"description": "Encoded JSON object that specifies constraint values for Events objects to delete.\nIf not specified, all Events objects are deleted.\n",
+					"type": "Hash"
+				}
+			]
+		},
+		"show": {
+			"summary": "Show Event",
+			"description": "Show event(s) with the given IDs. ",
+			"authRequired": false,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "event_id",
+					"description": "ID of the event to delete.\n\nEither `event_id` or `event_ids` must be specified.\n",
+					"type": "String"
+				},
+				{
+					"name": "event_ids",
+					"description": "Comma-separated list of event IDs to show.",
+					"type": "String"
+				},
+				{
+					"name": "response_json_depth",
+					"description": "Nested object depth level counts in response JSON.\n\nIn order to reduce server API calls from an application, the response JSON may\ninclude not just the identified objects, but also some important data related\nto the returning objects such as object's owner or referenced objects.\n\nDefault is 1, valid range is 1 to 8.\n",
+					"type": "Number"
+				},
+				{
+					"name": "show_user_like",
+					"description": "If set to **true** the Event object in the response will include `\"current_user_liked: true\"`\nif the current user has liked the object. If the user has not liked the object, the \n`current_user_liked` field is not included in the response.\n",
+					"type": "Boolean"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
+		"showOccurrences": {
+			"summary": "Show Event Occurrences",
+			"description": "Show the event occurrences of an event with the given `event_id`. ",
+			"authRequired": false,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "event_id",
+					"description": "ID of the event to show occurrences of.",
+					"type": "String",
+					"required": true
+				},
+				{
+					"name": "page",
+					"description": "Request page number, default is 1.",
+					"type": "Number"
+				},
+				{
+					"name": "per_page",
+					"description": "Number of results per page, default is 10.",
+					"type": "Number"
+				},
+				{
+					"name": "response_json_depth",
+					"description": "Nested object depth level counts in response json.\nIn order to reduce server API calls from an application, the response json may\ninclude not just the objects that are being queried/searched, but also with\nsome important data related to the returning objects such as object's owner or\nreferencing objects.\n\nDefault is 1, valid range is 1 to 8.\n",
+					"type": "Number"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
+		"searchOccurrences": {
+			"summary": "Seach for Event Occurrences",
+			"description": "Full text search of event occurrences.  Optionally, `latitude` and `longitude` can be given to return the list of event occurrences starting from a particular location (location is retrieved from place if the event is associated with a place). To bound the results within a certain radius (in km) from the starting coordinates, add the `distance` parameter. `q` can be given to search by event name. ",
+			"authRequired": false,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "page",
+					"description": "Request page number, default is 1.",
+					"type": "Number"
+				},
+				{
+					"name": "per_page",
+					"description": "Number of results per page, default is 10.",
+					"type": "Number"
+				},
+				{
+					"name": "place_id",
+					"description": "Restrict search results to events located in the identified Places.",
+					"type": "String"
+				},
+				{
+					"name": "user_id",
+					"description": "Restrict search results to events owned by the identified Users.",
+					"type": "String"
+				},
+				{
+					"name": "latitude",
+					"description": "Latitude of the search starting point.",
+					"type": "Number"
+				},
+				{
+					"name": "longitude",
+					"description": "Longitude of the search starting point.",
+					"type": "Number"
+				},
+				{
+					"name": "distance",
+					"description": "Maximum distance in km from the starting point identified by\n`longitude`, latitude`.\n",
+					"type": "Number"
+				},
+				{
+					"name": "start_time",
+					"description": "Only return events that start on or after `start_time`.",
+					"type": "Date"
+				},
+				{
+					"name": "end_time",
+					"description": "Only return events that end on or before `end_time`.",
+					"type": "Date"
+				},
+				{
+					"name": "q",
+					"description": "Space-separated list of keywords, used to perform full text search on event\nname and tags.\n",
+					"type": "String"
+				},
+				{
+					"name": "response_json_depth",
+					"description": "Nested object depth level counts in response json.\nIn order to reduce server API calls from an application, the response json may\ninclude not just the objects that are being queried/searched, but also with\nsome important data related to the returning objects such as object's owner or\nreferencing objects.\n\nDefault is 1, valid range is 1 to 8.\n",
+					"type": "Number"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
 		"update": {
 			"summary": "",
-			"description": "Update the event with the given `id`. Only the original submitter can update\nthe event.\n\nFor the event that is set as a recurring event, once created, there will be\nseveral \"event occurrences\" created associating with the event object on\nserver side, one \"event occurrence\" represents a single occurrence of the\nrecurring event. An \"event occurrence\" contains start and end time of the\nevent's occurrence which are calulated according to the \"recurring\" settings\nof the event object.\n\nInstead of computing actual individual occurrences of a recurring event on the\nclient side, you can use event occurrences query API to get a list of\noccurrences associated with a repeating event.\n\nTo get all \"event occurrence\" of an recurring event object, you can use\nEvents#show_occurrences with the event's `id`.\n\nAll the event occurrences will be recomputed if there is any change to the\nstart_time, duration and/or recurring.\n\nAn application admin can update any Event object.\n",
+			"description": "Update the event with the given `id`. Only the original submitter can update the event.  For the event that is set as a recurring event, once created, there will be several \"event occurrences\" created associating with the event object on server side, one \"event occurrence\" represents a single occurrence of the recurring event. An \"event occurrence\" contains start and end time of the event's occurrence which are calulated according to the \"recurring\" settings of the event object.  Instead of computing actual individual occurrences of a recurring event on the client side, you can use event occurrences query API to get a list of occurrences associated with a repeating event.  To get all \"event occurrence\" of an recurring event object, you can use Events#show_occurrences with the event's `id`.  All the event occurrences will be recomputed if there is any change to the start_time, duration and/or recurring.  An application admin can update any Event object. ",
 			"authRequired": true,
 			"instance": true,
 			"adminRequired": false,
@@ -199,7 +500,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/event", {
 					"type": "String"
 				},
 				{
-					"name": "user_id",
+					"name": "su_id",
 					"description": "User to update the Event object on behalf of. The user must be the creator of the object.\n\nThe current user must be an application admin to update the Event object on\nbehalf of another user.\n",
 					"type": "String"
 				},
@@ -210,10 +511,10 @@ module.exports = Arrow.Model.extend("appc.arrowdb/event", {
 				}
 			]
 		},
-		"showOccurrences": {
-			"summary": "Show Event Occurrences",
-			"description": "Show the event occurrences of an event with the given `event_id`.\n",
-			"authRequired": false,
+		"delete": {
+			"summary": "Delete an Event",
+			"description": "Delete the event with the given `id`. Only the original submitter can delete the event.  The Place or Event associated with the object is not deleted.          Application Admin can delete any Event object. ",
+			"authRequired": true,
 			"instance": true,
 			"adminRequired": false,
 			"response": {
@@ -222,19 +523,73 @@ module.exports = Arrow.Model.extend("appc.arrowdb/event", {
 			"parameters": [
 				{
 					"name": "event_id",
-					"description": "ID of the event to show occurrences of.",
+					"description": "ID of the event to delete.",
 					"type": "String",
 					"required": true
 				},
 				{
+					"name": "su_id",
+					"description": "User to delete the Event object on behalf of. The user must be the creator of the object.\n\nThe current user must be an application admin to delete an Event object on\nbehalf of another user.\n",
+					"type": "String"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
+		"query": {
+			"summary": "Custom Query Events",
+			"description": "Perform custom query of events with sorting and paginating. Currently you can not query or sort data stored inside array or hash in custom fields.  In ACS 1.1.5 and later, you can paginate query results using `skip` and `limit` parameters, or by including a `where` clause to limit the results to objects whose IDs fall within a specified range. For details, see [Query Pagination](#!/guide/search_query-section-query-pagination).  In addition to the custom fields, you can query the following event fields:                Name     Type         Summary             name     String     Event's name           user_id     String     Event owner's user ID           place_id     String     If an event belongs to a place, the associated place_id           tags_array     Array     Array of tags assigned to the Event.           start_time     Time     Start time of an event           num_occurences     Integer     Number of time the event repeats           lnglat     Geo location array - [longitude, latitude]     If an event belongs to a place, you can use lnglat to query events by place location           created_at     Date     Timestamp when the event was created           updated_at     Date     Timestamp when the event was last updated      For details about using the query parameters, see the [Search and Query guide](#!/guide/search_query). ",
+			"authRequired": false,
+			"instance": true,
+			"adminRequired": false,
+			"parameters": [
+				{
 					"name": "page",
-					"description": "Request page number, default is 1.",
+					"description": "\nStarting in ACS 1.1.5, page and per_page are no longer supported in query operations. \nApplications should instead use skip and limit \nquery parameters.\n",
 					"type": "Number"
 				},
 				{
 					"name": "per_page",
-					"description": "Number of results per page, default is 10.",
+					"description": "\nStarting in ACS 1.1.5, page and per_page are no longer supported in query operations. \nApplications should instead use skip and limit \nquery parameters.\n\n\nThis parameter is only available to ACS applications created before ACS 1.1.5.\nApplications created with ACS 1.1.5 and later must use ranged-based queries queries\nto paginate their queries.\n",
 					"type": "Number"
+				},
+				{
+					"name": "limit",
+					"description": "The number of records to fetch. The value must be greater than 0, and no greater than \n1000, or an HTTP 400 (Bad Request) error will be returned. Default value of `limit` is 10.\n",
+					"type": "Number"
+				},
+				{
+					"name": "skip",
+					"description": "The number of records to skip. The value must be greater than or equal to 0, and no greater \nthan 4999, or an HTTP 400 error will be returned. To skip 5000 records or more \nyou need to perform a range-based query. See \nQuery Pagination for more information.\n",
+					"type": "Number"
+				},
+				{
+					"name": "where",
+					"description": "Constraint values for fields. `where` should be encoded JSON.\n\nIf `where` is not specified, `query` returns all objects.\n",
+					"type": "Hash"
+				},
+				{
+					"name": "order",
+					"description": "Sort results by one or more fields.\n",
+					"type": "String"
+				},
+				{
+					"name": "sel",
+					"description": "Selects the object fields to display. Do not use this parameter with `unsel`.\n",
+					"type": "Hash"
+				},
+				{
+					"name": "show_user_like",
+					"description": "If set to **true**, each Event in the response includes `\"current_user_liked: true\"`\n if the current user has liked the object. If the current user has not liked the object, the\n`current_user_liked` field is not included in the response.\n",
+					"type": "Boolean"
+				},
+				{
+					"name": "unsel",
+					"description": "Selects the object fields NOT to display. Do not use this parameter with `sel`.\n",
+					"type": "Hash"
 				},
 				{
 					"name": "response_json_depth",
@@ -250,7 +605,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/event", {
 		},
 		"create": {
 			"summary": "",
-			"description": "Create an event. Times given with time zones other than UTC (for example PST\nduring daylight savings is -0700) will be converted to UTC. An ical string\nwill be returned to represent the occurrences of the event.\n\nFor the event that is set as a recurring event, once created, there will be\nseveral \"event occurrences\" created associating with the event object on\nserver side, one \"event occurrence\" represents a single occurrence of the\nrecurring event. An \"event occurrence\" contains start and end time of the\nevent's occurrence which are calculated according to the \"recurring\" settings\nof the event object.\n\nInstead of computing actual individual occurrences of a recurring event on the\nclient side, you can use event occurrences query api to get a list of\noccurrences associated of a repeating event.\n\nTo get all occurrences for a recurring event object, you can call Events#show_occurrences\nevent occurrence](/docs/api/v1/events/show_occurrences) and pass in the\nevent's `id`.\n",
+			"description": "Create an event. Times given with time zones other than UTC (for example PST during daylight savings is -0700) will be converted to UTC. An ical string will be returned to represent the occurrences of the event.  For the event that is set as a recurring event, once created, there will be several \"event occurrences\" created associating with the event object on server side, one \"event occurrence\" represents a single occurrence of the recurring event. An \"event occurrence\" contains start and end time of the event's occurrence which are calculated according to the \"recurring\" settings of the event object.  Instead of computing actual individual occurrences of a recurring event on the client side, you can use event occurrences query api to get a list of occurrences associated of a repeating event.  To get all occurrences for a recurring event object, you can call Events#show_occurrences event occurrence](/docs/api/v1/events/show_occurrences) and pass in the event's `id`. ",
 			"authRequired": true,
 			"instance": true,
 			"adminRequired": false,
@@ -334,353 +689,9 @@ module.exports = Arrow.Model.extend("appc.arrowdb/event", {
 					"type": "String"
 				},
 				{
-					"name": "user_id",
+					"name": "su_id",
 					"description": "User ID to create the event on behalf of.\n\nThe current login user must be an application admin to create an event on\nbehalf of another user.\n",
 					"type": "String"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
-		"batchDelete": {
-			"summary": "Deletes multiple Events objects.",
-			"description": "Deletes Events objects that match the query constraints provided in the `where` parameter.\nIf no `where` parameter is provided, all Events objects are deleted. \nNote that an HTTP 200 code (success)\nis returned if the call completed successfully but the query matched no objects.\n\nFor performance reasons, the number of objects that can be deleted in a single batch delete \noperation is limited to 100,000.\n\nThe matched objects are deleted asynchronously in a separate process.\n\nAny Place or Event associated with the matched objects are not deleted.        \n\nYou must be an application admin to run this command.        \n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": true,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "where",
-					"description": "Encoded JSON object that specifies constraint values for Events objects to delete.\nIf not specified, all Events objects are deleted.\n",
-					"type": "Hash"
-				}
-			]
-		},
-		"query": {
-			"summary": "Custom Query Events",
-			"description": "Perform custom query of events with sorting and paginating. Currently you can\nnot query or sort data stored inside array or hash in custom fields.\n\nIn ACS 1.1.5 and later, you can paginate query results using `skip` and `limit` parameters, or by including\na `where` clause to limit the results to objects whose IDs fall within a specified range.\nFor details, see [Query Pagination](#!/guide/search_query-section-query-pagination).\n\nIn addition to the custom fields, you can query the following event fields:\n\n\n    \n        Name\n    Type\n        Summary\n    \n  \n    name\n    String\n    Event's name\n  \n  \n    user_id\n    String\n    Event owner's user ID\n  \n  \n    place_id\n    String\n    If an event belongs to a place, the associated place_id\n  \n  \n    tags_array\n    Array\n    Array of tags assigned to the Event.\n  \n  \n    start_time\n    Time\n    Start time of an event\n  \n  \n    num_occurences\n    Integer\n    Number of time the event repeats\n  \n  \n    lnglat\n    Geo location array - [longitude, latitude]\n    If an event belongs to a place, you can use lnglat to query events by place location\n  \n  \n    created_at\n    Date\n    Timestamp when the event was created\n  \n  \n    updated_at\n    Date\n    Timestamp when the event was last updated\n  \n\n\nFor details about using the query parameters,\nsee the [Search and Query guide](#!/guide/search_query).\n",
-			"authRequired": false,
-			"instance": true,
-			"adminRequired": false,
-			"parameters": [
-				{
-					"name": "page",
-					"description": "\nStarting in ACS 1.1.5, page and per_page are no longer supported in query operations. \nApplications should instead use skip and limit \nquery parameters.\n",
-					"type": "Number"
-				},
-				{
-					"name": "per_page",
-					"description": "\nStarting in ACS 1.1.5, page and per_page are no longer supported in query operations. \nApplications should instead use skip and limit \nquery parameters.\n\n\nThis parameter is only available to ACS applications created before ACS 1.1.5.\nApplications created with ACS 1.1.5 and later must use ranged-based queries queries\nto paginate their queries.\n",
-					"type": "Number"
-				},
-				{
-					"name": "limit",
-					"description": "The number of records to fetch. The value must be greater than 0, and no greater than \n1000, or an HTTP 400 (Bad Request) error will be returned. Default value of `limit` is 10.\n",
-					"type": "Number"
-				},
-				{
-					"name": "skip",
-					"description": "The number of records to skip. The value must be greater than or equal to 0, and no greater \nthan 4999, or an HTTP 400 error will be returned. To skip 5000 records or more \nyou need to perform a range-based query. See \nQuery Pagination for more information.\n",
-					"type": "Number"
-				},
-				{
-					"name": "where",
-					"description": "Constraint values for fields. `where` should be encoded JSON.\n\nIf `where` is not specified, `query` returns all objects.\n",
-					"type": "Hash"
-				},
-				{
-					"name": "order",
-					"description": "Sort results by one or more fields.\n",
-					"type": "String"
-				},
-				{
-					"name": "sel",
-					"description": "Selects the object fields to display. Do not use this parameter with `unsel`.\n",
-					"type": "Hash"
-				},
-				{
-					"name": "show_user_like",
-					"description": "If set to **true**, each Event in the response includes `\"current_user_liked: true\"`\n if the current user has liked the object. If the current user has not liked the object, the\n`current_user_liked` field is not included in the response.\n",
-					"type": "Boolean"
-				},
-				{
-					"name": "unsel",
-					"description": "Selects the object fields NOT to display. Do not use this parameter with `sel`.\n",
-					"type": "Hash"
-				},
-				{
-					"name": "response_json_depth",
-					"description": "Nested object depth level counts in response json.\nIn order to reduce server API calls from an application, the response json may\ninclude not just the objects that are being queried/searched, but also with\nsome important data related to the returning objects such as object's owner or\nreferencing objects.\n\nDefault is 1, valid range is 1 to 8.\n",
-					"type": "Number"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
-		"queryOccurrences": {
-			"summary": "Custom Query Event Occurrences",
-			"description": "Perform custom query of event occurrences with sorting and paginating.\n\nCurrently, you can not query or sort data stored inside array or hash in custom\nfields.\n\nIn addition to custom fields, you can query the following fields:\n\n\n    \n        Name\n    Type\n        Summary\n    \n  \n    name\n    String\n    Event's name\n  \n  \n    user_id\n    String\n    Event owner's user id\n  \n  \n    place_id\n    String\n    If an event belongs to a place, the associated place_id\n  \n  \n    start_time\n    Time\n    Start time of an event occurrence\n  \n  \n    end_time\n    Time\n    End time of an event occurrence\n  \n  \n    lnglat\n    Geo location array - [longitude, latitude]\n    If an event belongs to a place, you can use lnglat to query events by place location\n  \n\n\nFor details about using the query parameters,\nsee the [Search and Query guide](#!/guide/search_query).\n",
-			"authRequired": false,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "page",
-					"description": "Request page number, default is 1.\n\nThis parameter is only available to ACS applications created before ACS 1.1.5. \nApplications created with ACS 1.1.5 and later must use ranged-based queries queries\nto paginate their queries.\n",
-					"type": "Number"
-				},
-				{
-					"name": "per_page",
-					"description": "Number of results per page, default is 10.\n\nThis parameter is only available to ACS applications created before ACS 1.1.5. \nApplications created with ACS 1.1.5 and later must use ranged-based queries queries\nto paginate their queries.\n",
-					"type": "Number"
-				},
-				{
-					"name": "limit",
-					"description": "The number of records to fetch. The value must be greater than 0, and no greater than \n1000, or an HTTP 400 (Bad Request) error will be returned.\n",
-					"type": "Number"
-				},
-				{
-					"name": "skip",
-					"description": "Number of records to skip. Must be used together with `limit`.\nThe specified value must not be less than 0 or an HTTP 400 error will be returned.            \n",
-					"type": "Number"
-				},
-				{
-					"name": "where",
-					"description": "Constraint values for fields. `where` should be encoded JSON.\n\nIf `where` is not specified, `query` returns all objects.\n",
-					"type": "Hash"
-				},
-				{
-					"name": "order",
-					"description": "Sort results by one or more fields.\n",
-					"type": "String"
-				},
-				{
-					"name": "sel",
-					"description": "Selects the object fields to display. Do not use this parameter with `unsel`.\n",
-					"type": "Hash"
-				},
-				{
-					"name": "unsel",
-					"description": "Selects the object fields NOT to display. Do not use this parameter with `sel`.\n",
-					"type": "Hash"
-				},
-				{
-					"name": "response_json_depth",
-					"description": "Nested object depth level counts in response json.\nIn order to reduce server API calls from an application, the response json may\ninclude not just the objects that are being queried/searched, but also with\nsome important data related to the returning objects such as object's owner or\nreferencing objects.\n\nDefault is 1, valid range is 1 to 8.\n",
-					"type": "Number"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
-		"show": {
-			"summary": "Show Event",
-			"description": "Show event(s) with the given IDs.\n",
-			"authRequired": false,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "event_id",
-					"description": "ID of the event to delete.\n\nEither `event_id` or `event_ids` must be specified.\n",
-					"type": "String"
-				},
-				{
-					"name": "event_ids",
-					"description": "Comma-separated list of event IDs to show.",
-					"type": "String"
-				},
-				{
-					"name": "response_json_depth",
-					"description": "Nested object depth level counts in response JSON.\n\nIn order to reduce server API calls from an application, the response JSON may\ninclude not just the identified objects, but also some important data related\nto the returning objects such as object's owner or referenced objects.\n\nDefault is 1, valid range is 1 to 8.\n",
-					"type": "Number"
-				},
-				{
-					"name": "show_user_like",
-					"description": "If set to **true** the Event object in the response will include `\"current_user_liked: true\"`\nif the current user has liked the object. If the user has not liked the object, the \n`current_user_liked` field is not included in the response.\n",
-					"type": "Boolean"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
-		"delete": {
-			"summary": "Delete an Event",
-			"description": "Delete the event with the given `id`. Only the original submitter can delete\nthe event.\n\nThe Place or Event associated with the object is not deleted.        \n\nApplication Admin can delete any Event object.\n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "event_id",
-					"description": "ID of the event to delete.",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "user_id",
-					"description": "User to delete the Event object on behalf of. The user must be the creator of the object.\n\nThe current user must be an application admin to delete an Event object on\nbehalf of another user.\n",
-					"type": "String"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
-		"search": {
-			"summary": "",
-			"description": "Full text search of events.\n\nOptionally, `latitude` and `longitude` can be given to return the list of\nevents starting from a particular location (location is retrieved from place\nif the event is associated with a place). To bound the results within a\ncertain radius (in km) from the starting coordinates, add the `distance`\nparameter. `q` can be given to search by event name.\n",
-			"authRequired": false,
-			"instance": true,
-			"adminRequired": false,
-			"parameters": [
-				{
-					"name": "page",
-					"description": "Request page number, default is 1.",
-					"type": "Number"
-				},
-				{
-					"name": "per_page",
-					"description": "Number of results per page, default is 10.",
-					"type": "Number"
-				},
-				{
-					"name": "place_id",
-					"description": "Restrict search results to events located in the identified Places.",
-					"type": "String"
-				},
-				{
-					"name": "user_id",
-					"description": "Restrict search results to events owned by the identified Users.",
-					"type": "String"
-				},
-				{
-					"name": "latitude",
-					"description": "Latitude of the search starting point.",
-					"type": "Number"
-				},
-				{
-					"name": "longitude",
-					"description": "Longitude of the search starting point.",
-					"type": "Number"
-				},
-				{
-					"name": "distance",
-					"description": "Maximum distance in km from the starting point identified by\n`longitude`, latitude`.\n",
-					"type": "Number"
-				},
-				{
-					"name": "start_time",
-					"description": "Only return events that start on or after `start_time`.",
-					"type": "Date"
-				},
-				{
-					"name": "q",
-					"description": "Space-separated list of keywords, used to perform full text search on event\nname and tags.\n",
-					"type": "String"
-				},
-				{
-					"name": "response_json_depth",
-					"description": "Nested object depth level counts in response json.\nIn order to reduce server API calls from an application, the response json may\ninclude not just the objects that are being queried/searched, but also with\nsome important data related to the returning objects such as object's owner or\nreferencing objects.\n\nDefault is 1, valid range is 1 to 8.\n",
-					"type": "Number"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
-		"searchOccurrences": {
-			"summary": "Seach for Event Occurrences",
-			"description": "Full text search of event occurrences.\n\nOptionally, `latitude` and `longitude` can be given to return the list of\nevent occurrences starting from a particular location (location is retrieved\nfrom place if the event is associated with a place). To bound the results\nwithin a certain radius (in km) from the starting coordinates, add the\n`distance` parameter. `q` can be given to search by event name.\n",
-			"authRequired": false,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "page",
-					"description": "Request page number, default is 1.",
-					"type": "Number"
-				},
-				{
-					"name": "per_page",
-					"description": "Number of results per page, default is 10.",
-					"type": "Number"
-				},
-				{
-					"name": "place_id",
-					"description": "Restrict search results to events located in the identified Places.",
-					"type": "String"
-				},
-				{
-					"name": "user_id",
-					"description": "Restrict search results to events owned by the identified Users.",
-					"type": "String"
-				},
-				{
-					"name": "latitude",
-					"description": "Latitude of the search starting point.",
-					"type": "Number"
-				},
-				{
-					"name": "longitude",
-					"description": "Longitude of the search starting point.",
-					"type": "Number"
-				},
-				{
-					"name": "distance",
-					"description": "Maximum distance in km from the starting point identified by\n`longitude`, latitude`.\n",
-					"type": "Number"
-				},
-				{
-					"name": "start_time",
-					"description": "Only return events that start on or after `start_time`.",
-					"type": "Date"
-				},
-				{
-					"name": "end_time",
-					"description": "Only return events that end on or before `end_time`.",
-					"type": "Date"
-				},
-				{
-					"name": "q",
-					"description": "Space-separated list of keywords, used to perform full text search on event\nname and tags.\n",
-					"type": "String"
-				},
-				{
-					"name": "response_json_depth",
-					"description": "Nested object depth level counts in response json.\nIn order to reduce server API calls from an application, the response json may\ninclude not just the objects that are being queried/searched, but also with\nsome important data related to the returning objects such as object's owner or\nreferencing objects.\n\nDefault is 1, valid range is 1 to 8.\n",
-					"type": "Number"
 				},
 				{
 					"name": "pretty_json",
@@ -709,5 +720,5 @@ module.exports = Arrow.Model.extend("appc.arrowdb/event", {
 		return defaultValue;
 	},
 
-	actions: ["update","create","delete","read"]
+	actions: ["delete","update","read","create"]
 });

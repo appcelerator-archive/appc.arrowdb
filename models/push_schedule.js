@@ -7,9 +7,20 @@ var Arrow = require("arrow");
  */
 module.exports = Arrow.Model.extend("appc.arrowdb/push_schedule", {
 	/**
-	 * Remove generated property or set it to false if you want to prevent syncModels.js from changing this file.
+	 * Remove _generated property or set it to false if you want to prevent syncModels.js from changing this file.
+	 */
+	_generated: true,
+
+	/**
+	 * indicate that the model was generated
 	 */
 	generated: true,
+
+	/**
+	 * if this model is visible
+	 */
+	visible: true,
+
 	/*
 	 Fields for this model.
 	 */
@@ -27,12 +38,12 @@ module.exports = Arrow.Model.extend("appc.arrowdb/push_schedule", {
 		"push_notification": {
 			// "originalType": "Hash",
 			"type": Object,
-			"description": "Push notification to send for scheduled pushes.\n\n  * *channel* (String): Name of the channel to send the push notification to.\n    The name of the push channel cannot start with a hash symbol ('#').\n  * *payload* (Hash): Payload to send to the device. Same format as PushNotifications#notify.\n  * *to_ids* (Array/String): Array or comma-separated list of IDs to send push notifications to.\n  * *options* (Hash): Dictionary of additional options\n      * *expire_after_seconds* (Number): Expiration time in seconds of when to stop\n        sending the push notification based on the start date. For example, if the push\n        notification is scheduled to be sent in a week and the expiration time is for a\n        day. The push expires in eight days and will not be sent if the user's device\n        has been off before the send day and after the end of the expiration period.\n"
+			"description": "Push notification to send for scheduled pushes.    * *channel* (String): Name of the channel to send the push notification to.     The name of the push channel cannot start with a hash symbol ('#').   * *payload* (Hash): Payload to send to the device. Same format as PushNotifications#notify.   * *to_ids* (Array/String): Array or comma-separated list of IDs to send push notifications to.   * *options* (Hash): Dictionary of additional options       * *expire_after_seconds* (Number): Expiration time in seconds of when to stop         sending the push notification based on the start date. For example, if the push         notification is scheduled to be sent in a week and the expiration time is for a         day. The push expires in eight days and will not be sent if the user's device         has been off before the send day and after the end of the expiration period. "
 		},
 		"recurrence": {
 			// "originalType": "Hash",
 			"type": Object,
-			"description": "Schedules the recurrence of the push notification.\n\n  * *interval* (Number/String): Value in minutes to repeat the notification or `daily`, `weekly` or `monthly`.\n  * *end_time* (Date): Datetime to end the push notifications in ISO 8601 format. Must occur after `start_time`.\n"
+			"description": "Schedules the recurrence of the push notification.    * *interval* (Number/String): Value in minutes to repeat the notification or `daily`, `weekly` or `monthly`.   * *end_time* (Date): Datetime to end the push notifications in ISO 8601 format. Must occur after `start_time`. "
 		},
 		"custom_fields": {
 			// "originalType": "",
@@ -49,9 +60,31 @@ module.exports = Arrow.Model.extend("appc.arrowdb/push_schedule", {
 	 Methods for this model.
 	 */
 	methodMeta: {
+		"delete": {
+			"summary": "delete",
+			"description": "Deletes a scheduled push notification.  This feature is only available for Enterprise users.  The current user must be an application admin. ",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": true,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "ids",
+					"description": "Array of push schedule IDs to delete.",
+					"type": "Array"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
 		"update": {
 			"summary": "update",
-			"description": "Updates a scheduled push notification. All parameters specified in the PushSchedules \nPushSchedules#create method can be updated, with the following exceptions:\n\n  * The schedule's start time cannot be updated, and the `start_time` parameter is ignored, if provided.\n  * When specifying a new `end_time` parameter, the new date and time must be greater than \n    the current time, and the previously specified `end_time` value must not have expired.\n\nThis feature is only available for Enterprise users. Also, the current user must be an \napplication administrator to invoke the command.\n",
+			"description": "Updates a scheduled push notification. All parameters specified in the PushSchedules  PushSchedules#create method can be updated, with the following exceptions:    * The schedule's start time cannot be updated, and the `start_time` parameter is ignored, if provided.   * When specifying a new `end_time` parameter, the new date and time must be greater than      the current time, and the previously specified `end_time` value must not have expired.  This feature is only available for Enterprise users. Also, the current user must be an  application administrator to invoke the command. ",
 			"authRequired": true,
 			"instance": true,
 			"adminRequired": true,
@@ -83,9 +116,9 @@ module.exports = Arrow.Model.extend("appc.arrowdb/push_schedule", {
 				}
 			]
 		},
-		"delete": {
-			"summary": "delete",
-			"description": "Deletes a scheduled push notification.\n\nThis feature is only available for Enterprise users.\n\nThe current user must be an application admin.\n",
+		"create": {
+			"summary": "create",
+			"description": "Creates a scheduled push notification.  At minimum, you must specify the `start_time`, and `payload` parameters. A push schedule can optionally define a location query so that only devices in the specified geographic region will receive the push notification.  This feature is only available for Enterprise users, and the current user must be an application admin. ",
 			"authRequired": true,
 			"instance": true,
 			"adminRequired": true,
@@ -94,9 +127,15 @@ module.exports = Arrow.Model.extend("appc.arrowdb/push_schedule", {
 			},
 			"parameters": [
 				{
-					"name": "ids",
-					"description": "Array of push schedule IDs to delete.",
-					"type": "Array"
+					"name": "schedule",
+					"description": "Push notification to schedule.",
+					"type": "PushSchedulePayload",
+					"required": true
+				},
+				{
+					"name": "where",
+					"description": "A JSON-encoded object that defines a location query used to select the devices\nthat will receive the scheduled notification. Up to 1000 users can be returned by the query. To specify a location query, set the `loc` field to a\n[MongoDB Geospatial Query](http://docs.mongodb.org/manual/reference/operator/query-geospatial/).\nThe following query searches for all users within 2 km of Oakland, CA, USA:\n\n    where={\n      \"loc\": {\n        \"$nearSphere\" : { \n          \"$geometry\" : { \n            \"type\" : \"Point\" , \n            \"coordinates\" : [-122.2708,37.8044] } , \n            \"$maxDistance\" : 2000 \n          }\n        }\n      }\n\nFor details about using the `where` parameter, see the [Search and Query guide](#!/guide/search_query).\n",
+					"type": "Hash"
 				},
 				{
 					"name": "pretty_json",
@@ -107,7 +146,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/push_schedule", {
 		},
 		"query": {
 			"summary": "query",
-			"description": "Queries the list of scheduled push notifications.\n\nThis feature is only available for Enterprise users, and the current logged-in user must be an \napplication admin.\n\nIn ACS 1.1.5 and later, you can paginate query results using `skip` and `limit` parameters, or by including\na `where` clause to limit the results to objects whose IDs fall within a specified range.\nFor details, see [Query Pagination](#!/guide/search_query-section-query-pagination).\n",
+			"description": "Queries the list of scheduled push notifications.  This feature is only available for Enterprise users, and the current logged-in user must be an  application admin.  In ACS 1.1.5 and later, you can paginate query results using `skip` and `limit` parameters, or by including a `where` clause to limit the results to objects whose IDs fall within a specified range. For details, see [Query Pagination](#!/guide/search_query-section-query-pagination). ",
 			"authRequired": true,
 			"instance": true,
 			"adminRequired": true,
@@ -144,34 +183,6 @@ module.exports = Arrow.Model.extend("appc.arrowdb/push_schedule", {
 				}
 			]
 		},
-		"create": {
-			"summary": "create",
-			"description": "Creates a scheduled push notification.  At minimum, you must specify the `start_time`,\nand `payload` parameters. A push schedule can optionally define a location query so that\nonly devices in the specified geographic region will receive the push notification.\n\nThis feature is only available for Enterprise users, and the current user must be an application admin.\n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": true,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "schedule",
-					"description": "Push notification to schedule.",
-					"type": "PushSchedulePayload",
-					"required": true
-				},
-				{
-					"name": "where",
-					"description": "A JSON-encoded object that defines a location query used to select the devices\nthat will receive the scheduled notification. Up to 1000 users can be returned by the query. To specify a location query, set the `loc` field to a\n[MongoDB Geospatial Query](http://docs.mongodb.org/manual/reference/operator/query-geospatial/).\nThe following query searches for all users within 2 km of Oakland, CA, USA:\n\n    where={\n      \"loc\": {\n        \"$nearSphere\" : { \n          \"$geometry\" : { \n            \"type\" : \"Point\" , \n            \"coordinates\" : [-122.2708,37.8044] } , \n            \"$maxDistance\" : 2000 \n          }\n        }\n      }\n\nFor details about using the `where` parameter, see the [Search and Query guide](#!/guide/search_query).\n",
-					"type": "Hash"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
 		"remove": {
 			"canonical": "delete"
 		}
@@ -192,5 +203,5 @@ module.exports = Arrow.Model.extend("appc.arrowdb/push_schedule", {
 		return defaultValue;
 	},
 
-	actions: ["update","delete","read","create"]
+	actions: ["delete","update","create","read"]
 });

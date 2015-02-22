@@ -1,7 +1,10 @@
 <%
 	data.canonicals = [];
 	function printString(val) {
-		return JSON.stringify(val || '').trim();
+		if (val && typeof(val)==='string') {
+			val = val.replace(/[\t\r\n]/g,' ');
+		}
+		return JSON.stringify(val || '').replace(/[\t\r\n]/g,' ').trim();
 	}
 	function printArray(arr, indent) {
 		return JSON.stringify(arr || [], null, '\t')
@@ -23,9 +26,20 @@ var Arrow = require("arrow");
  */
 module.exports = Arrow.Model.extend("appc.arrowdb/<%= data.fileName %>", {
 	/**
-	 * Remove generated property or set it to false if you want to prevent syncModels.js from changing this file.
+	 * Remove _generated property or set it to false if you want to prevent syncModels.js from changing this file.
+	 */
+	_generated: true,
+
+	/**
+	 * indicate that the model was generated
 	 */
 	generated: true,
+
+	/**
+	 * if this model is visible
+	 */
+	visible: <%= !!(data.fields && data.fields.length) %>,
+
 	/*
 	 Fields for this model.
 	 */

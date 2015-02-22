@@ -7,9 +7,20 @@ var Arrow = require("arrow");
  */
 module.exports = Arrow.Model.extend("appc.arrowdb/client", {
 	/**
-	 * Remove generated property or set it to false if you want to prevent syncModels.js from changing this file.
+	 * Remove _generated property or set it to false if you want to prevent syncModels.js from changing this file.
+	 */
+	_generated: true,
+
+	/**
+	 * indicate that the model was generated
 	 */
 	generated: true,
+
+	/**
+	 * if this model is visible
+	 */
+	visible: false,
+
 	/*
 	 Fields for this model.
 	 */
@@ -21,7 +32,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/client", {
 	methodMeta: {
 		"geolocate": {
 			"summary": "Geolocate a Client",
-			"description": "Provides location data about the mobile device or computer your app is\nrunning on based on its IP address. This feature uses [MaxMind\nGeoIP](https://www.maxmind.com/app/ip-location) to return the most accurate\nIP-based geolocation data possible. Note that the results are not not based on\nGPS signals nor WiFi triangulation commonly used on mobile devices. See\n[MaxMind GeoIP city accuracy](https://www.maxmind.com/app/city_accuracy) for\nmore information. An example use of this data is to verify the country that\nthe app user in, so that access can be given to application data.\n\nAn error will be returned of the location cannot be determined from the IP\naddress. A successful lookup will return at minimum a [ISO 3166 country\ncode](https://www.maxmind.com/app/iso3166).\n",
+			"description": "Provides location data about the mobile device or computer your app is running on based on its IP address. This feature uses [MaxMind GeoIP](https://www.maxmind.com/app/ip-location) to return the most accurate IP-based geolocation data possible. Note that the results are not not based on GPS signals nor WiFi triangulation commonly used on mobile devices. See [MaxMind GeoIP city accuracy](https://www.maxmind.com/app/city_accuracy) for more information. An example use of this data is to verify the country that the app user in, so that access can be given to application data.  An error will be returned of the location cannot be determined from the IP address. A successful lookup will return at minimum a [ISO 3166 country code](https://www.maxmind.com/app/iso3166). ",
 			"authRequired": false,
 			"instance": true,
 			"adminRequired": false,

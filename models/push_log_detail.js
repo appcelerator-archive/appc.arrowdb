@@ -7,9 +7,20 @@ var Arrow = require("arrow");
  */
 module.exports = Arrow.Model.extend("appc.arrowdb/push_log_detail", {
 	/**
-	 * Remove generated property or set it to false if you want to prevent syncModels.js from changing this file.
+	 * Remove _generated property or set it to false if you want to prevent syncModels.js from changing this file.
+	 */
+	_generated: true,
+
+	/**
+	 * indicate that the model was generated
 	 */
 	generated: true,
+
+	/**
+	 * if this model is visible
+	 */
+	visible: true,
+
 	/*
 	 Fields for this model.
 	 */
@@ -17,7 +28,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/push_log_detail", {
 		"android_types": {
 			// "originalType": "Array",
 			"type": Array,
-			"description": "List of Android push notification object types, and the number of notifications\ndelivered using each type. Possible key names are the following:\n\n  * GCM: Google Cloud Messaging service for Android\n  * MQTT:  MQ Telemetry Transport\n"
+			"description": "List of Android push notification object types, and the number of notifications delivered using each type. Possible key names are the following:    * GCM: Google Cloud Messaging service for Android   * MQTT:  MQ Telemetry Transport "
 		},
 		"app_id": {
 			// "originalType": "String",
@@ -42,7 +53,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/push_log_detail", {
 		"error_message": {
 			// "originalType": "String",
 			"type": String,
-			"description": "The error, if any, associated with the push notification. For a list of possible errors,\nsee [Push Notification Error Message](#!/guide/troubleshooting-section-push-notification-error-messages).\n"
+			"description": "The error, if any, associated with the push notification. For a list of possible errors, see [Push Notification Error Message](#!/guide/troubleshooting-section-push-notification-error-messages). "
 		},
 		"locked_at": {
 			// "originalType": "Date",
@@ -62,12 +73,12 @@ module.exports = Arrow.Model.extend("appc.arrowdb/push_log_detail", {
 		"send_status": {
 			// "originalType": "Number",
 			"type": Number,
-			"description": "A number that indicates the notification's status, and can be one of the\nfollowing values:\n\n * 0 - Sending\n * 1 - Success\n * 2 - Fail\n * 3 - Over Due\n"
+			"description": "A number that indicates the notification's status, and can be one of the following values:   * 0 - Sending  * 1 - Success  * 2 - Fail  * 3 - Over Due "
 		},
 		"types": {
 			// "originalType": "Array",
 			"type": Array,
-			"description": "A single-element Array containing an object with possible field names \"android\"\nand \"ios\". The value of each field indicates the number of Android and iOS devices, respectively,\nto which the push notification was delivered.\n"
+			"description": "A single-element Array containing an object with possible field names \"android\" and \"ios\". The value of each field indicates the number of Android and iOS devices, respectively, to which the push notification was delivered. "
 		},
 		"updated_at": {
 			// "originalType": "Date",

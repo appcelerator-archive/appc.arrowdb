@@ -7,9 +7,20 @@ var Arrow = require("arrow");
  */
 module.exports = Arrow.Model.extend("appc.arrowdb/push_schedule_payload", {
 	/**
-	 * Remove generated property or set it to false if you want to prevent syncModels.js from changing this file.
+	 * Remove _generated property or set it to false if you want to prevent syncModels.js from changing this file.
+	 */
+	_generated: true,
+
+	/**
+	 * indicate that the model was generated
 	 */
 	generated: true,
+
+	/**
+	 * if this model is visible
+	 */
+	visible: true,
+
 	/*
 	 Fields for this model.
 	 */
@@ -27,12 +38,12 @@ module.exports = Arrow.Model.extend("appc.arrowdb/push_schedule_payload", {
 		"push_notification": {
 			// "originalType": "Hash",
 			"type": Object,
-			"description": "Push notification to send.\n\n  * *channel* (String): Name of the channel to send the push notification to.\n    The name of the push channel cannot start with a hash symbol ('#').\n  * *payload* (PushPayload): Payload to send to the device. (**required**).\n  * *to_ids* (Array/String): Array or comma-separated list of IDs to send push notifications to.\n  * *options* (Hash): Dictionary to specify additional options:\n\n      * *expire_after_seconds* (Number): Expiration time in seconds of when to stop\n        sending the push notification based on the start date. For example, if the push\n        notification is scheduled to be sent in a week and the expiration time is for a\n        day.  The push expires in eight days and will not be sent if the user's device\n        has been off before the send day and after the end of the expiration period.\n \n"
+			"description": "Push notification to send.    * *channel* (String): Name of the channel to send the push notification to.     The name of the push channel cannot start with a hash symbol ('#').   * *payload* (PushPayload): Payload to send to the device. (**required**).   * *to_ids* (Array/String): Array or comma-separated list of IDs to send push notifications to.   * *options* (Hash): Dictionary to specify additional options:        * *expire_after_seconds* (Number): Expiration time in seconds of when to stop         sending the push notification based on the start date. For example, if the push         notification is scheduled to be sent in a week and the expiration time is for a         day.  The push expires in eight days and will not be sent if the user's device         has been off before the send day and after the end of the expiration period.   "
 		},
 		"recurrence": {
 			// "originalType": "Hash",
 			"type": Object,
-			"description": "Schedules the recurrence of the push notification.\n\n  * *interval* (String): Set to either `daily`, `weekly` or `monthly`.\n  * *end_time* (Date): Datetime to end the push notifications in ISO 8601 format.\n    Must occur after *start_time*.\n"
+			"description": "Schedules the recurrence of the push notification.    * *interval* (String): Set to either `daily`, `weekly` or `monthly`.   * *end_time* (Date): Datetime to end the push notifications in ISO 8601 format.     Must occur after *start_time*. "
 		},
 		"custom_fields": {
 			// "originalType": "",

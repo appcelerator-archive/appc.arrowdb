@@ -7,9 +7,10 @@ var Arrow = require("arrow");
  */
 module.exports = Arrow.Model.extend("appc.arrowdb/user", {
 	/**
-	 * Remove generated property or set it to false if you want to prevent syncModels.js from changing this file.
+	 * Remove _generated property or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
-	generated: false,
+	generated: true,
+	_generated: false,
 	/*
 	 Fields for this model.
 	 */

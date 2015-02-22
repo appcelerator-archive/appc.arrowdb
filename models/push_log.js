@@ -7,9 +7,20 @@ var Arrow = require("arrow");
  */
 module.exports = Arrow.Model.extend("appc.arrowdb/push_log", {
 	/**
-	 * Remove generated property or set it to false if you want to prevent syncModels.js from changing this file.
+	 * Remove _generated property or set it to false if you want to prevent syncModels.js from changing this file.
+	 */
+	_generated: true,
+
+	/**
+	 * indicate that the model was generated
 	 */
 	generated: true,
+
+	/**
+	 * if this model is visible
+	 */
+	visible: true,
+
 	/*
 	 Fields for this model.
 	 */
@@ -42,12 +53,12 @@ module.exports = Arrow.Model.extend("appc.arrowdb/push_log", {
 		"push_schedule_id": {
 			// "originalType": "String",
 			"type": String,
-			"description": "ID of the PushSchedules used to create the push notification (only present if the push notification\nwas created by a PushSchedule).\n"
+			"description": "ID of the PushSchedules used to create the push notification (only present if the push notification was created by a PushSchedule). "
 		},
 		"scheduled_at": {
 			// "originalType": "Date",
 			"type": Date,
-			"description": "Date that push notification was scheduled (only present if the push notification\nwas created by a schedule.)\n"
+			"description": "Date that push notification was scheduled (only present if the push notification was created by a schedule.) "
 		},
 		"created_at": {
 			// "originalType": "Date",

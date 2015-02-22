@@ -7,9 +7,20 @@ var Arrow = require("arrow");
  */
 module.exports = Arrow.Model.extend("appc.arrowdb/acl", {
 	/**
-	 * Remove generated property or set it to false if you want to prevent syncModels.js from changing this file.
+	 * Remove _generated property or set it to false if you want to prevent syncModels.js from changing this file.
+	 */
+	_generated: true,
+
+	/**
+	 * indicate that the model was generated
 	 */
 	generated: true,
+
+	/**
+	 * if this model is visible
+	 */
+	visible: true,
+
 	/*
 	 Fields for this model.
 	 */
@@ -22,22 +33,22 @@ module.exports = Arrow.Model.extend("appc.arrowdb/acl", {
 		"readers": {
 			// "originalType": "Array",
 			"type": Array,
-			"description": "List of IDs identifying users who can read objects controlled by this ACL.\n"
+			"description": "List of IDs identifying users who can read objects controlled by this ACL. "
 		},
 		"writers": {
 			// "originalType": "Array",
 			"type": Array,
-			"description": "List of IDs identifying users who can update objects controlled by this ACL.\n"
+			"description": "List of IDs identifying users who can update objects controlled by this ACL. "
 		},
 		"public_read": {
 			// "originalType": "String",
 			"type": String,
-			"description": "Determines whether objects controlled by this ACS are publicly readable. \n\nDefault is false.\n"
+			"description": "Determines whether objects controlled by this ACS are publicly readable.   Default is false. "
 		},
 		"public_write": {
 			// "originalType": "String",
 			"type": String,
-			"description": "Determines whether objects controlled by this ACS are publicly writable. \n\nDefault is false.\n"
+			"description": "Determines whether objects controlled by this ACS are publicly writable.   Default is false. "
 		},
 		"user": {
 			// "originalType": "Users",
@@ -57,7 +68,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/acl", {
 		"pretty_json": {
 			// "originalType": "Boolean",
 			"type": Boolean,
-			"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n"
+			"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a single line (`false`). Default is `false`. "
 		},
 		"custom_fields": {
 			// "originalType": "",
@@ -74,9 +85,187 @@ module.exports = Arrow.Model.extend("appc.arrowdb/acl", {
 	 Methods for this model.
 	 */
 	methodMeta: {
+		"delete": {
+			"summary": "Delete an ACL",
+			"description": "Deletes an ACL object with the given `id` or `name`.  An application admin can delete any ACL object. ",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"description": "ID of the ACL oject to delete.\n\nEither `name` or `id` must be specified.\n",
+					"type": "String"
+				},
+				{
+					"name": "name",
+					"description": "Name of the ACL object to delete.\n\nEither `name` or `id` must be specified.\n",
+					"type": "String"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				},
+				{
+					"name": "su_id",
+					"description": "User to delete the ACL object on behalf of. The user must be the creator of the object.\n\nThe current user must be an application admin to remove an ACL on\nbehalf of another user.\n",
+					"type": "String"
+				}
+			]
+		},
+		"show": {
+			"summary": "Show an ACL",
+			"description": "Shows the ACL object with the given `id` or `name`. ",
+			"authRequired": false,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"description": "ID of the ACL oject.\n\nEither `name` or `id` must be specified.\n",
+					"type": "String"
+				},
+				{
+					"name": "name",
+					"description": "Name of the ACL object.\n\nEither `name` or `id` must be specified.\n",
+					"type": "String"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
+		"create": {
+			"summary": "Create an access control list",
+			"description": "Creates an ACL object, which can be used to control access to ACS objects. ",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "name",
+					"description": "Name of the ACL object.\n",
+					"type": "String",
+					"required": true
+				},
+				{
+					"name": "reader_ids",
+					"description": "Comma separated list of IDs identifying users who can read objects\ncontrolled by this ACL.\n",
+					"type": "String"
+				},
+				{
+					"name": "writer_ids",
+					"description": "Comma separated list of IDs identifying users who can update an object.\ncontrolled by this ACL.\n",
+					"type": "String"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				},
+				{
+					"name": "public_read",
+					"description": "Determines whether objects controlled by this ACS are publically readable.\n\nDefault is false.\n",
+					"type": "String"
+				},
+				{
+					"name": "public_write",
+					"description": "Determines whether objects controlled by this ACS are publically writable.\n\nDefault is false.\n",
+					"type": "String"
+				},
+				{
+					"name": "su_id",
+					"description": "Specifies the owner of the new URL.\n\nOnly allowed if the current login user is an application admin. Otherwise, the\nnew ACL is always owned by the current login user.\n",
+					"type": "String"
+				}
+			]
+		},
+		"check": {
+			"summary": "Checks a user's permission in an ACL.",
+			"description": "Checks the permissions a specified user is granted by a specified ACL. In the response, \"read_permission\": \"yes\" means the user has read permission; if this property is omitted or the value is not \"yes\", the user does not have read permission.  Similarly, \"write_permission\": \"yes\" means the user has write permission. If the property is omitted or the value is not \"yes\", the user does not have write permission. ",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "name",
+					"description": "Name of the ACL object.\n\nEither `name` or `id` must be specified.\n",
+					"type": "String"
+				},
+				{
+					"name": "id",
+					"description": "ID of the ACL oject.\n\nEither `name` or `id` must be specified.\n",
+					"type": "String"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				},
+				{
+					"name": "user_id",
+					"description": "User ID of the user to check.",
+					"type": "String"
+				}
+			]
+		},
+		"add": {
+			"summary": "Add user(s) to an ACL.",
+			"description": "Adds one or more user(s) to an existing ACL object, identified by its `id` or `name`. ",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": false,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "name",
+					"description": "Name of the ACL object.\n\nEither `name` or `id` must be specified.\n",
+					"type": "String"
+				},
+				{
+					"name": "id",
+					"description": "ID of the ACL oject.\n\nEither `name` or `id` must be specified.\n",
+					"type": "String"
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				},
+				{
+					"name": "reader_ids",
+					"description": "Comma separated list of IDs identifying users who can read objects\ncontrolled by this ACL.\n",
+					"type": "String",
+					"required": true
+				},
+				{
+					"name": "writer_ids",
+					"description": "Comma separated list of IDs identifying users who can update an object.\ncontrolled by this ACL.\n",
+					"type": "String",
+					"required": true
+				}
+			]
+		},
 		"remove": {
 			"summary": "Remove user(s) from an ACL",
-			"description": "Removes one or more user(s) from an ACL object with the given `id` or `name`.\n\nYou can remove users from the `readers` list, which grants read permission, the\n`writers` list, which grants update/delete permission, or both.\n",
+			"description": "Removes one or more user(s) from an ACL object with the given `id` or `name`.  You can remove users from the `readers` list, which grants read permission, the `writers` list, which grants update/delete permission, or both. ",
 			"authRequired": true,
 			"instance": true,
 			"adminRequired": false,
@@ -115,7 +304,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/acl", {
 		},
 		"update": {
 			"summary": "Update an ACL",
-			"description": "Updates an ACL object to change its access control list. When updating an ACL,\nyou can change the members of the `readers` list and the `writers` list, or change the value\nof the `public_read` and `public_write` flags.\n\nAn application admin can update any ACL object.\n",
+			"description": "Updates an ACL object to change its access control list. When updating an ACL, you can change the members of the `readers` list and the `writers` list, or change the value of the `public_read` and `public_write` flags.  An application admin can update any ACL object. ",
 			"authRequired": true,
 			"instance": true,
 			"adminRequired": false,
@@ -161,162 +350,16 @@ module.exports = Arrow.Model.extend("appc.arrowdb/acl", {
 					"type": "String"
 				},
 				{
-					"name": "user_id",
+					"name": "su_id",
 					"description": "User to update the ACL object on behalf of. The user must be the creator of the object.\n\nThe current user must be an application admin to update an ACL object on\nbehalf of another user.\n",
-					"type": "String"
-				}
-			]
-		},
-		"show": {
-			"summary": "Show an ACL",
-			"description": "Shows the ACL object with the given `id` or `name`.\n",
-			"authRequired": false,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "id",
-					"description": "ID of the ACL oject.\n\nEither `name` or `id` must be specified.\n",
-					"type": "String"
-				},
-				{
-					"name": "name",
-					"description": "Name of the ACL object.\n\nEither `name` or `id` must be specified.\n",
-					"type": "String"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
-		"create": {
-			"summary": "Create an access control list",
-			"description": "Creates an ACL object, which can be used to control access to ACS objects.\n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "name",
-					"description": "Name of the ACL object.\n",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "reader_ids",
-					"description": "Comma separated list of IDs identifying users who can read objects\ncontrolled by this ACL.\n",
-					"type": "String"
-				},
-				{
-					"name": "writer_ids",
-					"description": "Comma separated list of IDs identifying users who can update an object.\ncontrolled by this ACL.\n",
-					"type": "String"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				},
-				{
-					"name": "public_read",
-					"description": "Determines whether objects controlled by this ACS are publically readable.\n\nDefault is false.\n",
-					"type": "String"
-				},
-				{
-					"name": "public_write",
-					"description": "Determines whether objects controlled by this ACS are publically writable.\n\nDefault is false.\n",
-					"type": "String"
-				},
-				{
-					"name": "user_id",
-					"description": "Specifies the owner of the new URL.\n\nOnly allowed if the current login user is an application admin. Otherwise, the\nnew ACL is always owned by the current login user.\n",
-					"type": "String"
-				}
-			]
-		},
-		"add": {
-			"summary": "Add user(s) to an ACL.",
-			"description": "Adds one or more user(s) to an existing ACL object, identified by its `id` or `name`.\n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "name",
-					"description": "Name of the ACL object.\n\nEither `name` or `id` must be specified.\n",
-					"type": "String"
-				},
-				{
-					"name": "id",
-					"description": "ID of the ACL oject.\n\nEither `name` or `id` must be specified.\n",
-					"type": "String"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				},
-				{
-					"name": "reader_ids",
-					"description": "Comma separated list of IDs identifying users who can read objects\ncontrolled by this ACL.\n",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "writer_ids",
-					"description": "Comma separated list of IDs identifying users who can update an object.\ncontrolled by this ACL.\n",
-					"type": "String",
-					"required": true
-				}
-			]
-		},
-		"check": {
-			"summary": "Checks a user's permission in an ACL.",
-			"description": "Checks the permissions a specified user is granted by a specified ACL.\nIn the response, \"read_permission\": \"yes\" means the user has read permission; if\nthis property is omitted or the value is not \"yes\", the user does not have read\npermission.\n\nSimilarly, \"write_permission\": \"yes\" means the user has write permission. If the\nproperty is omitted or the value is not \"yes\", the user does not have write\npermission.\n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "name",
-					"description": "Name of the ACL object.\n\nEither `name` or `id` must be specified.\n",
-					"type": "String"
-				},
-				{
-					"name": "id",
-					"description": "ID of the ACL oject.\n\nEither `name` or `id` must be specified.\n",
-					"type": "String"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				},
-				{
-					"name": "user_id",
-					"description": "User ID of the user to check.",
 					"type": "String"
 				}
 			]
 		},
 		"query": {
 			"summary": "Performs a custom query of ACLs.",
-			"description": "Performs a custom query of ACLs. Currently you can not query or sort data stored inside \nan array or hash in custom fields.\n\nIn ACS 1.1.5 and later, you can paginate query results using `skip` and `limit` parameters, or by including\na `where` clause to limit the results to objects whose IDs fall within a specified range.\nFor details, see [Query Pagination](#!/guide/search_query-section-query-pagination).\n\nFor details about using the query parameters, see the [Search and Query guide](#!/guide/search_query).\n",
-			"authRequired": false,
+			"description": "Performs a custom query of ACLs. Regular application users can only query ACLs that they have created.  Application admins can query ACLs for an arbitrary user by specifying the `user_id` method parameter. (In applications created with ACS 1.1.7 and earlier, any user can query another user's  ACLs, regardless of whether they are an admin or not.)  * Applications created with ACS 1.1.5 and later can paginate query results using `skip`  and `limit` parameters. For details, see [Query Pagination](#!/guide/search_query-section-query-pagination). * Currently you can not query or sort data stored inside an array or hash in custom fields.  For general information on queries, see [Search and Query guide](#!/guide/search_query). ",
+			"authRequired": true,
 			"instance": true,
 			"adminRequired": false,
 			"parameters": [
@@ -351,11 +394,6 @@ module.exports = Arrow.Model.extend("appc.arrowdb/acl", {
 					"type": "Number"
 				},
 				{
-					"name": "where",
-					"description": "Constraint values for fields. `where` should be encoded JSON.\n\nYou can query any of the standard values for an ACL object, as well as any\ncustom fields that contain simple values, such as String, Number or Boolean\nvalues.\n\nIf `where` is not specified, `query` returns all objects.\n",
-					"type": "Hash"
-				},
-				{
 					"name": "order",
 					"description": "Sort results by one or more fields.\n",
 					"type": "String"
@@ -374,38 +412,12 @@ module.exports = Arrow.Model.extend("appc.arrowdb/acl", {
 					"name": "response_json_depth",
 					"description": "Nested object depth level counts in response json.\nIn order to reduce server API calls from an application, the response json may\ninclude not just the objects that are being queried/searched, but also with\nsome important data related to the returning objects such as object's owner or\nreferencing objects.\n\nDefault is 1, valid range is 1 to 8.\n",
 					"type": "Number"
-				}
-			]
-		},
-		"delete": {
-			"summary": "Delete an ACL",
-			"description": "Deletes an ACL object with the given `id` or `name`.\n\nAn application admin can delete any ACL object.\n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": false,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "id",
-					"description": "ID of the ACL oject to delete.\n\nEither `name` or `id` must be specified.\n",
-					"type": "String"
-				},
-				{
-					"name": "name",
-					"description": "Name of the ACL object to delete.\n\nEither `name` or `id` must be specified.\n",
-					"type": "String"
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
 				},
 				{
 					"name": "user_id",
-					"description": "User to delete the ACL object on behalf of. The user must be the creator of the object.\n\nThe current user must be an application admin to remove an ACL on\nbehalf of another user.\n",
-					"type": "String"
+					"description": "ID of the user whose ACLs should be returned. You must be an application admin to use this \nparameter.\n",
+					"type": "String",
+					"admin-required": true
 				}
 			]
 		},
@@ -429,5 +441,5 @@ module.exports = Arrow.Model.extend("appc.arrowdb/acl", {
 		return defaultValue;
 	},
 
-	actions: ["delete","update","create","read"]
+	actions: ["delete","create","update","read"]
 });

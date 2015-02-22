@@ -7,9 +7,20 @@ var Arrow = require("arrow");
  */
 module.exports = Arrow.Model.extend("appc.arrowdb/email", {
 	/**
-	 * Remove generated property or set it to false if you want to prevent syncModels.js from changing this file.
+	 * Remove _generated property or set it to false if you want to prevent syncModels.js from changing this file.
+	 */
+	_generated: true,
+
+	/**
+	 * indicate that the model was generated
 	 */
 	generated: true,
+
+	/**
+	 * if this model is visible
+	 */
+	visible: false,
+
 	/*
 	 Fields for this model.
 	 */
@@ -21,7 +32,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/email", {
 	methodMeta: {
 		"emailFromTemplate": {
 			"summary": "Send Emails",
-			"description": "Sends an email to a list of email addresses you specify. \n\nWhen sending an email, you specify the name of an email template created in Dashboard \n(see [Managing Email Templates](http://docs.appcelerator.com/platform/latest/#!/guide/Managing_Email_Templates)),\nand one or more email recipients. You can optionally specify the email content type (\nHTML, plain-text, or multipart), as well as values for any placeholder fields\ndefined by the template. The below examples demonstrate these concepts.\n\nAn email template's body can contain HTML-formatted or plain-text content \n, or both. When you send an email, you can specify whether the email should be sent \nas HTML, plain text, or multipart using the `content_type` parameter. \nA multipart email contains both the plain text and HTML versions; which \nversion is displayed is determined by the recipient's email client.\n\nIf the `content_type` parameter is **not** provided in the request, the format\nis automatically chosen based on the following rules:\n\n* If the email template contains both HTML and plain-text bodies, it will be sent in a multipart format. \n* If the email template contains only an HTML body, it will be sent in an HTML format. \n* If the email template contains only a plain-text body. it will be sent in plain-text format.      \n\nIf the `content_type` parameter is provided in the request, then the following\nmust be true:\n\n* If `content_type` is \"html\", then the email template must define an HTML body.\n* If `content_type` is \"plain\", then the email template must define a plain text body.\n* If `content_type` is \"multipart\", then the email template must define both HTML and plain text body.\n",
+			"description": "Sends an email to a list of email addresses you specify.   When sending an email, you specify the name of an email template created in Dashboard  (see [Managing Email Templates](http://docs.appcelerator.com/platform/latest/#!/guide/Managing_Email_Templates)), and one or more email recipients. You can optionally specify the email content type ( HTML, plain-text, or multipart), as well as values for any placeholder fields defined by the template. The below examples demonstrate these concepts.  An email template's body can contain HTML-formatted or plain-text content  , or both. When you send an email, you can specify whether the email should be sent  as HTML, plain text, or multipart using the `content_type` parameter.  A multipart email contains both the plain text and HTML versions; which  version is displayed is determined by the recipient's email client.  If the `content_type` parameter is **not** provided in the request, the format is automatically chosen based on the following rules:  * If the email template contains both HTML and plain-text bodies, it will be sent in a multipart format.  * If the email template contains only an HTML body, it will be sent in an HTML format.  * If the email template contains only a plain-text body. it will be sent in plain-text format.        If the `content_type` parameter is provided in the request, then the following must be true:  * If `content_type` is \"html\", then the email template must define an HTML body. * If `content_type` is \"plain\", then the email template must define a plain text body. * If `content_type` is \"multipart\", then the email template must define both HTML and plain text body. ",
 			"authRequired": false,
 			"instance": true,
 			"adminRequired": false,

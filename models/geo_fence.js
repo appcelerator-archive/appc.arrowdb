@@ -7,9 +7,20 @@ var Arrow = require("arrow");
  */
 module.exports = Arrow.Model.extend("appc.arrowdb/geo_fence", {
 	/**
-	 * Remove generated property or set it to false if you want to prevent syncModels.js from changing this file.
+	 * Remove _generated property or set it to false if you want to prevent syncModels.js from changing this file.
+	 */
+	_generated: true,
+
+	/**
+	 * indicate that the model was generated
 	 */
 	generated: true,
+
+	/**
+	 * if this model is visible
+	 */
+	visible: true,
+
 	/*
 	 Fields for this model.
 	 */
@@ -27,12 +38,12 @@ module.exports = Arrow.Model.extend("appc.arrowdb/geo_fence", {
 		"loc": {
 			// "originalType": "Hash",
 			"type": Object,
-			"description": "JSON-encoded object describing the geographic perimeter of the geo-fence, specified as a circle with\na center point of either `place_id` or `coordinates` property and the `radius` property:\n\n  * `place_id` (String): Use an ACS Places object as the center of the circle. Specify the\n    ID of the Place.\n  * `coordinates` (Array): Center coordinate of the circle.  Specify a point as `[longitude,latitude]`.\n  * `radius` (Number/String): Radius of the bounding circle in radians. To calculate the distance in radians,\n    divide the distance you want by the approximate circumference of the Earth in the same\n    units. For example, 10 miles is 10 / 3959 or 2 kilometers is 2 / 6371.  Specify the\n    fraction as a string, for example, `\"10/3959\"` or `\"2/6371\"`.\n"
+			"description": "JSON-encoded object describing the geographic perimeter of the geo-fence, specified as a circle with a center point of either `place_id` or `coordinates` property and the `radius` property:    * `place_id` (String): Use an ACS Places object as the center of the circle. Specify the     ID of the Place.   * `coordinates` (Array): Center coordinate of the circle.  Specify a point as `[longitude,latitude]`.   * `radius` (Number/String): Radius of the bounding circle in radians. To calculate the distance in radians,     divide the distance you want by the approximate circumference of the Earth in the same     units. For example, 10 miles is 10 / 3959 or 2 kilometers is 2 / 6371.  Specify the     fraction as a string, for example, `\"10/3959\"` or `\"2/6371\"`. "
 		},
 		"payload": {
 			// "originalType": "Hash",
 			"type": Object,
-			"description": "JSON-encoded data to retrieve if the geo-fence area intersects the device's location.\n"
+			"description": "JSON-encoded data to retrieve if the geo-fence area intersects the device's location. "
 		},
 		"created_at": {
 			// "originalType": "Date",
@@ -59,9 +70,32 @@ module.exports = Arrow.Model.extend("appc.arrowdb/geo_fence", {
 	 Methods for this model.
 	 */
 	methodMeta: {
+		"delete": {
+			"summary": "Deletes a Geofence",
+			"description": "Deletes an existing geo-fence object.  Available only for Enterprise administrators.  ",
+			"authRequired": true,
+			"instance": true,
+			"adminRequired": true,
+			"response": {
+				"singleElement": true
+			},
+			"parameters": [
+				{
+					"name": "id",
+					"description": "ID of the geo-fence object to delete.",
+					"type": "String",
+					"required": true
+				},
+				{
+					"name": "pretty_json",
+					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
+					"type": "Boolean"
+				}
+			]
+		},
 		"update": {
 			"summary": "Updates a Geofence",
-			"description": "Updates an existing geo-fence object.\n\nAvailable only for Enterprise administrators. \n",
+			"description": "Updates an existing geo-fence object.  Available only for Enterprise administrators.  ",
 			"authRequired": true,
 			"instance": true,
 			"adminRequired": true,
@@ -87,32 +121,9 @@ module.exports = Arrow.Model.extend("appc.arrowdb/geo_fence", {
 				}
 			]
 		},
-		"delete": {
-			"summary": "Deletes a Geofence",
-			"description": "Deletes an existing geo-fence object.\n\nAvailable only for Enterprise administrators. \n",
-			"authRequired": true,
-			"instance": true,
-			"adminRequired": true,
-			"response": {
-				"singleElement": true
-			},
-			"parameters": [
-				{
-					"name": "id",
-					"description": "ID of the geo-fence object to delete.",
-					"type": "String",
-					"required": true
-				},
-				{
-					"name": "pretty_json",
-					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
-					"type": "Boolean"
-				}
-			]
-		},
 		"query": {
 			"summary": "Custom Query of Geofences",
-			"description": "Perform custom query of geofences with sorting and paginating.\n\nAvailable only for Enterprise users.\n\nIn ACS 1.1.5 and later, you can paginate query results using `skip` and `limit` parameters, or by including\na `where` clause to limit the results to objects whose IDs fall within a specified range.\nFor details, see [Query Pagination](#!/guide/search_query-section-query-pagination).        \n\nFor details about using the query parameters,\nsee the [Search and Query guide](#!/guide/search_query).\n",
+			"description": "Perform custom query of geofences with sorting and paginating.  Available only for Enterprise users.  In ACS 1.1.5 and later, you can paginate query results using `skip` and `limit` parameters, or by including a `where` clause to limit the results to objects whose IDs fall within a specified range. For details, see [Query Pagination](#!/guide/search_query-section-query-pagination).          For details about using the query parameters, see the [Search and Query guide](#!/guide/search_query). ",
 			"authRequired": false,
 			"instance": true,
 			"adminRequired": false,
@@ -156,7 +167,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/geo_fence", {
 		},
 		"create": {
 			"summary": "Creates a Geofence.",
-			"description": "Creates a geo-fence object with an optional start and end time.\n\nAvailable only for Enterprise administrators.\n",
+			"description": "Creates a geo-fence object with an optional start and end time.  Available only for Enterprise administrators. ",
 			"authRequired": true,
 			"instance": true,
 			"adminRequired": true,
@@ -197,5 +208,5 @@ module.exports = Arrow.Model.extend("appc.arrowdb/geo_fence", {
 		return defaultValue;
 	},
 
-	actions: ["update","delete","read","create"]
+	actions: ["delete","update","read","create"]
 });
