@@ -4,9 +4,9 @@ var Arrow = require('arrow');
 
 module.exports = Arrow.Model.extend('appc.arrowdb/customObject', {
 	/**
-	 * Remove _generated property or set it to false if you want to prevent syncModels.js from changing this file.
+	 * Remove _syncModelsCanUpdateThis property or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
-	_generated: false,
+	_syncModelsCanUpdateThis: false,
 
 	/**
 	 * indicate that the model was generated

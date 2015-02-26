@@ -229,8 +229,8 @@ function writeModels() {
 			// Sync up the model with the filesystem, based on the existing contents.
 			if (fs.existsSync(modelPath)) {
 				var currentContents = fs.readFileSync(modelPath, 'utf8');
-				if (currentContents.indexOf('_generated:false') < 0 &&
-					currentContents.indexOf('_generated: false') < 0) {
+				if (currentContents.indexOf('_syncModelsCanUpdateThis:true') >= 0 ||
+					currentContents.indexOf('_syncModelsCanUpdateThis: true') >= 0) {
 					if (newContents !== currentContents) {
 						fs.writeFileSync(modelPath, newContents);
 						console.log('Updated ' + key + '.');
@@ -240,7 +240,7 @@ function writeModels() {
 					}
 				}
 				else {
-					console.log('Skipping model generation for ' + key + ' because it does not specify generated: true.');
+					console.log('Skipping model generation for ' + key + ' because it does not specify _syncModelsCanUpdateThis: true.');
 				}
 			}
 			else {
