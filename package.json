@@ -14,17 +14,19 @@
   "repository": {},
   "scripts": {
     "test": "grunt",
-    "start": "node ./app.js"
+    "start": "node ./app.js",
+    "preinstall": "[ -e ./node_modules/ensure-latest/index.js ] && node ./node_modules/ensure-latest || echo"
   },
   "private": true,
   "dependencies": {
     "arrowdb": "^1.0.0",
     "async": "^0.9.0",
+    "ensure-latest": "^1.0.1",
     "lodash": "^2.4.1",
     "pkginfo": "^0.3.0"
   },
   "devDependencies": {
-    "arrow": "*",
+    "arrow": "0.3.38",
     "grunt": "^0.4.5",
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-jshint": "^0.10.0",
@@ -35,5 +37,8 @@
     "should": "^4.5.1",
     "wrench": "^1.5.8"
   },
+  "ensureLatest": [
+    "arrow"
+  ],
   "appc_access": "public"
 }
