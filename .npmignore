@@ -3,3 +3,8 @@
 node_modules
 logs
 conf/local.js
+*.tgz
+test
+scripts
+Gruntfile.js
+app.js
