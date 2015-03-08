@@ -1,7 +1,7 @@
 {
   "name": "appc.arrowdb",
   "description": "ArrowDB connector",
-  "version": "1.0.39",
+  "version": "1.0.40",
   "author": "Jeff Haynie",
   "license": "Appcelerator Proprietary",
   "framework": "none",
@@ -15,7 +15,7 @@
   "scripts": {
     "test": "grunt",
     "start": "node ./app.js",
-    "preinstall": "[ -e ./node_modules/ensure-latest/index.js ] && node ./node_modules/ensure-latest || echo"
+    "preinstall": "node ./bin/update"
   },
   "private": true,
   "dependencies": {
@@ -25,7 +25,7 @@
     "pkginfo": "^0.3.0"
   },
   "devDependencies": {
-    "arrow": "0.3.73",
+    "arrow": "0.3.76",
     "ensure-latest": "^1.0.1",
     "grunt": "^0.4.5",
     "grunt-contrib-clean": "^0.6.0",
@@ -41,5 +41,11 @@
     "arrow",
     "arrowdb"
   ],
-  "appc_access": "public"
+  "appc_access": "public",
+  "appc_owners": [
+    "jhaynie@appcelerator.com",
+    "dtoth@appcelerator.com",
+    "mgoff@appcelerator.com",
+    "tlukasavage@appcelerator.com"
+  ]
 }
