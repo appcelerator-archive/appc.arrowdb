@@ -1,0 +1,11 @@
+{
+  "type": "connector",
+  "group": "arrow",
+  "access": "public",
+  "owners": [
+    "jhaynie@appcelerator.com",
+    "dtoth@appcelerator.com",
+    "mgoff@appcelerator.com",
+    "tlukasavage@appcelerator.com"
+  ]
+}

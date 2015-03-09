@@ -7,7 +7,6 @@
   "framework": "none",
   "keywords": [
     "appcelerator",
-    "appc-package-connector",
     "arrow",
     "arrow-connector"
   ],
@@ -40,12 +39,5 @@
   "ensureLatest": [
     "arrow",
     "arrowdb"
-  ],
-  "appc_access": "public",
-  "appc_owners": [
-    "jhaynie@appcelerator.com",
-    "dtoth@appcelerator.com",
-    "mgoff@appcelerator.com",
-    "tlukasavage@appcelerator.com"
   ]
 }
