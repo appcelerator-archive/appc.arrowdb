@@ -19,7 +19,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/post", {
 	/**
 	 * if this model is visible
 	 */
-	visible: true,
+	visible: false,
 
 	/*
 	 Fields for this model.
