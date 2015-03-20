@@ -1,7 +1,7 @@
 {
   "name": "appc.arrowdb",
   "description": "ArrowDB connector",
-  "version": "1.0.48",
+  "version": "1.0.49",
   "author": "Jeff Haynie",
   "license": "Apache-2.0",
   "framework": "none",
@@ -18,13 +18,13 @@
   },
   "private": true,
   "dependencies": {
-    "arrowdb": "1.0.2",
+    "arrowdb": "1.0.3",
     "async": "^0.9.0",
     "lodash": "^2.4.1",
     "pkginfo": "^0.3.0"
   },
   "devDependencies": {
-    "arrow": "0.3.109",
+    "arrow": "0.3.113",
     "ensure-latest": "^1.0.1",
     "grunt": "^0.4.5",
     "grunt-contrib-clean": "^0.6.0",
