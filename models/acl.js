@@ -19,7 +19,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/acl", {
 	/**
 	 * if this model is visible
 	 */
-	visible: false,
+	visible: true,
 
 	/*
 	 Fields for this model.
