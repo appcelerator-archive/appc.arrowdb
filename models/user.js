@@ -87,7 +87,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/user", {
 		},
 		//NOTE: added manually
 		password: { type: String, hidden: true },
-		password_confirmation: { type: String, hidden: true }
+		password_confirmation: { type: String, hidden: true, copy_field:'password' }
 	},
 	/*
 	 Methods for this model.
