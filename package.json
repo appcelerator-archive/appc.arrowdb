@@ -1,7 +1,7 @@
 {
   "name": "appc.arrowdb",
   "description": "ArrowDB connector",
-  "version": "1.0.52",
+  "version": "1.0.53",
   "author": "Jeff Haynie",
   "license": "Apache-2.0",
   "framework": "none",
