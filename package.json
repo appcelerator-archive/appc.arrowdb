@@ -27,8 +27,8 @@
     "pkginfo": "^0.3.0"
   },
   "devDependencies": {
-    "arrow": "0.3.147",
-    "ensure-latest": "^1.0.1",
+    "arrow": "0.3.158",
+    "ensure-latest": "^1.0.3",
     "grunt": "^0.4.5",
     "grunt-contrib-clean": "^0.6.0",
     "grunt-contrib-jshint": "^0.10.0",
