@@ -2,10 +2,6 @@
 
 This is a Arrow connector to ArrowDB.
 
-> This software is pre-release and not yet ready for usage. Please don't use
-  this just yet while we're working through testing and finishing it up. Once
-  it's ready, we'll make an announcement about it.
-
 ## Installation
 
 ```bash
@@ -29,11 +25,11 @@ var User = Arrow.Model.extend('user', {
 });
 ```
 
-If you want to map a specific model to a specific collection name, use metadata.
-For example, to map the `user` model to the collection `users`, set it such as:
+If you want to map a specific model to a specific ArrowDB object, use metadata.
+For example, to map the `user` model to the ArrowDB object `Users`, set it such as:
 
 ```javascript
-var User = Arrow.Model.extend('user',{
+var User = Arrow.Model.extend('user', {
 	fields: {
 		name: { type: String, required: false, validator: /[a-zA-Z]{3,}/ }
 	},
