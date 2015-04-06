@@ -23,22 +23,20 @@ describe('Custom Objects', function () {
 		should(this.CustomObjectModel).be.an.Object;
 	});
 
-	describe('Model', function () {
-		it('should create a model and register it with the connector', function (done) {
-			FruitModel = Model.extend('fruit', {
-				fields: {
-					name: { type: String },
-					color: { type: String }
-				},
-				connector: 'appc.arrowdb'
-			});
-
-			should(FruitModel.getConnector()).equal(this.connector);
-
-			this.server.addModel(FruitModel);
-
-			done();
+	before(function (done) {
+		FruitModel = Model.extend('fruit', {
+			fields: {
+				name: { type: String },
+				color: { type: String }
+			},
+			connector: 'appc.arrowdb'
 		});
+
+		should(FruitModel.getConnector()).equal(this.connector);
+
+		this.server.addModel(FruitModel);
+
+		done();
 	});
 
 	describe('Query and Count', function () {
@@ -349,11 +347,9 @@ describe('Custom Objects', function () {
 		});
 
 		it('should not find any custom objects with a invalid id', function (done) {
-			FruitModel.findOne('this_id_is_invalid', function (err) {
-				assertFailure(err);
-				should(err.statusCode).equal(400);
-				should(err.body.meta.code).equal(400);
-				should(err.body.meta.message).match(/Invalid object id ?: 'this_id_is_invalid'/i);
+			FruitModel.findOne('this_id_is_invalid', function (err,results) {
+				should(err).not.be.ok;
+				should(results).not.be.ok;
 				done();
 			});
 		});
