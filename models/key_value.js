@@ -5,7 +5,7 @@ var Arrow = require("arrow");
 /*
  The KeyValues model.
  */
-module.exports = Arrow.Model.extend("appc.arrowdb/key_value", {
+module.exports = Arrow.Model.extend("appc.arrowdb/keyValue", {
 	/**
 	 * Remove _syncModelsCanUpdateThis property or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
