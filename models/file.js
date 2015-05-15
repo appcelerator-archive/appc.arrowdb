@@ -30,6 +30,10 @@ module.exports = Arrow.Model.extend("appc.arrowdb/file", {
 			"type": String,
 			"description": "File name."
 		},
+		"file": {
+			"type": Object,
+			"description": "The attached binary file to upload to ACS. You can specify either file or url, but not both."
+		},
 		"processed": {
 			// "originalType": "Boolean",
 			"type": Boolean,

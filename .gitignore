@@ -7,3 +7,4 @@ logs
 *.tgz
 conf/local.js
 undefined.metadata
+coverage

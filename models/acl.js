@@ -420,9 +420,6 @@ module.exports = Arrow.Model.extend("appc.arrowdb/acl", {
 					"admin-required": true
 				}
 			]
-		},
-		"remove": {
-			"canonical": "delete"
 		}
 		
 	},

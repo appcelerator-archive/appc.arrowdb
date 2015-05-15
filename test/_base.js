@@ -9,36 +9,32 @@ global.dump = dump;
 global.init = init;
 global.assertFailure = assertFailure;
 
+var state = {};
+
 function dump() {
 	Array.prototype.slice.call(arguments).forEach(function (arg) {
 		console.log(util.inspect(arg, false, null, true));
 	});
 }
 
-function init(beforeFn) {
+function init(ctx, beforeFn) {
+	ctx.timeout(60000);
+	ctx.slow(50000);
+
 	before(function (next) {
-		Arrow.resetGlobal();
-		this.server = new Arrow({ignoreDuplicateModels:true});
-		this.connector = this.server.getConnector('appc.arrowdb');
-		this.connector.connect(function () {
+		if (state.server) {
+			this.server = state.server;
+			this.connector = state.connector;
 			beforeFn && beforeFn.call(this);
 			next();
-		}.bind(this));
-	});
-
-	after(function (next) {
-		var self = this;
-
-		if (this.connector) {
-			this.connector.disconnect(finalize);
-		} else {
-			finalize();
 		}
-
-		function finalize() {
-			self.connector = null;
-			self.server = null;
-			next();
+		else {
+			this.server = state.server = new Arrow({ignoreDuplicateModels: true, generateModelsFromSchema: true});
+			this.connector = state.connector = this.server.getConnector('appc.arrowdb');
+			this.server.start(function () {
+				beforeFn && beforeFn.call(this);
+				next();
+			}.bind(this));
 		}
 	});
 }

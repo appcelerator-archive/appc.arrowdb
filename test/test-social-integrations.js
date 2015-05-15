@@ -9,7 +9,7 @@ var assert = require('assert'),
 
 describe('Social Integrations', function () {
 
-	init();
+	init(this);
 
 	it('should allow calling externalAccountLogin', function (next) {
 

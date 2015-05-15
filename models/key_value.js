@@ -62,7 +62,8 @@ module.exports = Arrow.Model.extend("appc.arrowdb/keyValue", {
 			"instance": true,
 			"adminRequired": false,
 			"response": {
-				"singleElement": true
+				"singleElement": true,
+				"model": "keyvalues"
 			},
 			"parameters": [
 				{
@@ -101,7 +102,8 @@ module.exports = Arrow.Model.extend("appc.arrowdb/keyValue", {
 			"instance": true,
 			"adminRequired": false,
 			"response": {
-				"singleElement": true
+				"singleElement": true,
+				"model": "keyvalues"
 			},
 			"parameters": [
 				{
@@ -193,7 +195,8 @@ module.exports = Arrow.Model.extend("appc.arrowdb/keyValue", {
 			"instance": true,
 			"adminRequired": false,
 			"response": {
-				"singleElement": true
+				"singleElement": true,
+				"model": "keyvalues"
 			},
 			"parameters": [
 				{
@@ -226,7 +229,8 @@ module.exports = Arrow.Model.extend("appc.arrowdb/keyValue", {
 			"instance": true,
 			"adminRequired": false,
 			"response": {
-				"singleElement": true
+				"singleElement": true,
+				"model": "keyvalues"
 			},
 			"parameters": [
 				{
@@ -273,7 +277,8 @@ module.exports = Arrow.Model.extend("appc.arrowdb/keyValue", {
 			"instance": true,
 			"adminRequired": false,
 			"response": {
-				"singleElement": true
+				"singleElement": true,
+				"model": "keyvalues"
 			},
 			"parameters": [
 				{
@@ -311,7 +316,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/keyValue", {
 		"remove": {
 			"canonical": "delete"
 		}
-		
+
 	},
 
 	_prepareParams: function prepareParams(method, instance, params, defaultValue) {
@@ -328,5 +333,5 @@ module.exports = Arrow.Model.extend("appc.arrowdb/keyValue", {
 		return defaultValue;
 	},
 
-	actions: ["delete","read"]
+	actions: ["delete", "read"]
 });
