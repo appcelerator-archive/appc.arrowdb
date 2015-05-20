@@ -1,7 +1,7 @@
 {
   "name": "appc.arrowdb",
   "description": "ArrowDB connector",
-  "version": "1.0.69",
+  "version": "1.0.74",
   "author": "Jeff Haynie",
   "license": "Apache-2.0",
   "framework": "none",
@@ -27,7 +27,7 @@
     "pkginfo": "^0.3.0"
   },
   "devDependencies": {
-    "arrow": "0.3.179",
+    "arrow": "0.3.209",
     "ensure-latest": "^1.0.3",
     "grunt": "^0.4.5",
     "grunt-contrib-clean": "^0.6.0",
@@ -36,6 +36,7 @@
     "grunt-mocha-test": "^0.12.6",
     "js-yaml": "^3.2.5",
     "mocha": "^2.1.0",
+    "request": "^2.55.0",
     "should": "^4.5.1",
     "wrench": "^1.5.8"
   },

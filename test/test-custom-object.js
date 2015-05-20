@@ -9,16 +9,13 @@ var assert = require('assert'),
 	should = require('should');
 
 describe('Custom Objects', function () {
-	this.timeout(60000);
-	this.slow(50000);
-
 	var FruitModel = null,
 		fruitCount = 0,
 		initialCount = 0,
 		testCustomObj = null,
 		testFruit = null;
 
-	init(function () {
+	init(this, function () {
 		this.CustomObjectModel = this.connector.getModel('customObject');
 		should(this.CustomObjectModel).be.an.Object;
 	});
@@ -166,7 +163,7 @@ describe('Custom Objects', function () {
 			FruitModel.query({ limit: 1000 }, function (err, fruits) {
 				assert.ifError(err);
 				should(fruits).be.an.Object;
-				should(fruits.length).be.within(0, 1000);
+				should(fruits.length).be.within(1, 1000);
 
 				fruitCount = fruits.length;
 
@@ -334,7 +331,7 @@ describe('Custom Objects', function () {
 		});
 	});
 
-	describe('findAll and findOne', function () {
+	describe('FindAll and FindOne', function () {
 		it('should find the custom object by id', function (done) {
 			assert(testFruit);
 			FruitModel.findOne(testFruit.getPrimaryKey(), function (err, fruit) {
@@ -541,10 +538,9 @@ describe('Custom Objects', function () {
 		it('should fail to update the custom object', function (done) {
 			assert(testFruit);
 			testFruit.set('color', 'blue');
-			testFruit.update(function (err) {
-				assert(err);
-				should(err).be.an.Error;
-				should(err.message).match(new RegExp('One or more invalid object id\\(s\\)\\: \\["' + testFruit.getPrimaryKey() + '"\\]', 'i'));
+			testFruit.update(function (err, instance) {
+				should(err).be.not.ok;
+				should(instance).be.not.ok;
 				done();
 			});
 		});
@@ -569,10 +565,7 @@ describe('Custom Objects', function () {
 
 		it('should fail to delete when an id does not exist', function (done) {
 			FruitModel.delete('this_id_is_invalid', function (err) {
-				assertFailure(err);
-				should(err.statusCode).equal(400);
-				should(err.body.meta.code).equal(400);
-				should(err.body.meta.message).match(/Invalid object id ?: 'this_id_is_invalid'/i);
+				should(err).containEql('trying to remove, couldn\'t');
 				done();
 			});
 		});

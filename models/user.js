@@ -55,11 +55,6 @@ module.exports = Arrow.Model.extend("appc.arrowdb/user", {
 			"type": Array,
 			"description": "Primary photo for this user."
 		},
-		"custom_fields": {
-			// "originalType": "String,Hash",
-			"type": Object,
-			"description": "User defined fields. See [Custom Data Fields](#!/guide/customfields)."
-		},
 		"created_at": {
 			// "originalType": "Date",
 			"type": Date,

@@ -5,7 +5,7 @@ var Arrow = require("arrow");
 /*
  The SocialIntegrations model.
  */
-module.exports = Arrow.Model.extend("appc.arrowdb/social_integration", {
+module.exports = Arrow.Model.extend("appc.arrowdb/socialIntegration", {
 	/**
 	 * Remove _syncModelsCanUpdateThis property or set it to false if you want to prevent syncModels.js from changing this file.
 	 */

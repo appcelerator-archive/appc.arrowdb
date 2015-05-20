@@ -30,6 +30,10 @@ module.exports = Arrow.Model.extend("appc.arrowdb/photo", {
 			"type": String,
 			"description": "Filename of the original photo."
 		},
+		"photo": {
+			"type": Object,
+			"description": "The attached binary file for creation."
+		},
 		"title": {
 			// "originalType": "String",
 			"type": String,
@@ -95,11 +99,6 @@ module.exports = Arrow.Model.extend("appc.arrowdb/photo", {
 			"type": Array,
 			"description": "User object for the photo's owner. "
 		},
-		"custom_fields": {
-			// "originalType": "",
-			"type": Object,
-			"description": "User defined fields."
-		},
 		"user_id": {
 			// "originalType": "",
 			"type": String,
@@ -129,16 +128,6 @@ module.exports = Arrow.Model.extend("appc.arrowdb/photo", {
 			// "originalType": "Hash",
 			"type": Object,
 			"description": "Breakdown of the number of reviews that specified a given rating value. For example, if your ratings range from 1-5, the ratings summary might look like this:      ratings_summary: {         \"1\" : 1,         \"2\" : 0,         \"3\" : 5,         \"4\" : 50,         \"5\" : 12     }  Only present if the object has been reviewed. "
-		},
-		"custom_fields": {
-			// "originalType": "",
-			"type": Object,
-			"description": "User defined fields."
-		},
-		"user_id": {
-			// "originalType": "",
-			"type": String,
-			"description": "Specifies the owner of object."
 		}
 	},
 	/*

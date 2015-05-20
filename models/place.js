@@ -105,16 +105,6 @@ module.exports = Arrow.Model.extend("appc.arrowdb/place", {
 			"type": Array,
 			"description": "Owner of this place object."
 		},
-		"custom_fields": {
-			// "originalType": "",
-			"type": Object,
-			"description": "User defined fields."
-		},
-		"user_id": {
-			// "originalType": "",
-			"type": String,
-			"description": "Specifies the owner of object."
-		},
 		"reviews": {
 			// "originalType": "Array",
 			"type": Array,
@@ -139,11 +129,6 @@ module.exports = Arrow.Model.extend("appc.arrowdb/place", {
 			// "originalType": "Hash",
 			"type": Object,
 			"description": "Breakdown of the number of reviews that specified a given rating value. For example, if your ratings range from 1-5, the ratings summary might look like this:      ratings_summary: {         \"1\" : 1,         \"2\" : 0,         \"3\" : 5,         \"4\" : 50,         \"5\" : 12     }  Only present if the object has been reviewed. "
-		},
-		"custom_fields": {
-			// "originalType": "",
-			"type": Object,
-			"description": "User defined fields."
 		},
 		"user_id": {
 			// "originalType": "",
