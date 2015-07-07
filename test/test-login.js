@@ -90,6 +90,9 @@ describe('Login', function () {
 			json: true
 		}, function (err, response, body) {
 			should(body.success).be.true;
+			should(response).be.ok;
+			should(response.headers).have.property('set-cookie');
+			should(response.headers['set-cookie']).match(/arrowdbuid=/);
 			cb();
 		});
 	});

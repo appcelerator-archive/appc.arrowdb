@@ -19,7 +19,7 @@ module.exports = function(grunt) {
 		kahvesi: {
 			src: ['test/**/*.js']
 		},
-		clean: ['tmp']
+		clean: ['tmp', 'logs']
 	});
 
 	// Load grunt plugins for modules

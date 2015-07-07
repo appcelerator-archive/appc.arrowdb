@@ -29,7 +29,15 @@ function init(ctx, beforeFn) {
 			next();
 		}
 		else {
-			this.server = state.server = new Arrow({ignoreDuplicateModels: true, generateModelsFromSchema: true});
+			this.server = state.server = new Arrow({
+				ignoreDuplicateModels: true,
+				generateModelsFromSchema: true,
+				connectors: {
+					'appc.arrowdb': {
+						modelAutogen: true
+					}
+				}
+			});
 			this.connector = state.connector = this.server.getConnector('appc.arrowdb');
 			this.server.start(function () {
 				beforeFn && beforeFn.call(this);

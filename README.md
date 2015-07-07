@@ -5,7 +5,7 @@ This is a Arrow connector to ArrowDB.
 ## Installation
 
 ```bash
-$ appc install connector/appc.arrowdb --save
+$ appc install connector/appc.arrowdb
 ```
 
 ## Usage
