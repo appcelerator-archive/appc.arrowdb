@@ -1,7 +1,7 @@
 {
   "name": "appc.arrowdb",
   "description": "ArrowDB connector",
-  "version": "1.0.76",
+  "version": "1.0.77",
   "author": "Jeff Haynie",
   "license": "Apache-2.0",
   "framework": "none",
@@ -24,6 +24,7 @@
     "arrowdb": "1.0.7",
     "async": "^0.9.0",
     "lodash": "^2.4.1",
+    "lru-cache": "^2.6.5",
     "pkginfo": "^0.3.0"
   },
   "devDependencies": {
