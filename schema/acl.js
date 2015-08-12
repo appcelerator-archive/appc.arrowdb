@@ -1,11 +1,12 @@
 'use strict';
 
-var Arrow = require("arrow");
-
 /*
  The ACLs model.
  */
-module.exports = Arrow.Model.extend("appc.arrowdb/acl", {
+module.exports = {
+	name: 'acl',
+	objectName: 'ACLs',
+
 	/**
 	 * Remove _syncModelsCanUpdateThis property or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
@@ -421,7 +422,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/acl", {
 				}
 			]
 		}
-		
+
 	},
 
 	_prepareParams: function prepareParams(method, instance, params, defaultValue) {
@@ -438,5 +439,5 @@ module.exports = Arrow.Model.extend("appc.arrowdb/acl", {
 		return defaultValue;
 	},
 
-	actions: ["delete","create","update","read"]
-});
+	actions: ["delete", "create", "update", "read"]
+};

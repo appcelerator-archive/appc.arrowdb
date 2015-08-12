@@ -2,7 +2,10 @@
 
 var Arrow = require('arrow');
 
-module.exports = Arrow.Model.extend('appc.arrowdb/customObject', {
+module.exports = {
+	name: 'customObject',
+	objectName: 'CustomObjects',
+
 	/**
 	 * Remove _syncModelsCanUpdateThis property or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
@@ -19,10 +22,10 @@ module.exports = Arrow.Model.extend('appc.arrowdb/customObject', {
 	visible: false,
 
 	fields: {
-		classname: { type: String },
-		created_at: { type: Date },
-		fields: { type: Object },
-		updated_at: { type: Date }
+		classname: {type: String},
+		created_at: {type: Date},
+		fields: {type: Object},
+		updated_at: {type: Date}
 	},
 
 	methodMeta: {
@@ -97,4 +100,4 @@ module.exports = Arrow.Model.extend('appc.arrowdb/customObject', {
 
 		return defaultValue;
 	}
-});
+};

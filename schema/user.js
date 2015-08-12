@@ -1,11 +1,12 @@
 'use strict';
 
-var Arrow = require("arrow");
-
 /*
  The Users model.
  */
-module.exports = Arrow.Model.extend("appc.arrowdb/user", {
+module.exports = {
+	name: 'user',
+	objectName: 'Users',
+
 	/**
 	 * Remove _syncModelsCanUpdateThis property or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
@@ -81,8 +82,8 @@ module.exports = Arrow.Model.extend("appc.arrowdb/user", {
 			"description": "Specifies the owner of object."
 		},
 		//NOTE: added manually
-		password: { type: String, hidden: true },
-		password_confirmation: { type: String, hidden: true, copy_field:'password' }
+		password: {type: String, hidden: true},
+		password_confirmation: {type: String, hidden: true, copy_field: 'password'}
 	},
 	/*
 	 Methods for this model.
@@ -571,15 +572,15 @@ module.exports = Arrow.Model.extend("appc.arrowdb/user", {
 		"remove": {
 			"canonical": "delete"
 		}
-		
+
 	},
 
 	_prepareParams: function prepareParams(method, instance, params, defaultValue) {
 		params || (params = {});
 		switch (method) {
 			//NOTE: added manually
-			case 'login': 
-				return  {
+			case 'login':
+				return {
 					login: instance.username,
 					password: params.password
 				};
@@ -594,5 +595,5 @@ module.exports = Arrow.Model.extend("appc.arrowdb/user", {
 		return defaultValue;
 	},
 
-	actions: ["read","update","delete","create"]
-});
+	actions: ["read", "update", "delete", "create"]
+};

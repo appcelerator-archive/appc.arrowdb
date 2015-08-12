@@ -1,11 +1,12 @@
 'use strict';
 
-var Arrow = require("arrow");
-
 /*
  The KeyValues model.
  */
-module.exports = Arrow.Model.extend("appc.arrowdb/keyValue", {
+module.exports = {
+	name: 'keyValue',
+	objectName: 'KeyValues',
+
 	/**
 	 * Remove _syncModelsCanUpdateThis property or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
@@ -334,4 +335,4 @@ module.exports = Arrow.Model.extend("appc.arrowdb/keyValue", {
 	},
 
 	actions: ["delete", "read"]
-});
+};

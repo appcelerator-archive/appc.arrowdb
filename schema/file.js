@@ -1,11 +1,12 @@
 'use strict';
 
-var Arrow = require("arrow");
-
 /*
  The Files model.
  */
-module.exports = Arrow.Model.extend("appc.arrowdb/file", {
+module.exports = {
+	name: 'file',
+	objectName: 'Files',
+
 	/**
 	 * Remove _syncModelsCanUpdateThis property or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
@@ -320,7 +321,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/file", {
 		"remove": {
 			"canonical": "delete"
 		}
-		
+
 	},
 
 	_prepareParams: function prepareParams(method, instance, params, defaultValue) {
@@ -337,5 +338,5 @@ module.exports = Arrow.Model.extend("appc.arrowdb/file", {
 		return defaultValue;
 	},
 
-	actions: ["update","delete","create","read"]
-});
+	actions: ["update", "delete", "create", "read"]
+};

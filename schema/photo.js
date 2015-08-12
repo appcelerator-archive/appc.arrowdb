@@ -1,11 +1,12 @@
 'use strict';
 
-var Arrow = require("arrow");
-
 /*
  The Photos model.
  */
-module.exports = Arrow.Model.extend("appc.arrowdb/photo", {
+module.exports = {
+	name: 'photo',
+	objectName: 'Photos',
+
 	/**
 	 * Remove _syncModelsCanUpdateThis property or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
@@ -472,7 +473,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/photo", {
 		"remove": {
 			"canonical": "delete"
 		}
-		
+
 	},
 
 	_prepareParams: function prepareParams(method, instance, params, defaultValue) {
@@ -489,5 +490,5 @@ module.exports = Arrow.Model.extend("appc.arrowdb/photo", {
 		return defaultValue;
 	},
 
-	actions: ["delete","create","read","update"]
-});
+	actions: ["delete", "create", "read", "update"]
+};

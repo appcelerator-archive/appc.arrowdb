@@ -40,8 +40,4 @@ describe('User', function () {
 		tests.update(modelName, {first_name: 'Dawson', last_name: 'Toth'});
 	});
 
-	describe('Delete All', function () {
-		tests.deleteAll(modelName);
-	});
-
 });

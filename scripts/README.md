@@ -1,5 +1,5 @@
 # Model Generation
-This script will sync the models with the latest documentation from ACS.
+This script will sync the schema with the latest documentation from ACS.
 
 It requires a GitHub access token, which you can generate at https://github.com/settings/applications
 

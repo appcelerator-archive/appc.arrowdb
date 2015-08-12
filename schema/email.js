@@ -1,11 +1,12 @@
 'use strict';
 
-var Arrow = require("arrow");
-
 /*
  The Emails model.
  */
-module.exports = Arrow.Model.extend("appc.arrowdb/email", {
+module.exports = {
+	name: 'email',
+	objectName: 'Emails',
+
 	/**
 	 * Remove _syncModelsCanUpdateThis property or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
@@ -24,8 +25,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/email", {
 	/*
 	 Fields for this model.
 	 */
-	fields: {
-	},
+	fields: {},
 	/*
 	 Methods for this model.
 	 */
@@ -86,4 +86,4 @@ module.exports = Arrow.Model.extend("appc.arrowdb/email", {
 	},
 
 	actions: []
-});
+};

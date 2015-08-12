@@ -223,7 +223,7 @@ function writeModels() {
 
 			// Calculate what our model should be.
 			var fileName = object.fileName = translateObjectNameToFileName(key),
-				modelPath = path.join(__dirname, '../models/', fileName + '.js'),
+				modelPath = path.join(__dirname, '..', 'schema', fileName + '.js'),
 				newContents = template(object);
 
 			// Sync up the model with the filesystem, based on the existing contents.

@@ -1,11 +1,12 @@
 'use strict';
 
-var Arrow = require("arrow");
-
 /*
  The SocialIntegrations model.
  */
-module.exports = Arrow.Model.extend("appc.arrowdb/socialIntegration", {
+module.exports = {
+	name: 'socialIntegration',
+	objectName: 'SocialIntegrations',
+
 	/**
 	 * Remove _syncModelsCanUpdateThis property or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
@@ -24,8 +25,7 @@ module.exports = Arrow.Model.extend("appc.arrowdb/socialIntegration", {
 	/*
 	 Fields for this model.
 	 */
-	fields: {
-	},
+	fields: {},
 	/*
 	 Methods for this model.
 	 */
@@ -173,4 +173,4 @@ module.exports = Arrow.Model.extend("appc.arrowdb/socialIntegration", {
 	},
 
 	actions: []
-});
+};

@@ -24,7 +24,9 @@ var Arrow = require("arrow");
 /*
  The <%= data.name %> model.
  */
-module.exports = Arrow.Model.extend("appc.arrowdb/<%= data.fileName %>", {
+module.exports = {
+	name: "<%= data.fileName %>",
+
 	/**
 	 * Remove _syncModelsCanUpdateThis property or set it to false if you want to prevent syncModels.js from changing this file.
 	 */
@@ -118,4 +120,4 @@ module.exports = Arrow.Model.extend("appc.arrowdb/<%= data.fileName %>", {
 	},
 
 	actions: <%=JSON.stringify(Object.keys(actions))%>
-});
+};
