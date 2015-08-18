@@ -12,8 +12,11 @@ module.exports = {
 			username: '', // A user from your ArrowDB to use for looking up metadata.
 			password: '', // The password for your user.
 
-			generateModelsFromSchema: true, // Generate models for the built in ArrowDB types (ACLs, Users, etc).
-			modelAutogen: false // Don't create APIs for the generate models.
+			// Create models for the built in ArrowDB types that can be used in your API.
+			generateModelsFromSchema: true,
+
+			// Whether or not to generate APIs based on the methods in generated models. 
+			modelAutogen: false
 		}
 	}
 };
