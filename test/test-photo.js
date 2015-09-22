@@ -21,7 +21,9 @@ describe('Photo', function () {
 
 	describe('Create', function () {
 		tests.create(modelName, {
-			photo: fs.createReadStream(__dirname + '/testfile.jpg')
+			photo: fs.createReadStream(__dirname + '/testfile.jpg'),
+			photo_sizes: {preview: '120x120#'},
+			'photo_sync_sizes[]': 'preview'
 		});
 	});
 

@@ -129,6 +129,14 @@ module.exports = {
 			// "originalType": "Hash",
 			"type": Object,
 			"description": "Breakdown of the number of reviews that specified a given rating value. For example, if your ratings range from 1-5, the ratings summary might look like this:      ratings_summary: {         \"1\" : 1,         \"2\" : 0,         \"3\" : 5,         \"4\" : 50,         \"5\" : 12     }  Only present if the object has been reviewed. "
+		},
+		"photo_sizes": {
+			"type": Object,
+			"description": "User-defined photo sizes. See [Photo Uploading &\nSizes](#!/guide/photosizes#custom).  Sizes be specified as a JSON object, or using a separate parameter for each\nsize. To specify a photo size called \"preview\" using JSON:\n\n    photo_size : { \"preview\" : \"120x120#\" }\n\nTo pass each size as a separate parameter, do *not* use the literal parameter name `photo_sizes`,\nbut add a parameter named `photo_sizes[`_sizeName_`]` for each custom photo\nsize. The previous example in this format looks like this:\n\n    \"photo_size[preview]\" : \"120x120#\"\n"
+		},
+		"photo_sync_sizes[]": {
+			"type": String,
+			"description": "Synchronous photo sizes to upload. See [Photo Uploading & Resizing](#!/guide/photosizes).\n\nThe literal name for this parameter is `photo_sync_sizes[]`. This parameter can be specified\nmultiple times, once for each photo size that must be created before the request returns.\n\nFor example:\n\n    \"photo_sync_sizes[]=preview\"\n"
 		}
 	},
 	/*
