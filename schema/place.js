@@ -94,7 +94,7 @@ module.exports = {
 		"custom_fields": {
 			// "originalType": "String,Hash",
 			"type": Object,
-			"description": "User defined fields. See [Custom Data Fields](#!/guide/customfields)."
+			"description": "User defined fields. See [Custom Data Fields](http://docs.appcelerator.com/arrowdb/latest/#!/guide/customfields)."
 		},
 		"acls": {
 			// "originalType": "Array",
@@ -176,7 +176,7 @@ module.exports = {
 		},
 		"query": {
 			"summary": "Custom Query Places",
-			"description": "Performs custom query of places with sorting and paginating. Currently you can not query or sort data stored inside array or hash in custom fields.  The following fields can be used for querying and sorting places:  *   `address` : String.  Place address. *   `city` : String.  Place city. *   `state` : String. Place state. *   `country` : String.  Country. *   `user_id` : String. ID of the user who created this place. *   `google_cid` : Google Customer ID (CID) associated with this place. *   `tags_array` : String. Search tags. *   `lnglat` : `[longitude, latitude]`. The Place's default coordinates. You can also store      custom coordinates in a custom field and query for those coordinates separately       (see [Geographic Coordinates in Custom Fields](#!/guide/customfields-section-geographic-coordinates-in-custom-fields)). *   `ratings_average:  Number`.  Place's average rating (see Reviews). *   `ratings_count: Number`. Place's total number of ratings (see Reviews). *   `reviews_count: Number`. Place's total number of reviews (see Reviews). *   `created_at: Date`. Timestamp when the photo was created. *   `updated_at: Date`. Timestamp when the photo was updated.  In ACS 1.1.5 and later, you can paginate query results using `skip` and `limit` parameters, or by including a `where` clause to limit the results to objects whose IDs fall within a specified range. For details, see [Query Pagination](#!/guide/search_query-section-query-pagination).  For details about using the query parameters, see the [Search and Query guide](#!/guide/search_query). ",
+			"description": "Performs custom query of places with sorting and paginating. Currently you can not query or sort data stored inside array or hash in custom fields.  The following fields can be used for querying and sorting places:  *   `address` : String.  Place address. *   `city` : String.  Place city. *   `state` : String. Place state. *   `country` : String.  Country. *   `user_id` : String. ID of the user who created this place. *   `google_cid` : Google Customer ID (CID) associated with this place. *   `tags_array` : String. Search tags. *   `lnglat` : `[longitude, latitude]`. The Place's default coordinates. You can also store      custom coordinates in a custom field and query for those coordinates separately       (see [Geographic Coordinates in Custom Fields](http://docs.appcelerator.com/arrowdb/latest/#!/guide/customfields-section-geographic-coordinates-in-custom-fields)). *   `ratings_average:  Number`.  Place's average rating (see Reviews). *   `ratings_count: Number`. Place's total number of ratings (see Reviews). *   `reviews_count: Number`. Place's total number of reviews (see Reviews). *   `created_at: Date`. Timestamp when the photo was created. *   `updated_at: Date`. Timestamp when the photo was updated.  In ACS 1.1.5 and later, you can paginate query results using `skip` and `limit` parameters, or by including a `where` clause to limit the results to objects whose IDs fall within a specified range. For details, see [Query Pagination](http://docs.appcelerator.com/arrowdb/latest/#!/guide/search_query-section-query-pagination).  For details about using the query parameters, see the [Search and Query guide](http://docs.appcelerator.com/arrowdb/latest/#!/guide/search_query). ",
 			"authRequired": false,
 			"instance": true,
 			"adminRequired": false,
@@ -306,7 +306,7 @@ module.exports = {
 				},
 				{
 					"name": "photo",
-					"description": "New photo to attach as the primary photo for this place.\n\nWhen you use the `photo` parameter to attach a new photo, you can use the\n[custom resize and sync options](#!/guide/photosizes).\n",
+					"description": "New photo to attach as the primary photo for this place.\n\nWhen you use the `photo` parameter to attach a new photo, you can use the\n[custom resize and sync options](http://docs.appcelerator.com/arrowdb/latest/#!/guide/photosizes).\n",
 					"type": "Photos"
 				},
 				{
@@ -321,7 +321,7 @@ module.exports = {
 				},
 				{
 					"name": "custom_fields",
-					"description": "User defined fields. See [Custom Data Fields](#!/guide/customfields).",
+					"description": "User defined fields. See [Custom Data Fields](http://docs.appcelerator.com/arrowdb/latest/#!/guide/customfields).",
 					"type": [
 						"String",
 						"Hash"
@@ -450,7 +450,7 @@ module.exports = {
 				},
 				{
 					"name": "photo",
-					"description": "New photo to attach as the primary photo for this place.\n\nWhen you use the `photo` parameter to attach a new photo, you can use the\n[custom resize and sync options](#!/guide/photosizes).\n",
+					"description": "New photo to attach as the primary photo for this place.\n\nWhen you use the `photo` parameter to attach a new photo, you can use the\n[custom resize and sync options](http://docs.appcelerator.com/arrowdb/latest/#!/guide/photosizes).\n",
 					"type": "Photos"
 				},
 				{
@@ -465,7 +465,7 @@ module.exports = {
 				},
 				{
 					"name": "custom_fields",
-					"description": "User defined fields. See [Custom Data Fields](#!/guide/customfields).",
+					"description": "User defined fields. See [Custom Data Fields](http://docs.appcelerator.com/arrowdb/latest/#!/guide/customfields).",
 					"type": [
 						"String",
 						"Hash"

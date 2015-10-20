@@ -359,7 +359,7 @@ module.exports = {
 		},
 		"query": {
 			"summary": "Performs a custom query of ACLs.",
-			"description": "Performs a custom query of ACLs. Regular application users can only query ACLs that they have created.  Application admins can query ACLs for an arbitrary user by specifying the `user_id` method parameter. (In applications created with ACS 1.1.7 and earlier, any user can query another user's  ACLs, regardless of whether they are an admin or not.)  * Applications created with ACS 1.1.5 and later can paginate query results using `skip`  and `limit` parameters. For details, see [Query Pagination](#!/guide/search_query-section-query-pagination). * Currently you can not query or sort data stored inside an array or hash in custom fields.  For general information on queries, see [Search and Query guide](#!/guide/search_query). ",
+			"description": "Performs a custom query of ACLs. Regular application users can only query ACLs that they have created.  Application admins can query ACLs for an arbitrary user by specifying the `user_id` method parameter. (In applications created with ACS 1.1.7 and earlier, any user can query another user's  ACLs, regardless of whether they are an admin or not.)  * Applications created with ACS 1.1.5 and later can paginate query results using `skip`  and `limit` parameters. For details, see [Query Pagination](http://docs.appcelerator.com/arrowdb/latest/#!/guide/search_query-section-query-pagination). * Currently you can not query or sort data stored inside an array or hash in custom fields.  For general information on queries, see [Search and Query guide](#!http://docs.appcelerator.com/arrowdb/latest/#!/guide/search_query). ",
 			"authRequired": true,
 			"instance": true,
 			"adminRequired": false,

@@ -68,7 +68,7 @@ module.exports = {
 		"urls": {
 			// "originalType": "Hash",
 			"type": Object,
-			"description": "A hash containing image URLs for the photo at different sizes. The keys in the hash correspond to  the photo sizes described in [Photo Uploading & Resizing](#!/guide/photosizes):  * square_75 * thumb_100 * small_240 * medium_500 * medium_640 * large_1024 * original  The URLs are only available after the photo has been processed (`processed` is `true`). "
+			"description": "A hash containing image URLs for the photo at different sizes. The keys in the hash correspond to  the photo sizes described in [Photo Uploading & Resizing](http://docs.appcelerator.com/arrowdb/latest/#!/guide/photosizes):  * square_75 * thumb_100 * small_240 * medium_500 * medium_640 * large_1024 * original  The URLs are only available after the photo has been processed (`processed` is `true`). "
 		},
 		"created_at": {
 			// "originalType": "Date",
@@ -88,7 +88,7 @@ module.exports = {
 		"custom_fields": {
 			// "originalType": "Hash",
 			"type": Object,
-			"description": "User defined fields. See [Custom Data Fields](#!/guide/customfields)."
+			"description": "User defined fields. See [Custom Data Fields](http://docs.appcelerator.com/arrowdb/latest/#!/guide/customfields)."
 		},
 		"acls": {
 			// "originalType": "String",
@@ -132,11 +132,11 @@ module.exports = {
 		},
 		"photo_sizes": {
 			"type": Object,
-			"description": "User-defined photo sizes. See [Photo Uploading &\nSizes](#!/guide/photosizes#custom).  Sizes be specified as a JSON object, or using a separate parameter for each\nsize. To specify a photo size called \"preview\" using JSON:\n\n    photo_size : { \"preview\" : \"120x120#\" }\n\nTo pass each size as a separate parameter, do *not* use the literal parameter name `photo_sizes`,\nbut add a parameter named `photo_sizes[`_sizeName_`]` for each custom photo\nsize. The previous example in this format looks like this:\n\n    \"photo_size[preview]\" : \"120x120#\"\n"
+			"description": "User-defined photo sizes. See [Photo Uploading &\nSizes](http://docs.appcelerator.com/arrowdb/latest/#!/guide/photosizes).  Sizes be specified as a JSON object, or using a separate parameter for each\nsize. To specify a photo size called \"preview\" using JSON:\n\n    photo_size : { \"preview\" : \"120x120#\" }\n\nTo pass each size as a separate parameter, do *not* use the literal parameter name `photo_sizes`,\nbut add a parameter named `photo_sizes[`_sizeName_`]` for each custom photo\nsize. The previous example in this format looks like this:\n\n    \"photo_size[preview]\" : \"120x120#\"\n"
 		},
 		"photo_sync_sizes[]": {
 			"type": String,
-			"description": "Synchronous photo sizes to upload. See [Photo Uploading & Resizing](#!/guide/photosizes).\n\nThe literal name for this parameter is `photo_sync_sizes[]`. This parameter can be specified\nmultiple times, once for each photo size that must be created before the request returns.\n\nFor example:\n\n    \"photo_sync_sizes[]=preview\"\n"
+			"description": "Synchronous photo sizes to upload. See [Photo Uploading & Resizing](http://docs.appcelerator.com/arrowdb/latest/#!/guide/photosizes).\n\nThe literal name for this parameter is `photo_sync_sizes[]`. This parameter can be specified\nmultiple times, once for each photo size that must be created before the request returns.\n\nFor example:\n\n    \"photo_sync_sizes[]=preview\"\n"
 		}
 	},
 	/*
@@ -209,7 +209,7 @@ module.exports = {
 				},
 				{
 					"name": "custom_fields",
-					"description": "User-defined fields to add to this photo. See [Custom Data Fields](#!/guide/customfields).",
+					"description": "User-defined fields to add to this photo. See [Custom Data Fields](http://docs.appcelerator.com/arrowdb/latest/#!/guide/customfields).",
 					"type": [
 						"String",
 						"Hash"
@@ -232,7 +232,7 @@ module.exports = {
 				},
 				{
 					"name": "photo_sizes",
-					"description": "User-defined photo sizes. See [Photo Uploading &\nSizes](#!/guide/photosizes#custom).  Sizes be specified as a JSON object, or using a separate parameter for each\nsize. To specify a photo size called \"preview\" using JSON:\n\n    photo_size : { \"preview\" : \"120x120#\" }\n\nTo pass each size as a separate parameter, do *not* use the literal parameter name `photo_sizes`,\nbut add a parameter named `photo_sizes[`_sizeName_`]` for each custom photo\nsize. The previous example in this format looks like this:\n\n    \"photo_size[preview]\" : \"120x120#\"\n",
+					"description": "User-defined photo sizes. See [Photo Uploading &\nSizes](http://docs.appcelerator.com/arrowdb/latest/#!/guide/photosizes).  Sizes be specified as a JSON object, or using a separate parameter for each\nsize. To specify a photo size called \"preview\" using JSON:\n\n    photo_size : { \"preview\" : \"120x120#\" }\n\nTo pass each size as a separate parameter, do *not* use the literal parameter name `photo_sizes`,\nbut add a parameter named `photo_sizes[`_sizeName_`]` for each custom photo\nsize. The previous example in this format looks like this:\n\n    \"photo_size[preview]\" : \"120x120#\"\n",
 					"type": [
 						"String",
 						"Hash"
@@ -240,7 +240,7 @@ module.exports = {
 				},
 				{
 					"name": "photo_sync_sizes[]",
-					"description": "Synchronous photo sizes to upload. See [Photo Uploading & Resizing](#!/guide/photosizes).\n\nThe literal name for this parameter is `photo_sync_sizes[]`. This parameter can be specified\nmultiple times, once for each photo size that must be created before the request returns.\n\nFor example:\n\n    \"photo_sync_sizes[]=preview\"\n",
+					"description": "Synchronous photo sizes to upload. See [Photo Uploading & Resizing](http://docs.appcelerator.com/arrowdb/latest/#!/guide/photosizes).\n\nThe literal name for this parameter is `photo_sync_sizes[]`. This parameter can be specified\nmultiple times, once for each photo size that must be created before the request returns.\n\nFor example:\n\n    \"photo_sync_sizes[]=preview\"\n",
 					"type": "String"
 				},
 				{
@@ -285,7 +285,7 @@ module.exports = {
 		},
 		"query": {
 			"summary": "Custom Query Photos",
-			"description": "Perform custom query of photos with sorting and paginating. Currently you can not query or sort data stored inside array or hash in custom fields.  In addition to custom fields, here is a list of pre-defined fields that can be queried and sorted:  *   `user_id: String`. Photo owner's user ID. *   `title:  String`.  Photo title. *   `tags_array: String`. Photo tags. *   `ratings_average:  Number`.  Photo's average rating (see Reviews). *   `ratings_count: Number`. Photo's total number of ratings (see Reviews). *   `reviews_count: Number`. Photo's total number of reviews (see Reviews). *   `created_at: Date`. Timestamp when the photo was created. *   `updated_at: Date`. Timestamp when the photo was updated.  In ACS 1.1.5 and later, you can paginate query results using `skip` and `limit` parameters, or by including a `where` clause to limit the results to objects whose IDs fall within a specified range. For details, see [Query Pagination](#!/guide/search_query-section-query-pagination).  For details about using the query parameters, see the [Search and Query guide](#!/guide/search_query). ",
+			"description": "Perform custom query of photos with sorting and paginating. Currently you can not query or sort data stored inside array or hash in custom fields.  In addition to custom fields, here is a list of pre-defined fields that can be queried and sorted:  *   `user_id: String`. Photo owner's user ID. *   `title:  String`.  Photo title. *   `tags_array: String`. Photo tags. *   `ratings_average:  Number`.  Photo's average rating (see Reviews). *   `ratings_count: Number`. Photo's total number of ratings (see Reviews). *   `reviews_count: Number`. Photo's total number of reviews (see Reviews). *   `created_at: Date`. Timestamp when the photo was created. *   `updated_at: Date`. Timestamp when the photo was updated.  In ACS 1.1.5 and later, you can paginate query results using `skip` and `limit` parameters, or by including a `where` clause to limit the results to objects whose IDs fall within a specified range. For details, see [Query Pagination](http://docs.appcelerator.com/arrowdb/latest/#!/guide/search_query-section-query-pagination).  For details about using the query parameters, see the [Search and Query guide](http://docs.appcelerator.com/arrowdb/latest/#!/guide/search_query). ",
 			"authRequired": false,
 			"instance": true,
 			"adminRequired": false,
@@ -420,7 +420,7 @@ module.exports = {
 				},
 				{
 					"name": "custom_fields",
-					"description": "User-defined fields to add to this photo. See [Custom Data Fields](#!/guide/customfields).",
+					"description": "User-defined fields to add to this photo. See [Custom Data Fields](http://docs.appcelerator.com/arrowdb/latest/#!/guide/customfields).",
 					"type": [
 						"String",
 						"Hash"
@@ -438,7 +438,7 @@ module.exports = {
 				},
 				{
 					"name": "photo_sizes",
-					"description": "User-defined photo sizes. See [Photo Uploading & Resizings](#!/guide/photosizes).\nSizes be specified as a JSON object, or using a separate parameter for each\nsize. To specify a photo size called \"preview\" using JSON:\n\n    photo_size : { \"preview\" : \"120x120#\" }\n\nTo pass each size as a separate parameter, do *not* use the literal parameter name `photo_sizes`,\nbut add a parameter named `photo_sizes[`_sizeName_`]` for each custom photo\nsize. The previous example in this format looks like this:\n\n    \"photo_size[preview]\" : \"120x120#\"\n",
+					"description": "User-defined photo sizes. See [Photo Uploading & Resizings](http://docs.appcelerator.com/arrowdb/latest/#!/guide/photosizes).\nSizes be specified as a JSON object, or using a separate parameter for each\nsize. To specify a photo size called \"preview\" using JSON:\n\n    photo_size : { \"preview\" : \"120x120#\" }\n\nTo pass each size as a separate parameter, do *not* use the literal parameter name `photo_sizes`,\nbut add a parameter named `photo_sizes[`_sizeName_`]` for each custom photo\nsize. The previous example in this format looks like this:\n\n    \"photo_size[preview]\" : \"120x120#\"\n",
 					"type": [
 						"String",
 						"Hash"
@@ -446,7 +446,7 @@ module.exports = {
 				},
 				{
 					"name": "photo_sync_sizes",
-					"description": "Synchronous photo sizes to upload. See [Photo Uploading & Resizings](#!/guide/photosizes).\n\nThe literal name for this parameter is `photo_sync_sizes[]`. This parameter can be specified\nmultiple times, once for each photo size that must be created before the request returns.\n\nFor example:\n\n    \"photo_sync_sizes[]=preview\"\n",
+					"description": "Synchronous photo sizes to upload. See [Photo Uploading & Resizings](http://docs.appcelerator.com/arrowdb/latest/#!/guide/photosizes).\n\nThe literal name for this parameter is `photo_sync_sizes[]`. This parameter can be specified\nmultiple times, once for each photo size that must be created before the request returns.\n\nFor example:\n\n    \"photo_sync_sizes[]=preview\"\n",
 					"type": "String"
 				},
 				{

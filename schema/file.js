@@ -108,7 +108,7 @@ module.exports = {
 				},
 				{
 					"name": "custom_fields",
-					"description": "User defined fields. See [Custom Data Fields](#!/guide/customfields).",
+					"description": "User defined fields. See [Custom Data Fields](http://docs.appcelerator.com/arrowdb/latest/#!/guide/customfields).",
 					"type": [
 						"String",
 						"Hash"
@@ -191,7 +191,7 @@ module.exports = {
 				},
 				{
 					"name": "custom_fields",
-					"description": "User defined fields. See [Custom Data Fields](#!/guide/customfields).",
+					"description": "User defined fields. See [Custom Data Fields](http://docs.appcelerator.com/arrowdb/latest/#!/guide/customfields).",
 					"type": [
 						"String",
 						"Hash"
@@ -261,7 +261,7 @@ module.exports = {
 		},
 		"query": {
 			"summary": "Custom Query Files",
-			"description": "Perform custom query of files with sorting and paginating. Currently you can not query or sort data stored inside custom fields that have Array or Hash values.  In addition to custom fields, here is a list of pre-defined fields in the File object that can be queried and sorted:  *   `user_id: String`.  User ID of the File's owner.  *   `created_at: Date`. Timestamp when the file was created.  *   `updated_at: Date`. Timestamp when the file was last updated.  In ACS 1.1.5 and later, you can paginate query results using `skip` and `limit` parameters, or by including a `where` clause to limit the results to objects whose IDs fall within a specified range. For details, see [Query Pagination](#!/guide/search_query-section-query-pagination).          For details about using the query parameters, see the [Search and Query guide](#!/guide/search_query). ",
+			"description": "Perform custom query of files with sorting and paginating. Currently you can not query or sort data stored inside custom fields that have Array or Hash values.  In addition to custom fields, here is a list of pre-defined fields in the File object that can be queried and sorted:  *   `user_id: String`.  User ID of the File's owner.  *   `created_at: Date`. Timestamp when the file was created.  *   `updated_at: Date`. Timestamp when the file was last updated.  In ACS 1.1.5 and later, you can paginate query results using `skip` and `limit` parameters, or by including a `where` clause to limit the results to objects whose IDs fall within a specified range. For details, see [Query Pagination](http://docs.appcelerator.com/arrowdb/latest/#!/guide/search_query-section-query-pagination).          For details about using the query parameters, see the [Search and Query guide](http://docs.appcelerator.com/arrowdb/latest/#!/guide/search_query). ",
 			"authRequired": false,
 			"instance": true,
 			"adminRequired": false,

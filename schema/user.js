@@ -91,7 +91,7 @@ module.exports = {
 	methodMeta: {
 		"query": {
 			"summary": "Custom Query of Users",
-			"description": "Custom query of Users objects with sorting and paginating. You can query on sort\nbased on the data in any of the standard User fields. You can also query and\nsort data based on the values of any custom fields, if the values are simple JSON\nvalues.\n\nFor security reasons, when querying for Users the email field is not returned\nin each Users object unless you have [admin access](#!/guide/admin_access).\n\nCurrently you **cannot** sort or query based on data stored inside array or hash\nobjects in custom fields.\n\nIn ACS 1.1.5 and later, you can paginate query results using `skip` and `limit` parameters, or by including\na `where` clause to limit the results to objects whose IDs fall within a specified range.\nFor details, see [Query Pagination](#!/guide/search_query-section-query-pagination).\n\nFor details about using the query parameters,\nsee the [Search and Query guide](#!/guide/search_query).\n",
+			"description": "Custom query of Users objects with sorting and paginating. You can query on sort\nbased on the data in any of the standard User fields. You can also query and\nsort data based on the values of any custom fields, if the values are simple JSON\nvalues.\n\nFor security reasons, when querying for Users the email field is not returned\nin each Users object unless you have [admin access](http://docs.appcelerator.com/arrowdb/latest/#!/guide/admin_access).\n\nCurrently you **cannot** sort or query based on data stored inside array or hash\nobjects in custom fields.\n\nIn ACS 1.1.5 and later, you can paginate query results using `skip` and `limit` parameters, or by including\na `where` clause to limit the results to objects whose IDs fall within a specified range.\nFor details, see [Query Pagination](http://docs.appcelerator.com/arrowdb/latest/#!/guide/search_query-section-query-pagination).\n\nFor details about using the query parameters,\nsee the [Search and Query guide](http://docs.appcelerator.com/arrowdb/latest/#!/guide/search_query).\n",
 			"authRequired": false,
 			"instance": true,
 			"adminRequired": false,
@@ -259,7 +259,7 @@ module.exports = {
 		},
 		"search": {
 			"summary": "Search Users",
-			"description": "Returns the list of users that have been added to the app, sorted by search\nrelevancy.\n\nOptionally, `q` can be given to perform full text search on user's first name,\nlast name, email address, username and tags. For security reasons, when searching for Users\nthe email field is not returned in each Users object unless you have \n[admin access](#!/guide/admin_access).\n\nFor advanced custom search, see query.\n",
+			"description": "Returns the list of users that have been added to the app, sorted by search\nrelevancy.\n\nOptionally, `q` can be given to perform full text search on user's first name,\nlast name, email address, username and tags. For security reasons, when searching for Users\nthe email field is not returned in each Users object unless you have \n[admin access](http://docs.appcelerator.com/arrowdb/latest/#!/guide/admin_access).\n\nFor advanced custom search, see query.\n",
 			"authRequired": false,
 			"instance": true,
 			"adminRequired": false,
@@ -303,7 +303,7 @@ module.exports = {
 			"parameters": [
 				{
 					"name": "device_token",
-					"description": "If specified, all push subscriptions associated with this device token are\ncanceled. See the \"Push Notifications\" section in the\n[Android SDK guide](#!/guide/sdks/android) for more information.\n",
+					"description": "If specified, all push subscriptions associated with this device token are\ncanceled. See the \"Push Notifications\" section in the\n[Android SDK guide](#!http://docs.appcelerator.com/arrowdb/latest/#!/guide/android) for more information.\n",
 					"type": "String"
 				},
 				{
@@ -516,7 +516,7 @@ module.exports = {
 				},
 				{
 					"name": "photo",
-					"description": "New photo to attach as the primary photo for the user.\n\nWhen you use the `photo` parameter to attach a new photo, you can use the\n[custom resize and sync options](#!/guide/photosizes).\n",
+					"description": "New photo to attach as the primary photo for the user.\n\nWhen you use the `photo` parameter to attach a new photo, you can use the\n[custom resize and sync options](http://docs.appcelerator.com/arrowdb/latest/#!/guide/photosizes).\n",
 					"type": "Photos"
 				},
 				{
@@ -531,7 +531,7 @@ module.exports = {
 				},
 				{
 					"name": "custom_fields",
-					"description": "User defined fields. See [Custom Data Fields](#!/guide/customfields).",
+					"description": "User defined fields. See [Custom Data Fields](http://docs.appcelerator.com/arrowdb/latest/#!/guide/customfields).",
 					"type": [
 						"String",
 						"Hash"
