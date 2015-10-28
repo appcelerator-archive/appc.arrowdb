@@ -224,6 +224,11 @@ module.exports = {
 					"type": "String"
 				},
 				{
+					"name": "su_id",
+					"description": "User ID to update this user on behalf of.\nThe current login user must be an application admin to update a user on behalf of another user.",
+					"type": "String"
+				},
+				{
 					"name": "pretty_json",
 					"description": "Determines if the JSON response is formatted for readability (`true`), or displayed on a\nsingle line (`false`). Default is `false`.\n",
 					"type": "Boolean"
@@ -585,11 +590,11 @@ module.exports = {
 					password: params.password
 				};
 			case 'update':
-				defaultValue.user_id = instance.getPrimaryKey();
+				defaultValue.su_id = instance.getPrimaryKey();
 				return defaultValue;
 			case 'delete':
 				return {
-					user_id: instance.getPrimaryKey()
+					su_id: instance.getPrimaryKey()
 				};
 		}
 		return defaultValue;

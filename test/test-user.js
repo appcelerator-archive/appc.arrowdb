@@ -35,9 +35,7 @@ describe('User', function () {
 
 	describe('Update', function () {
 		tests.update(modelName, {first_name: 'Dawson', last_name: 'Toth'});
-	});
 
-	describe('Extension', function () {
 		it('should update users properly over REST', function (done) {
 			var urlToHit = 'http://localhost:' + server.port + '/api/' + modelName,
 				auth = {

@@ -1,6 +1,4 @@
 module.exports = {
-	logs: './logs',
-	quiet: false,
 	logLevel: 'error',
 	apikey: 'U7eX4bHNFCVRgfw2IDypoRabolDqxzLB',
 	admin: {
