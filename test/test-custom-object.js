@@ -10,6 +10,7 @@ var assert = require('assert'),
 
 describe('Custom Objects', function () {
 	var FruitModel = null,
+		FruitNameModel = null,
 		fruitCount = 0,
 		initialCount = 0,
 		testCustomObj = null,
@@ -23,8 +24,8 @@ describe('Custom Objects', function () {
 	before(function (done) {
 		FruitModel = Model.extend('fruit', {
 			fields: {
-				name: { type: String },
-				color: { type: String }
+				name: {type: String},
+				color: {type: String}
 			},
 			connector: 'appc.arrowdb'
 		});
@@ -32,6 +33,16 @@ describe('Custom Objects', function () {
 		should(FruitModel.getConnector()).equal(this.connector);
 
 		this.server.addModel(FruitModel);
+
+		FruitNameModel = Model.reduce('fruit', 'fruitColor', {
+			fields: {
+				name: {type: String}
+			}
+		});
+
+		should(FruitNameModel.getConnector()).equal(this.connector);
+
+		this.server.addModel(FruitNameModel);
 
 		done();
 	});
@@ -45,14 +56,14 @@ describe('Custom Objects', function () {
 				done();
 			});
 		});
-		
+
 		it('should support sel and unsel', function (done) {
 			FruitModel.create({
 				name: 'apple' + Math.round(Math.random() * 1e5),
 				color: 'red'
-			}, function(err) {
+			}, function (err) {
 				assert.ifError(err);
-				FruitModel.query({ sel: { name: 1 } }, function(err, fruits) {
+				FruitModel.query({sel: {name: 1}}, function (err, fruits) {
 					assert.ifError(err);
 					should(fruits).be.an.Object;
 					should(fruits.length).be.ok;
@@ -60,7 +71,7 @@ describe('Custom Objects', function () {
 						should(fruits[i].name).be.ok;
 						should(fruits[i].color).be.not.ok;
 					}
-					FruitModel.query({ unsel: { color: '1' } }, function(err, fruits) {
+					FruitModel.query({unsel: {color: '1'}}, function (err, fruits) {
 						assert.ifError(err);
 						should(fruits).be.an.Object;
 						should(fruits.length).be.ok;
@@ -73,24 +84,24 @@ describe('Custom Objects', function () {
 				});
 			});
 		});
-		
+
 		it('should support order', function (done) {
 			FruitModel.create([
-				{ name: 'apple', color: 'red' },
-				{ name: 'orange', color: 'orange' },
-				{ name: 'watermelon', color: 'green' },
-				{ name: 'banana', color: 'yellow' },
-				{ name: 'kiwi', color: 'green' }
-			], function(err) {
+				{name: 'apple', color: 'red'},
+				{name: 'orange', color: 'orange'},
+				{name: 'watermelon', color: 'green'},
+				{name: 'banana', color: 'yellow'},
+				{name: 'kiwi', color: 'green'}
+			], function (err) {
 				assert.ifError(err);
-				FruitModel.query({ order: { name: 1 } }, function(err, fruits) {
+				FruitModel.query({order: {name: 1}}, function (err, fruits) {
 					assert.ifError(err);
 					should(fruits).be.an.Object;
 					should(fruits.length).be.ok;
 					for (var i = 0; i < fruits.length - 1; i++) {
 						assert(fruits[i].name <= fruits[i + 1].name);
 					}
-					FruitModel.query({ order: { name: -1 } }, function(err, fruits) {
+					FruitModel.query({order: {name: -1}}, function (err, fruits) {
 						assert.ifError(err);
 						should(fruits).be.an.Object;
 						should(fruits.length).be.ok;
@@ -102,24 +113,24 @@ describe('Custom Objects', function () {
 				});
 			});
 		});
-		
+
 		it('should support order as string', function (done) {
 			FruitModel.create([
-				{ name: 'apple', color: 'red' },
-				{ name: 'orange', color: 'orange' },
-				{ name: 'watermelon', color: 'green' },
-				{ name: 'banana', color: 'yellow' },
-				{ name: 'kiwi', color: 'green' }
-			], function(err) {
+				{name: 'apple', color: 'red'},
+				{name: 'orange', color: 'orange'},
+				{name: 'watermelon', color: 'green'},
+				{name: 'banana', color: 'yellow'},
+				{name: 'kiwi', color: 'green'}
+			], function (err) {
 				assert.ifError(err);
-				FruitModel.query({ order: 'name' }, function(err, fruits) {
+				FruitModel.query({order: 'name'}, function (err, fruits) {
 					assert.ifError(err);
 					should(fruits).be.an.Object;
 					should(fruits.length).be.ok;
 					for (var i = 0; i < fruits.length - 1; i++) {
 						assert(fruits[i].name <= fruits[i + 1].name);
 					}
-					FruitModel.query({ order: '-name' }, function(err, fruits) {
+					FruitModel.query({order: '-name'}, function (err, fruits) {
 						assert.ifError(err);
 						should(fruits).be.an.Object;
 						should(fruits.length).be.ok;
@@ -135,20 +146,20 @@ describe('Custom Objects', function () {
 		it('should support $like', function (done) {
 
 			async.eachSeries([
-				{ insert: 'Hello world', where: 'Hello%' },
+				{insert: 'Hello world', where: 'Hello%'},
 				// Not supported by ACS: { insert: 'Hello world', where: '%world' },
 				// Not supported by ACS: { insert: 'Hello world', where: '%Hello%' },
-				{ insert: '10% Off', where: '10%% %' },
-				{ insert: '10% Off', where: '10\\% %' },
-				{ insert: 'Hello world', where: 'Hello world' },
-				{ insert: 'Hello world', where: 'He%ld' },
-				{ insert: 'We use _.js', where: 'We % \\_._s' }
-			], function(item, next) {
-				FruitModel.create({ name: item.insert, color: 'testing' }, function(err) {
+				{insert: '10% Off', where: '10%% %'},
+				{insert: '10% Off', where: '10\\% %'},
+				{insert: 'Hello world', where: 'Hello world'},
+				{insert: 'Hello world', where: 'He%ld'},
+				{insert: 'We use _.js', where: 'We % \\_._s'}
+			], function (item, next) {
+				FruitModel.create({name: item.insert, color: 'testing'}, function (err) {
 					if (err) {
 						return next(item.where + ' insert failed: ' + err);
 					}
-					FruitModel.query({ where: { name: { $like: item.where } } }, function(err, coll) {
+					FruitModel.query({where: {name: {$like: item.where}}}, function (err, coll) {
 						if (err || !coll || !coll.length) {
 							return next(item.where + ' lookup failed: ' + (err || 'none found'));
 						}
@@ -156,11 +167,11 @@ describe('Custom Objects', function () {
 					});
 				});
 			}, done);
-		
+
 		});
 
 		it('should return no more than 1000 custom objects using a query', function (done) {
-			FruitModel.query({ limit: 1000 }, function (err, fruits) {
+			FruitModel.query({limit: 1000}, function (err, fruits) {
 				assert.ifError(err);
 				should(fruits).be.an.Object;
 				should(fruits.length).be.within(1, 1000);
@@ -190,7 +201,7 @@ describe('Custom Objects', function () {
 		});
 
 		it('should fail when trying to query more than 1000 custom objects', function (done) {
-			FruitModel.query({ limit: 1001 }, function (err) {
+			FruitModel.query({limit: 1001}, function (err) {
 				assertFailure(err);
 				should(err.statusCode).equal(400);
 				should(err.body.meta.code).equal(400);
@@ -202,7 +213,7 @@ describe('Custom Objects', function () {
 
 	describe('Create', function () {
 		it('should create a custom object via built-in model', function (done) {
-			var r = Math.round(Math.random()*1e5),
+			var r = Math.round(Math.random() * 1e5),
 				params = {
 					name: 'grape' + r,
 					color: 'purple'
@@ -235,12 +246,12 @@ describe('Custom Objects', function () {
 
 		it('should create a custom object via custom model', function (done) {
 			var params = {
-					name: 'apple' + Math.round(Math.random()*1e5),
-					color: 'red'
-				};
+				name: 'apple' + Math.round(Math.random() * 1e5),
+				color: 'red'
+			};
 
 			FruitModel.create(params, function (err, fruit) {
-	 			assert.ifError(err);
+				assert.ifError(err);
 
 				assertFruit(fruit);
 
@@ -344,18 +355,31 @@ describe('Custom Objects', function () {
 		});
 
 		it('should not find any custom objects with a invalid id', function (done) {
-			FruitModel.findOne('this_id_is_invalid', function (err,results) {
+			FruitModel.findOne('this_id_is_invalid', function (err, results) {
 				should(err).not.be.ok;
 				should(results).not.be.ok;
 				done();
 			});
 		});
-		
+
 		it('should return default of 1000 custom objects with findAll', function (done) {
 			FruitModel.findAll(function (err, fruits) {
 				assert.ifError(err);
 				should(fruits).be.an.Object;
-				should(fruits.length).be.within(0, 1000);
+				should(fruits.length).be.within(1, 1000);
+				should(fruits[0]).have.property('name');
+				should(fruits[0]).have.property('color');
+				done();
+			});
+		});
+
+		it('should return custom objects from a reduced model', function (done) {
+			FruitNameModel.findAll(function (err, fruits) {
+				assert.ifError(err);
+				should(fruits).be.an.Object;
+				should(fruits.length).be.within(1, 1000);
+				should(fruits[0]).have.property('name');
+				should(fruits[0]).not.have.property('color');
 				done();
 			});
 		});
@@ -510,10 +534,10 @@ describe('Custom Objects', function () {
 
 		it('should delete custom object using custom object by instance', function (done) {
 			FruitModel.create({
-				name: 'banana' + Math.round(Math.random()*1e5),
+				name: 'banana' + Math.round(Math.random() * 1e5),
 				color: 'yellow'
 			}, function (err, fruit) {
- 				assert.ifError(err);
+				assert.ifError(err);
 				assertFruit(fruit);
 
 				tmpFruit = fruit;
@@ -637,13 +661,13 @@ describe('Custom Objects', function () {
 		});
 	});
 
-	describe('Invalid primary key', function(){
-		it('should return 404 on invalid id', function(done){
+	describe('Invalid primary key', function () {
+		it('should return 404 on invalid id', function (done) {
 			if (!FruitModel) {
 				FruitModel = Model.extend('fruit', {
 					fields: {
-						name: { type: String },
-						color: { type: String }
+						name: {type: String},
+						color: {type: String}
 					},
 					connector: 'appc.arrowdb'
 				});
@@ -653,7 +677,7 @@ describe('Custom Objects', function () {
 				this.server.addModel(FruitModel);
 			}
 
-			FruitModel.find('12345', function(err,resp){
+			FruitModel.find('12345', function (err, resp) {
 				should(err).not.be.ok;
 				should(resp).not.be.ok;
 				done();

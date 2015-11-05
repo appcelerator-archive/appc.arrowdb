@@ -1,5 +1,5 @@
 module.exports = {
-	logLevel: 'error',
+	logLevel: 'info',
 	apikey: 'U7eX4bHNFCVRgfw2IDypoRabolDqxzLB',
 	admin: {
 		enabled: true,
