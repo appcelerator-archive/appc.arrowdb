@@ -42,6 +42,43 @@ var User = Arrow.Model.extend('user', {
 });
 ```
 
+### Authenticating Through ArrowDB
+
+You can pass authentication through this connector on to ArrowDB by changing the configuration. To get started,
+set `requireSessionLogin` to `true` for the ArrowDB connector:
+
+```javascript
+module.exports = {
+	connectors: {
+		'appc.arrowdb': {
+			...
+			requireSessionLogin: true
+			...
+		}
+	}
+};
+```
+
+This property allows you to configure whether or not anonymous requests can use your default account (specified in your
+configuration files) for connecting to the server. Set this to "true" to require requests to specify their own
+credentials or their own cookie string (via the headers user, and pass, or accesstoken).
+
+With it set to true, call any of the REST APIs on a ArrowDB model, such as User.findAll, and provide credentials
+via headers:
+
+```bash
+curl --header "user: aUsername" --header "pass: aPassword" http://localhost:8080/api/appc.arrowdb/user
+```
+
+The request will execute, and you will either get back an error if the login failed, or you will get the results of the 
+findAll query. You will also get back the header "sessioncookiestring". For future requests, pass this header back
+instead of the user and pass headers. This allows us to re-use the session.
+
+```bash
+curl --header "sessioncookiestring: theSessionCookieString" http://localhost:8080/api/appc.arrowdb/user
+```
+
+
 ## Development
 
 > This section is for individuals developing the ArrowDB Connector and not intended
