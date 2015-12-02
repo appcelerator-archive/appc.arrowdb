@@ -345,7 +345,7 @@ describe('Custom Objects', function () {
 	describe('FindAll and FindOne', function () {
 		it('should find the custom object by id', function (done) {
 			assert(testFruit);
-			FruitModel.findOne(testFruit.getPrimaryKey(), function (err, fruit) {
+			FruitModel.findByID(testFruit.getPrimaryKey(), function (err, fruit) {
 				assert.ifError(err);
 				assertFruit(fruit);
 				should(fruit.name).equal(testFruit.name);
@@ -355,7 +355,7 @@ describe('Custom Objects', function () {
 		});
 
 		it('should not find any custom objects with a invalid id', function (done) {
-			FruitModel.findOne('this_id_is_invalid', function (err, results) {
+			FruitModel.findByID('this_id_is_invalid', function (err, results) {
 				should(err).not.be.ok;
 				should(results).not.be.ok;
 				done();
