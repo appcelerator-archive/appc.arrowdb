@@ -46,15 +46,22 @@ function init(ctx, beforeFn) {
 		}
 	});
 
-	afterEach(function (){
+	afterEach(function () {
 		if (this.connector) {
 			this.connector.reset();
-		}
-		else if (state.connector) {
+		} else if (state.connector) {
 			state.connector.reset();
 		}
 	});
 }
+
+after(function (cb) {
+	if (state.server) {
+		state.server.stop(cb);
+	} else {
+		cb();
+	}
+});
 
 function assertFailure(err) {
 	assert(err);

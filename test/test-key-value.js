@@ -48,12 +48,12 @@ describe('Key Value', function () {
 			});
 		});
 
-		it.skip('should delete', function (next) {
-			Model._delete({
+		it('should delete', function (next) {
+			Model._get({
 				name: 'welcome_message'
-			}, function (err) {
+			}, function (err, instance) {
 				should(err).be.not.ok;
-				next();
+				instance.delete(next);
 			});
 		});
 
@@ -92,12 +92,25 @@ describe('Key Value', function () {
 			});
 		});
 
-		it.skip('should delete', function (next) {
-			Model._delete({
+		it('should update', function (next) {
+			Model._get({
 				name: 'welcome_count'
-			}, function (err) {
+			}, function (err, instance) {
 				should(err).be.not.ok;
-				next();
+				instance.value = 1337;
+				Model.update(instance, function (err) {
+					should(err).be.not.ok;
+					next();
+				});
+			});
+		});
+
+		it('should delete', function (next) {
+			Model._get({
+				name: 'welcome_count'
+			}, function (err, instance) {
+				should(err).be.not.ok;
+				instance.delete(next);
 			});
 		});
 

@@ -142,7 +142,7 @@ function deleteAll(modelName) {
 	});
 
 	it('should delete objects by id', function (done) {
-		Model.query({limit: 1000}, function (err, items) {
+		Model.query({limit: 50}, function (err, items) {
 			assert.ifError(err);
 			should(items).be.an.Object;
 			should(items.length).be.within(0, 1000);
@@ -159,6 +159,14 @@ function deleteAll(modelName) {
 			}
 
 			deleteOne();
+		});
+	});
+
+	it('should delete all objects', function (done) {
+		Model.deleteAll(function (err) {
+			assert.ifError(err);
+			Model.deleteAll();
+			done();
 		});
 	});
 }
