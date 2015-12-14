@@ -79,6 +79,19 @@ describe('Login', function () {
 		});
 	});
 
+	it('should make sure auth is required even after auth params', function makeSureAuthIsRequired(cb) {
+		request({
+			method: 'GET',
+			uri: urlToHit,
+			auth: auth,
+			json: true
+		}, function (err, response, body) {
+			should(body.success).be.false;
+			should(body.message).containEql('Authentication is required. Please pass these headers:');
+			cb();
+		});
+	});
+
 	it('should pass with valid sessionCookieString', function passGoodAccessToken(cb) {
 		request({
 			method: 'GET',
@@ -93,6 +106,19 @@ describe('Login', function () {
 			should(response).be.ok;
 			should(response.headers).have.property('set-cookie');
 			should(response.headers['set-cookie']).match(/arrowdbuid=/);
+			cb();
+		});
+	});
+
+	it('should make sure auth is required even after sessionCookieString', function makeSureAuthIsRequired(cb) {
+		request({
+			method: 'GET',
+			uri: urlToHit,
+			auth: auth,
+			json: true
+		}, function (err, response, body) {
+			should(body.success).be.false;
+			should(body.message).containEql('Authentication is required. Please pass these headers:');
 			cb();
 		});
 	});
