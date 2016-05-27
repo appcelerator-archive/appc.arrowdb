@@ -586,7 +586,7 @@ module.exports = {
 			//NOTE: added manually
 			case 'login':
 				return {
-					login: instance.username,
+					login: params.username,
 					password: params.password
 				};
 			case 'update':
