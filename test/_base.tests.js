@@ -1,3 +1,4 @@
+// jscs:disable jsDoc
 var assert = require('assert'),
 	async = require('async'),
 	should = require('should'),
@@ -151,8 +152,7 @@ function deleteAll(modelName) {
 				should(err).be.not.ok;
 				if (items.length === 0) {
 					done();
-				}
-				else {
+				} else {
 					var item = items.pop();
 					item.delete(deleteOne);
 				}

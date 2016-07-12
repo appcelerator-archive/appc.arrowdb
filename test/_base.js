@@ -1,3 +1,4 @@
+// jscs:disable jsDoc
 'use strict';
 
 var Arrow = require('arrow'),
@@ -27,8 +28,7 @@ function init(ctx, beforeFn) {
 			this.connector = state.connector;
 			beforeFn && beforeFn.call(this);
 			next();
-		}
-		else {
+		} else {
 			this.server = state.server = new Arrow({
 				ignoreDuplicateModels: true,
 				generateModelsFromSchema: true,

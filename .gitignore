@@ -8,3 +8,4 @@ logs
 conf/local.js
 undefined.metadata
 coverage
+.idea

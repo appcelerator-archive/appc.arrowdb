@@ -4,14 +4,14 @@
  */
 
 var Arrow = require('arrow'),
-	server = new Arrow({ignoreDuplicateModels:true});
+	server = new Arrow({ignoreDuplicateModels: true});
 
 // lifecycle examples
-server.on('starting', function() {
+server.on('starting', function () {
 	server.logger.info('server is starting!');
 });
 
-server.on('started', function() {
+server.on('started', function () {
 	server.logger.info('server started!');
 });
 

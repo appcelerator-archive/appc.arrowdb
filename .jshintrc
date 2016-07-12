@@ -18,6 +18,5 @@
 	"node": true,
 	"-W104": true,
 	"-W068": true,
-	"globals": {},
-	"node": true
+	"globals": {}
 }
