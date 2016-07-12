@@ -1,4 +1,5 @@
 /* global init, assertFailure, dump */
+// jscs:disable jsDoc
 'use strict';
 
 require('./_base');
@@ -38,7 +39,7 @@ describe('Place', function () {
 	});
 
 	describe('Update', function () {
-		tests.update(modelName, { state: 'California' });
+		tests.update(modelName, {state: 'California'});
 	});
 
 	describe('Delete All', function () {

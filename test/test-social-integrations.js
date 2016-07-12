@@ -1,4 +1,5 @@
 /* global init, assertFailure, dump */
+// jscs:disable jsDoc
 'use strict';
 
 require('./_base');

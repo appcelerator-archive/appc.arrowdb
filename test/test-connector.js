@@ -1,4 +1,5 @@
 /* global init, assertFailure, dump */
+// jscs:disable jsDoc
 'use strict';
 
 var should = require('should');

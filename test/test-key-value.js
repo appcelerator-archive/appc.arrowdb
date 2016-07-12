@@ -1,4 +1,5 @@
 /* global init, assertFailure, dump */
+// jscs:disable jsDoc
 'use strict';
 
 require('./_base');
@@ -80,7 +81,6 @@ describe('Key Value', function () {
 				next();
 			});
 		});
-
 
 		it('should get', function (next) {
 			Model._get({
