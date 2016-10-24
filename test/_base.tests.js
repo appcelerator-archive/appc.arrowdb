@@ -7,7 +7,7 @@ var assert = require('assert'),
  Public API.
  */
 exports.create = create;
-exports.findAllAndFindOne = findAllAndFindOne;
+exports.findAllAndFindByID = findAllAndFindByID;
 exports.queryAndCount = queryAndCount;
 exports.update = update;
 exports.deleteAll = deleteAll;
@@ -32,7 +32,7 @@ function create(modelName, creationDict) {
 	});
 }
 
-function findAllAndFindOne(modelName) {
+function findAllAndFindByID(modelName) {
 	var Model,
 		testObject;
 	before(function () {
@@ -51,7 +51,7 @@ function findAllAndFindOne(modelName) {
 
 	it('should find the object by id', function (done) {
 		assert(testObject);
-		Model.findOne(testObject.getPrimaryKey(), function (err, instance) {
+		Model.findByID(testObject.getPrimaryKey(), function (err, instance) {
 			assert.ifError(err);
 			should(instance).be.ok;
 			done();
@@ -59,7 +59,7 @@ function findAllAndFindOne(modelName) {
 	});
 
 	it('should not find any objects with a invalid id', function (done) {
-		Model.findOne('this_id_is_invalid', function (err, results) {
+		Model.findByID('this_id_is_invalid', function (err, results) {
 			should(err).not.be.ok;
 			should(results).not.be.ok;
 			done();

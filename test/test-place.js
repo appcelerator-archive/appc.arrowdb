@@ -29,8 +29,8 @@ describe('Place', function () {
 		});
 	});
 
-	describe('FindAll and FindOne', function () {
-		tests.findAllAndFindOne(modelName);
+	describe('FindAll and FindByID', function () {
+		tests.findAllAndFindByID(modelName);
 	});
 
 	describe('Query and Count', function () {
