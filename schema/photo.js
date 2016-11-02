@@ -498,6 +498,5 @@ module.exports = {
 		return defaultValue;
 	},
 
-	actions: ["delete", "create", "read", "update"],
-	disabledActions: ["findOne"]
+	actions: ["delete", "create", "read", "update"]
 };
