@@ -511,6 +511,19 @@ describe('Custom Objects', function () {
 				done();
 			});
 		});
+
+		it('should show custom object via connector\'s method', function (done) {
+			this.connector.show(testFruit, {
+				classname: 'fruit',
+				id: testFruit.getPrimaryKey()
+			}, function (err, fruit) {
+				assert.ifError(err);
+				assertFruit(fruit);
+				should(fruit.name).equal(testFruit.name);
+				should(fruit.color).equal(testFruit.color);
+				done();
+			});
+		});
 	});
 
 	describe('Delete', function () {
@@ -631,7 +644,7 @@ describe('Custom Objects', function () {
 	});
 
 	describe('Delete All', function () {
-		it.skip('should delete all custom objects', function (done) {
+		it('should delete all custom objects', function (done) {
 			var fruits = [];
 
 			async.times(3, function (n, next) {
@@ -648,14 +661,12 @@ describe('Custom Objects', function () {
 				FruitModel.deleteAll(function (err) {
 					assert.ifError(err);
 
-					setTimeout(function () {
-						FruitModel.count(function (err, count) {
-							assert.ifError(err);
-							should(count).be.a.Number;
-							should(count).equal(0);
-							done();
-						});
-					}, 5000);
+					FruitModel.count(function (err, count) {
+						assert.ifError(err);
+						should(count).be.a.Number;
+						should(count).equal(0);
+						done();
+					});
 				});
 			});
 		});
