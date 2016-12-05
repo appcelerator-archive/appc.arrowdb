@@ -56,11 +56,9 @@ function init(ctx, beforeFn) {
 }
 
 after(function (cb) {
-	if (state.server) {
+	state.connector.disconnect(function () {
 		state.server.stop(cb);
-	} else {
-		cb();
-	}
+	});
 });
 
 function assertFailure(err) {
