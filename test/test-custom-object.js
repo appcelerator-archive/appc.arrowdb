@@ -340,6 +340,38 @@ describe('Custom Objects', function () {
 				done();
 			});
 		});
+
+		it('should create models via batch operation', function(done) {
+			var values = [];
+			for (var i = 0; i < 50; i++) {
+				values.push({
+					name: 'Batch Apple ' + (i + 1),
+					color: 'red'
+				});
+			}
+			FruitModel.create(values, function (err, result) {
+				assert.ifError(err);
+				should(result.received).equal(50);
+				should(result.inserted).equal(50);
+				initialCount += 50;
+				done();
+			});
+		});
+
+		it('should report error when exceeding the batch create limit', function(done) {
+			var values = [];
+			for (var i = 0; i < 105; i++) {
+				values.push({
+					name: 'Batch Apple ' + (i + 1),
+					color: 'red'
+				});
+			}
+
+			FruitModel.create(values, function (err, result) {
+				err.should.be.equal('100 objects batch create limit exceeded');
+				done();
+			});
+		});
 	});
 
 	describe('FindAll and FindByID', function () {
@@ -661,12 +693,15 @@ describe('Custom Objects', function () {
 				FruitModel.deleteAll(function (err) {
 					assert.ifError(err);
 
-					FruitModel.count(function (err, count) {
-						assert.ifError(err);
-						should(count).be.a.Number;
-						should(count).equal(0);
-						done();
-					});
+					// Batch delete is async so we wait a little before counting
+					setTimeout(function() {
+						FruitModel.count(function (err, count) {
+							assert.ifError(err);
+							should(count).be.a.Number;
+							should(count).equal(0);
+							done();
+						});
+					}, 500);
 				});
 			});
 		});
