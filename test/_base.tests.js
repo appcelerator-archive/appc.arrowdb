@@ -11,6 +11,7 @@ exports.findAllAndFindByID = findAllAndFindByID;
 exports.queryAndCount = queryAndCount;
 exports.update = update;
 exports.deleteAll = deleteAll;
+exports.mockDBMethod = mockDBMethod;
 
 /*
  Implementation.
@@ -185,4 +186,23 @@ function deleteAll(modelName) {
 			done();
 		});
 	});
+}
+
+function mockDBMethod (name, resp, once) {
+	var db = this.connector.getDB();
+	var origMethod = db[name];
+	db[name] = function (params, cb) {
+		cb(null, {
+			body: resp
+		});
+
+		if (once) {
+			// Restore the original method
+			db[name] = origMethod;
+		} else {
+			return function () {
+				db[name] = origMethod;
+			};
+		}
+	};
 }
