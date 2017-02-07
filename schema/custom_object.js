@@ -32,6 +32,10 @@ module.exports = {
 		'adminDropCollection': {
 			authRequired: true
 		},
+		'batchCreate': {
+			alias: 'createMany',
+			authRequired: true
+		},
 		'batchDelete': {
 			alias: 'deleteAll',
 			authRequired: true
