@@ -19,7 +19,10 @@ module.exports = {
 			modelAutogen: false,
 
 			// Wether or not to use batch create/delete
-			batchOperationsEnabled: true
+			batchOperationsEnabled: true,
+
+			// Default limit value for findAll and deleteAll (non-batch)
+			defaultLimit: 1000
 		}
 	}
 };
