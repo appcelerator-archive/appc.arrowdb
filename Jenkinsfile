@@ -2,7 +2,7 @@
 @Library('pipeline-library') _
 
 timestamps {
-	node('git && (osx || linux)') {
+	node('git && (osx || linux) && !master') {
 		stage('Checkout') {
 			checkout scm
 		}
