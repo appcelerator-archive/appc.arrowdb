@@ -36,7 +36,7 @@ describe('User', function () {
 	describe('Update', function () {
 		tests.update(modelName, {first_name: 'Dawson', last_name: 'Toth'});
 
-		it.skip('should update users properly over REST', function (done) {
+		it('should update users properly over REST', function (done) {
 			var urlToHit = 'http://localhost:' + server.port + '/api/' + modelName,
 				auth = {
 					user: server.config.apikey,

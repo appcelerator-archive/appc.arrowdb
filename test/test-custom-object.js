@@ -675,7 +675,7 @@ describe('Custom Objects', function () {
 							should(count).equal(0);
 							done();
 						});
-					}, 500);
+					}, 1000);
 				});
 			});
 		});
