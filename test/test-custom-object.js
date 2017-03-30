@@ -199,6 +199,16 @@ describe('Custom Objects', function () {
 				done();
 			});
 		});
+
+		it('should fail when trying to query more than 1000 custom objects', function (done) {
+			FruitModel.query({limit: 1001}, function (err) {
+				assertFailure(err);
+				should(err.statusCode).equal(400);
+				should(err.body.meta.code).equal(400);
+				should(err.body.meta.message).equal('Invalid limit parameter; value must be in a valid range of 1~1000');
+				done();
+			});
+		});
 	});
 
 	describe('Create', function () {
@@ -341,8 +351,24 @@ describe('Custom Objects', function () {
 			}
 			FruitModel.create(values, function (err, result) {
 				assert.ifError(err);
-				should(result.length).equal(50);
+				should(result.received).equal(50);
+				should(result.inserted).equal(50);
 				initialCount += 50;
+				done();
+			});
+		});
+
+		it('should report error when exceeding the batch create limit', function(done) {
+			var values = [];
+			for (var i = 0; i < 105; i++) {
+				values.push({
+					name: 'Batch Apple ' + (i + 1),
+					color: 'red'
+				});
+			}
+
+			FruitModel.create(values, function (err, result) {
+				err.should.be.equal('100 objects batch create limit exceeded');
 				done();
 			});
 		});
