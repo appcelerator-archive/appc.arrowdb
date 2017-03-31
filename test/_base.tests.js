@@ -107,6 +107,17 @@ function queryAndCount(modelName) {
 			done();
 		});
 	});
+
+	it('should fail when trying to query more than 1000 objects', function (done) {
+		Model.query({limit: 1001}, function (err) {
+			assert(err);
+			should(err).be.an.Error;
+			should(err.statusCode).equal(400);
+			should(err.body.meta.code).equal(400);
+			should(err.body.meta.message).equal('Invalid limit parameter; value must be in a valid range of 1~1000');
+			done();
+		});
+	});
 }
 
 function update(modelName, updateDict) {
