@@ -4,132 +4,131 @@
  */
 
 if (!process.env.GITHUB_TOKEN) {
-	console.error('The GITHUB_TOKEN=your_personal_github_token env arg is required for this script.');
-	process.exit(1);
+  console.error('The GITHUB_TOKEN=your_personal_github_token env arg is required for this script.')
+  process.exit(1)
 }
 
 /*
  Deps.
  */
-var yaml = require('js-yaml'),
-	_ = require('lodash'),
-	fs = require('fs'),
-	os = require('os'),
-	path = require('path'),
-	https = require('https'),
-	urlLib = require('url');
+const yaml = require('js-yaml')
+const _ = require('lodash')
+const fs = require('fs')
+const os = require('os')
+const path = require('path')
+const https = require('https')
+const urlLib = require('url')
 
 /*
  Configuration.
  */
-var excludedFields = ['id'],
-	excludedMethods = ['count'],
-	excludedObjects = [],
-	// fields that aren't in our documentation but should exist in the data model
-	includeFields = [{
-		name: 'custom_fields',
-		type: 'Object',
-		description: 'User defined fields.'
-	},{
-		name: 'user_id',
-		type: 'String',
-		description: 'Specifies the owner of object.'
-	}];
+var excludedFields = ['id']
+var excludedMethods = ['count']
+var excludedObjects = []
+  // fields that aren't in our documentation but should exist in the data model
+var includeFields = [{
+  name: 'custom_fields',
+  type: 'Object',
+  description: 'User defined fields.'
+}, {
+  name: 'user_id',
+  type: 'String',
+  description: 'Specifies the owner of object.'
+}]
 
 /*
  State.
  */
-var cache = process.env.CACHE || false,
-	repo = 'appcelerator/cloud_docs',
-	apiEndpoint = 'https://api.github.com/repos/' + repo + '/contents/',
-	rawEndpoint = 'https://raw.githubusercontent.com/' + repo + '/master/',
-	template = _.template(fs.readFileSync(path.join(__dirname, 'template.ejs')), undefined, { variable: 'data' }),
-	header = 'x-oauth-basic',
-	token = process.env.GITHUB_TOKEN;
+var cache = process.env.CACHE || false
+var repo = 'appcelerator/cloud_docs'
+var apiEndpoint = 'https://api.github.com/repos/' + repo + '/contents/'
+var rawEndpoint = 'https://raw.githubusercontent.com/' + repo + '/master/'
+var template = _.template(fs.readFileSync(path.join(__dirname, 'template.ejs')), undefined, { variable: 'data' })
+var header = 'x-oauth-basic'
+var token = process.env.GITHUB_TOKEN
 
-var downloading = 0,
-	objects = {};
+var downloading = 0
+var objects = {}
 
-console.log('Download the directory listing for apidoc.');
-downloading += 1;
-grab(apiEndpoint + 'apidoc', downloadedJSON);
+console.log('Download the directory listing for apidoc.')
+downloading += 1
+grab(apiEndpoint + 'apidoc', downloadedJSON)
 
 /**
  * Handles a downloaded directory listing from GitHub, recursively downloading each directory within it, and
  * downloading any contained YAML files.
  * @param body
  */
-function downloadedJSON(body) {
-	downloading -= 1;
-	var files = JSON.parse(body);
-	for (var i = 0; i < files.length; i++) {
-		var file = files[i];
-		if (file.type === 'dir') {
-			console.log('Recursing into ' + file.path + '.');
-			downloading += 1;
-			grab(apiEndpoint + file.path, downloadedJSON);
-		}
-		else {
-			console.log('Parsing ' + file.path + '.');
-			downloading += 1;
-			grab(rawEndpoint + file.path, downloadedYAML);
-		}
-	}
-	checkDone();
+function downloadedJSON (body) {
+  downloading -= 1
+  var files = JSON.parse(body)
+  for (var i = 0; i < files.length; i++) {
+    var file = files[i]
+    if (file.type === 'dir') {
+      console.log('Recursing into ' + file.path + '.')
+      downloading += 1
+      grab(apiEndpoint + file.path, downloadedJSON)
+    } else {
+      console.log('Parsing ' + file.path + '.')
+      downloading += 1
+      grab(rawEndpoint + file.path, downloadedYAML)
+    }
+  }
+  checkDone()
 }
 
 /**
  * Handles a downloaded YAML file, parsing it and mixing it in to our store of objects.
  * @param body
  */
-function downloadedYAML(body) {
-	downloading -= 1;
-	// Strip out links and HTML (for now).
-	body = body
-		.replace(/<[^>]+>/g, '')
-		.replace(/\{@link\s([^ ]+)\}/g, '$1')
-		.replace(/\{@link\s[^ ]+\s([^}]+?)\}/g, '$1');
-	// Load the doc.
-	var doc = yaml.safeLoad(body),
-		object = objects[doc.name] = objects[doc.name] || {
-			name: doc.name
-		};
+function downloadedYAML (body) {
+  downloading -= 1
+  // Strip out links and HTML (for now).
+  body = body
+    .replace(/<[^>]+>/g, '')
+    .replace(/\{@link\s([^ ]+)\}/g, '$1')
+    .replace(/\{@link\s[^ ]+\s([^}]+?)\}/g, '$1')
+  // Load the doc.
+  var doc = yaml.safeLoad(body)
+  var object = objects[doc.name] = objects[doc.name] || {
+    name: doc.name
+  }
 
-	// Should we log additional info on the doc for development purposes?
-	if (process.env.LOG_KEY && process.env.LOG_KEY === doc.name) {
-		console.log('------------------------------------------------------------------');
-		console.log('- Parsed YAML Doc');
-		console.log('------------------------------------------------------------------');
-		console.log(require('util').inspect(doc, false, null));
-		console.log('------------------------------------------------------------------');
-	}
+  // Should we log additional info on the doc for development purposes?
+  if (process.env.LOG_KEY && process.env.LOG_KEY === doc.name) {
+    console.log('------------------------------------------------------------------')
+    console.log('- Parsed YAML Doc')
+    console.log('------------------------------------------------------------------')
+    console.log(require('util').inspect(doc, false, null))
+    console.log('------------------------------------------------------------------')
+  }
 
-	// Concat methods.
-	if (doc.methods) {
-		object.methods = (object.methods || []).concat(doc.methods);
-		object.methods = object.methods.filter(excludeCertainMethods);
-	}
+  // Concat methods.
+  if (doc.methods) {
+    object.methods = (object.methods || []).concat(doc.methods)
+    object.methods = object.methods.filter(excludeCertainMethods)
+  }
 
-	// Concat fields.
-	if (doc.fields) {
-		for (var i = 0; i < doc.fields.length; i++) {
-			var field = doc.fields[i];
-			field.type = translateType(String(field.originalType = field.type));
-		}
-		object.fields = (object.fields || []).concat(doc.fields).concat(includeFields).filter(excludeCertainFields);
-	}
+  // Concat fields.
+  if (doc.fields) {
+    for (var i = 0; i < doc.fields.length; i++) {
+      var field = doc.fields[i]
+      field.type = translateType(String(field.originalType = field.type))
+    }
+    object.fields = (object.fields || []).concat(doc.fields).concat(includeFields).filter(excludeCertainFields)
+  }
 
-	// Check if its private (such as "Reviewable" and other future mixins).
-	if (doc.private) {
-		object.private = true;
-	}
+  // Check if its private (such as "Reviewable" and other future mixins).
+  if (doc.private) {
+    object.private = true
+  }
 
-	// Check if a mixin is used.
-	if (doc.mixin) {
-		object.mixin = doc.mixin;
-	}
+  // Check if a mixin is used.
+  if (doc.mixin) {
+    object.mixin = doc.mixin
+  }
 
-	checkDone();
+  checkDone()
 }
 
 /**
@@ -137,8 +136,8 @@ function downloadedYAML(body) {
  * @param field
  * @returns {*|boolean}
  */
-function excludeCertainFields(field) {
-	return field && excludedFields.indexOf(field.name) === -1;
+function excludeCertainFields (field) {
+  return field && excludedFields.indexOf(field.name) === -1
 }
 
 /**
@@ -146,8 +145,8 @@ function excludeCertainFields(field) {
  * @param method
  * @returns {*|boolean}
  */
-function excludeCertainMethods(method) {
-	return method && excludedMethods.indexOf(method.name) === -1;
+function excludeCertainMethods (method) {
+  return method && excludedMethods.indexOf(method.name) === -1
 }
 
 /**
@@ -155,100 +154,97 @@ function excludeCertainMethods(method) {
  * @param type
  * @returns {*}
  */
-function translateType(type) {
-	if (['Array', 'String', 'Date', 'Number', 'Boolean'].indexOf(type) >= 0) {
-		// No change necessary.
-		return type;
-	}
-	if (type.indexOf('Array<') === 0
-		|| type.indexOf('Collections') > 0
-		|| type.slice(-1) === 's') {
-		return 'Array';
-	}
-	if (type === 'Hash'
-		|| type == 'String,BinaryData'
-		|| type === 'String,Hash') {
-		return 'Object';
-	}
+function translateType (type) {
+  if (['Array', 'String', 'Date', 'Number', 'Boolean'].indexOf(type) >= 0) {
+    // No change necessary.
+    return type
+  }
+  if (type.indexOf('Array<') === 0 ||
+    type.indexOf('Collections') > 0 ||
+    type.slice(-1) === 's') {
+    return 'Array'
+  }
+  if (type === 'Hash' ||
+    type === 'String,BinaryData' ||
+    type === 'String,Hash') {
+    return 'Object'
+  }
 
-	console.error('Unknown type encountered: "' + type + '".');
-	process.exit(1);
+  console.error('Unknown type encountered: "' + type + '".')
+  process.exit(1)
 }
 
 /**
  * Sees if we are done with all downloads, and if so, begins writing models.
  */
-function checkDone() {
-	if (downloading === 0) {
-		console.log('All necessary information has been downloaded.');
-		console.log('Writing out models.');
-		writeModels();
-	}
+function checkDone () {
+  if (downloading === 0) {
+    console.log('All necessary information has been downloaded.')
+    console.log('Writing out models.')
+    writeModels()
+  }
 }
 
 /**
  * Well... it writes out the models. Stop acting so surprised!
  */
-function writeModels() {
-	for (var key in objects) {
-		if (objects.hasOwnProperty(key)) {
-			var object = objects[key];
-			// Is it private?
-			if (object.private) {
-				console.log('Skipping ' + key + ' because it is flagged "private".');
-				continue;
-			}
-			if (excludedObjects.indexOf(key)!==-1) {
-				console.log('Skipping ' + key + ' because it is marked as excluded.');
-				continue;
-			}
-			// Does it use a mixin?
-			if (object.mixin) {
-				var mixin = objects[object.mixin];
-				if (mixin.methods) {
-					object.methods = (object.methods || []).concat(mixin.methods);
-				}
-				if (mixin.fields) {
-					object.fields = (object.fields || []).concat(mixin.fields);
-				}
-			}
-			// Should we log additional info on the object for development purposes?
-			if (process.env.LOG_KEY && process.env.LOG_KEY === key) {
-				console.log('------------------------------------------------------------------');
-				console.log('- Generated Object');
-				console.log('------------------------------------------------------------------');
-				console.log(require('util').inspect(object, false, null));
-				console.log('------------------------------------------------------------------');
-			}
+function writeModels () {
+  for (var key in objects) {
+    if (objects.hasOwnProperty(key)) {
+      var object = objects[key]
+      // Is it private?
+      if (object.private) {
+        console.log('Skipping ' + key + ' because it is flagged "private".')
+        continue
+      }
+      if (excludedObjects.indexOf(key) !== -1) {
+        console.log('Skipping ' + key + ' because it is marked as excluded.')
+        continue
+      }
+      // Does it use a mixin?
+      if (object.mixin) {
+        var mixin = objects[object.mixin]
+        if (mixin.methods) {
+          object.methods = (object.methods || []).concat(mixin.methods)
+        }
+        if (mixin.fields) {
+          object.fields = (object.fields || []).concat(mixin.fields)
+        }
+      }
+      // Should we log additional info on the object for development purposes?
+      if (process.env.LOG_KEY && process.env.LOG_KEY === key) {
+        console.log('------------------------------------------------------------------')
+        console.log('- Generated Object')
+        console.log('------------------------------------------------------------------')
+        console.log(require('util').inspect(object, false, null))
+        console.log('------------------------------------------------------------------')
+      }
 
-			// Calculate what our model should be.
-			var fileName = object.fileName = translateObjectNameToFileName(key),
-				modelPath = path.join(__dirname, '..', 'schema', fileName + '.js'),
-				newContents = template(object);
+      // Calculate what our model should be.
+      var fileName = object.fileName = translateObjectNameToFileName(key)
+      var modelPath = path.join(__dirname, '..', 'schema', fileName + '.js')
+      var newContents = template(object)
 
-			// Sync up the model with the filesystem, based on the existing contents.
-			if (fs.existsSync(modelPath)) {
-				var currentContents = fs.readFileSync(modelPath, 'utf8');
-				if (currentContents.indexOf('_syncModelsCanUpdateThis:true') >= 0 ||
-					currentContents.indexOf('_syncModelsCanUpdateThis: true') >= 0) {
-					if (newContents !== currentContents) {
-						fs.writeFileSync(modelPath, newContents);
-						console.log('Updated ' + key + '.');
-					}
-					else {
-						console.log('No changes to ' + key + '.');
-					}
-				}
-				else {
-					console.log('Skipping model generation for ' + key + ' because it does not specify _syncModelsCanUpdateThis: true.');
-				}
-			}
-			else {
-				fs.writeFileSync(modelPath, newContents);
-				console.log('Created ' + key + '.');
-			}
-		}
-	}
+      // Sync up the model with the filesystem, based on the existing contents.
+      if (fs.existsSync(modelPath)) {
+        var currentContents = fs.readFileSync(modelPath, 'utf8')
+        if (currentContents.indexOf('_syncModelsCanUpdateThis:true') >= 0 ||
+            currentContents.indexOf('_syncModelsCanUpdateThis: true') >= 0) {
+          if (newContents !== currentContents) {
+            fs.writeFileSync(modelPath, newContents)
+            console.log('Updated ' + key + '.')
+          } else {
+            console.log('No changes to ' + key + '.')
+          }
+        } else {
+          console.log('Skipping model generation for ' + key + ' because it does not specify _syncModelsCanUpdateThis: true.')
+        }
+      } else {
+        fs.writeFileSync(modelPath, newContents)
+        console.log('Created ' + key + '.')
+      }
+    }
+  }
 }
 
 /**
@@ -256,12 +252,12 @@ function writeModels() {
  * @param objectName
  * @returns {string}
  */
-function translateObjectNameToFileName(objectName) {
-	return objectName
-		.replace(/^([A-Z]+)/, function(char) { return char.toLowerCase(); })
-		.replace(/([A-Z]+)/g, function(char) { return '_' + char.toLowerCase(); })
-		.replace(/s$/, '')
-		.replace(/se$/, 's');
+function translateObjectNameToFileName (objectName) {
+  return objectName
+    .replace(/^([A-Z]+)/, function (char) { return char.toLowerCase() })
+    .replace(/([A-Z]+)/g, function (char) { return '_' + char.toLowerCase() })
+    .replace(/s$/, '')
+    .replace(/se$/, 's')
 }
 
 /*
@@ -273,8 +269,8 @@ function translateObjectNameToFileName(objectName) {
  * @param str
  * @returns {*}
  */
-function md5(str) {
-	return require('crypto').createHash('md5').update(str).digest('hex');
+function md5 (str) {
+  return require('crypto').createHash('md5').update(str).digest('hex')
 }
 
 /**
@@ -283,27 +279,27 @@ function md5(str) {
  * @param url
  * @param callback
  */
-function grab(url, callback) {
-	var tempPath = path.join(os.tmpdir(), md5(url));
-	if (cache && fs.existsSync(tempPath)) {
-		setTimeout(function() {
-			callback(fs.readFileSync(tempPath, 'utf8'));
-		}, 1);
-		return;
-	}
-	url = urlLib.parse(url);
-	url.auth = header + ':' + token;
-	url.headers = {
-		'User-Agent': 'appcelerator'
-	};
-	https.get(url, function(res) {
-		var body = '';
-		res.on('data', function(chunk) { if (chunk) { body += chunk; } });
-		res.on('end', function() {
-			if (cache) {
-				fs.writeFileSync(tempPath, body);
-			}
-			callback(body);
-		});
-	});
+function grab (url, callback) {
+  var tempPath = path.join(os.tmpdir(), md5(url))
+  if (cache && fs.existsSync(tempPath)) {
+    setTimeout(function () {
+      callback(fs.readFileSync(tempPath, 'utf8'))
+    }, 1)
+    return
+  }
+  url = urlLib.parse(url)
+  url.auth = header + ':' + token
+  url.headers = {
+    'User-Agent': 'appcelerator'
+  }
+  https.get(url, function (res) {
+    var body = ''
+    res.on('data', function (chunk) { if (chunk) { body += chunk } })
+    res.on('end', function () {
+      if (cache) {
+        fs.writeFileSync(tempPath, body)
+      }
+      callback(body)
+    })
+  })
 }

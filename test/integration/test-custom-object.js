@@ -71,7 +71,7 @@ describe('Custom Objects', function () {
 						should(fruits[i].name).be.ok;
 						should(fruits[i].color).be.not.ok;
 					}
-					FruitModel.query({unsel: {color: '1'}}, function (err, fruits) {
+					FruitModel.query({unsel: {color: 1}}, function (err, fruits) {
 						assert.ifError(err);
 						should(fruits).be.an.Object;
 						should(fruits.length).be.ok;
@@ -701,7 +701,7 @@ describe('Custom Objects', function () {
 							should(count).equal(0);
 							done();
 						});
-					}, 1000);
+					}, 2000);
 				});
 			});
 		});
