@@ -81,7 +81,6 @@ describe('Key Value', function () {
 			});
 		});
 
-
 		it('should get', function (next) {
 			Model._get({
 				name: 'welcome_count'
@@ -89,19 +88,6 @@ describe('Key Value', function () {
 				should(err).be.not.ok;
 				should(+instance.toJSON().value).equal(3);
 				next();
-			});
-		});
-
-		it('should update', function (next) {
-			Model._get({
-				name: 'welcome_count'
-			}, function (err, instance) {
-				should(err).be.not.ok;
-				instance.value = 1337;
-				Model.update(instance, function (err) {
-					should(err).be.not.ok;
-					next();
-				});
 			});
 		});
 
