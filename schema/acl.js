@@ -429,11 +429,11 @@ module.exports = {
     params || (params = {})
     switch (method) {
       case 'update':
-        defaultValue.acl_id = instance.getPrimaryKey()
+        defaultValue.id = instance.getPrimaryKey()
         return defaultValue
       case 'delete':
         return {
-          acl_id: instance.getPrimaryKey()
+          id: instance.getPrimaryKey()
         }
     }
     return defaultValue

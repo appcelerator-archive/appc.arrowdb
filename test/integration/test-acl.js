@@ -12,7 +12,8 @@ var tests = require('./_base.tests'),
 describe('ACL', function () {
 
 	var modelName = 'appc.arrowdb/acl',
-		aclName = 'my.acl.' + Date.now(),
+		aclBaseName = 'my.acl.' + Date.now(),
+		aclName = aclBaseName + '-0',
 		auth,
 		server,
 		Model;
@@ -26,11 +27,15 @@ describe('ACL', function () {
 		server = this.server;
 	});
 
-	describe('Create', function () {
-		tests.create(modelName, {
-			name: aclName
-		});
+	before(function(done) {
+		var values = [];
+		for (var i = 0; i < 65; i++) {
+			values.push({name: aclBaseName + '-' + i});
+		}
+		Model.create(values, done);
+	});
 
+	describe('Create', function () {
 		it('should allow calling show', function (next) {
 			this.connector.getModel(modelName).show({
 				name: aclName
@@ -67,7 +72,7 @@ describe('ACL', function () {
 	});
 
 	describe('Update', function () {
-		tests.update(modelName, {name: aclName});
+		tests.update(modelName, {name: aclBaseName + '-changed'});
 	});
 
 	describe('Delete All', function () {

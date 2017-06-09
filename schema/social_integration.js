@@ -158,21 +158,5 @@ module.exports = {
     }
   },
 
-  _prepareParams: function prepareParams (method, instance, params, defaultValue) {
-    params || (params = {})
-    switch (method) {
-      /* istanbul ignore next */
-      case 'update':
-        defaultValue.social_integration_id = instance.getPrimaryKey()
-        return defaultValue
-      /* istanbul ignore next */
-      case 'delete':
-        return {
-          social_integration_id: instance.getPrimaryKey()
-        }
-    }
-    return defaultValue
-  },
-
   actions: []
 }
