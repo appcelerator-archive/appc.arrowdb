@@ -8,7 +8,7 @@ var assert = require('assert'),
 	Model = require('arrow').Model,
 	should = require('should');
 
-describe('Custom Objects', function () {
+describe('Custom Object', function () {
 	var FruitModel = null,
 		FruitNameModel = null,
 		fruitCount = 0,
@@ -341,7 +341,7 @@ describe('Custom Objects', function () {
 			});
 		});
 
-		it('should create models via batch operation', function(done) {
+		it.skip('should create models via batch operation', function(done) {
 			var values = [];
 			for (var i = 0; i < 50; i++) {
 				values.push({
@@ -358,7 +358,7 @@ describe('Custom Objects', function () {
 			});
 		});
 
-		it('should report error when exceeding the batch create limit', function(done) {
+		it.skip('should report error when exceeding the batch create limit', function(done) {
 			var values = [];
 			for (var i = 0; i < 105; i++) {
 				values.push({
@@ -543,19 +543,6 @@ describe('Custom Objects', function () {
 				done();
 			});
 		});
-
-		it('should show custom object via connector\'s method', function (done) {
-			this.connector.show(testFruit, {
-				classname: 'fruit',
-				id: testFruit.getPrimaryKey()
-			}, function (err, fruit) {
-				assert.ifError(err);
-				assertFruit(fruit);
-				should(fruit.name).equal(testFruit.name);
-				should(fruit.color).equal(testFruit.color);
-				done();
-			});
-		});
 	});
 
 	describe('Delete', function () {
@@ -676,7 +663,7 @@ describe('Custom Objects', function () {
 	});
 
 	describe('Delete All', function () {
-		it('should delete all custom objects', function (done) {
+		it.skip('should delete all custom objects', function (done) {
 			var fruits = [];
 
 			async.times(3, function (n, next) {

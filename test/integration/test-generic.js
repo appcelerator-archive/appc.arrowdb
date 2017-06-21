@@ -7,8 +7,10 @@ var Arrow = require('arrow'),
   Model = require('arrow').Model,
   TestModel;
 
+require('./_base');
+
 describe('generic model', function () {
-  init(this, function () {});
+  init(this, function () { });
 
   before(function () {
     TestModel = Model.extend('testBase', {

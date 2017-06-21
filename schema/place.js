@@ -7,139 +7,139 @@ module.exports = {
   name: 'place',
   objectName: 'Places',
 
- /**
-  * Remove _syncModelsCanUpdateThis property or set it to false if you want to prevent syncModels.js from changing this file.
-  */
+  /**
+   * Remove _syncModelsCanUpdateThis property or set it to false if you want to prevent syncModels.js from changing this file.
+   */
   _syncModelsCanUpdateThis: true,
 
- /**
-  * indicate that the model was generated
-  */
+  /**
+   * indicate that the model was generated
+   */
   generated: true,
 
- /**
-  * if this model is visible
-  */
+  /**
+   * if this model is visible
+   */
   visible: true,
 
- /*
-  Fields for this model.
-  */
+  /*
+   Fields for this model.
+   */
   fields: {
     'name': {
-    // "originalType": "String",
+      // "originalType": "String",
       'type': String,
       'description': 'Place name.'
     },
     'address': {
-    // "originalType": "String",
+      // "originalType": "String",
       'type': String,
       'description': 'Address.'
     },
     'city': {
-    // "originalType": "String",
+      // "originalType": "String",
       'type': String,
       'description': 'City.'
     },
     'state': {
-    // "originalType": "String",
+      // "originalType": "String",
       'type': String,
       'description': 'State.'
     },
     'postal_code': {
-    // "originalType": "String",
+      // "originalType": "String",
       'type': String,
       'description': 'Postal or ZIP code.'
     },
     'country': {
-    // "originalType": "String",
+      // "originalType": "String",
       'type': String,
       'description': 'Country.'
     },
     'latitude': {
-    // "originalType": "Number",
+      // "originalType": "Number",
       'type': Number,
       'description': 'Latitude.'
     },
     'longitude': {
-    // "originalType": "Number",
+      // "originalType": "Number",
       'type': Number,
       'description': 'Longitude.'
     },
     'website': {
-    // "originalType": "String",
+      // "originalType": "String",
       'type': String,
       'description': 'Website.'
     },
     'twitter': {
-    // "originalType": "String",
+      // "originalType": "String",
       'type': String,
       'description': 'Twitter ID.'
     },
     'phone_number': {
-    // "originalType": "String",
+      // "originalType": "String",
       'type': String,
       'description': 'Phone number.'
     },
     'photo': {
-    // "originalType": "Photos",
+      // "originalType": "Photos",
       'type': Array,
       'description': 'Primary photo for this place.'
     },
     'tags': {
-    // "originalType": "Array",
+      // "originalType": "Array",
       'type': Array,
       'description': 'List of tags for this object.'
     },
     'custom_fields': {
-    // "originalType": "String,Hash",
+      // "originalType": "String,Hash",
       'type': Object,
       'description': 'User defined fields. See [Custom Data Fields](http://docs.appcelerator.com/arrowdb/latest/#!/guide/customfields).'
     },
     'acls': {
-    // "originalType": "Array",
+      // "originalType": "Array",
       'type': Array,
       'description': 'Single-element array containing the ACL associated with this object, if any.'
     },
     'user': {
-    // "originalType": "Users",
+      // "originalType": "Users",
       'type': Array,
       'description': 'Owner of this place object.'
     },
     'reviews': {
-    // "originalType": "Array",
+      // "originalType": "Array",
       'type': Array,
       'description': 'List of reviews for this object.  Only present if the object has been reviewed. '
     },
     'reviews_count': {
-    // "originalType": "Number",
+      // "originalType": "Number",
       'type': Number,
       'description': 'Total number of reviews for this object.  Only present if the object has been reviewed. '
     },
     'ratings_count': {
-    // "originalType": "Number",
+      // "originalType": "Number",
       'type': Number,
       'description': 'Total number of reviews for this object that include a rating.  Only present if the object has been reviewed. '
     },
     'ratings_average': {
-    // "originalType": "Number",
+      // "originalType": "Number",
       'type': Number,
       'description': 'Average rating for this object. Only present if the object has been reviewed.'
     },
     'ratings_summary': {
-    // "originalType": "Hash",
+      // "originalType": "Hash",
       'type': Object,
       'description': 'Breakdown of the number of reviews that specified a given rating value. For example, if your ratings range from 1-5, the ratings summary might look like this:      ratings_summary: {         "1" : 1,         "2" : 0,         "3" : 5,         "4" : 50,         "5" : 12     }  Only present if the object has been reviewed. '
     },
     'user_id': {
-    // "originalType": "",
+      // "originalType": "",
       'type': String,
       'description': 'Specifies the owner of object.'
     }
   },
- /*
-  Methods for this model.
-  */
+  /*
+   Methods for this model.
+   */
   methodMeta: {
     'show': {
       'summary': 'Show a Place',
@@ -565,16 +565,16 @@ module.exports = {
 
   },
 
-  _prepareParams: function prepareParams (method, instance, params, defaultValue) {
+  _prepareParams: function prepareParams(method, instance, params, defaultValue) {
     params || (params = {})
+    var params
     switch (method) {
       case 'update':
         defaultValue.place_id = instance.getPrimaryKey()
         return defaultValue
       case 'delete':
-        return {
-          place_id: instance.getPrimaryKey()
-        }
+        params.place_id = instance.getPrimaryKey()
+        return params
     }
     return defaultValue
   },

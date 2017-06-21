@@ -11,6 +11,7 @@ exports.findAllAndFindByID = findAllAndFindByID;
 exports.queryAndCount = queryAndCount;
 exports.update = update;
 exports.deleteAll = deleteAll;
+exports.mockDBMethod = mockDBMethod;
 
 /*
  Implementation.
@@ -100,7 +101,7 @@ function queryAndCount(modelName) {
 	});
 
 	it('should return no more than 1000 objects using a query', function (done) {
-		Model.query({limit: 1000}, function (err, items) {
+		Model.query({ limit: 1000 }, function (err, items) {
 			assert.ifError(err);
 			should(items).be.an.Object;
 			should(items.length).be.within(0, 1000);
@@ -109,7 +110,7 @@ function queryAndCount(modelName) {
 	});
 
 	it('should fail when trying to query more than 1000 objects', function (done) {
-		Model.query({limit: 1001}, function (err) {
+		Model.query({ limit: 1001 }, function (err) {
 			assert(err);
 			should(err).be.an.Error;
 			should(err.statusCode).equal(400);
@@ -159,7 +160,7 @@ function deleteAll(modelName) {
 	});
 
 	it('should delete objects by id', function (done) {
-		Model.query({limit: 50}, function (err, items) {
+		Model.query({ limit: 50 }, function (err, items) {
 			assert.ifError(err);
 			should(items).be.an.Object;
 			should(items.length).be.within(0, 1000);
@@ -170,7 +171,8 @@ function deleteAll(modelName) {
 					done();
 				}
 				else {
-					var item = items.pop();
+					// var item = items.pop();
+					var item = items.shift()
 					item.delete(deleteOne);
 				}
 			}
@@ -185,4 +187,27 @@ function deleteAll(modelName) {
 			done();
 		});
 	});
+}
+function mockDBMethod(name, resp, once) {
+	var sessionLogin = this.connector.config.requireSessionLogin
+	
+	this.connector.config.requireSessionLogin = false
+	var db = this.connector.getDB()
+	this.connector.config.requireSessionLogin = sessionLogin
+
+	var origMethod = db[name];
+	db[name] = function (params, cb) {
+		cb(null, {
+			body: resp
+		});
+
+		if (once) {
+			// Restore the original method
+			db[name] = origMethod;
+		} else {
+			return function () {
+				db[name] = origMethod;
+			};
+		}
+	};
 }

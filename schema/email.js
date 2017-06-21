@@ -20,7 +20,7 @@ module.exports = {
    /**
     * if this model is visible
     */
-  visible: false,
+  visible: true,
 
    /*
     Fields for this model.

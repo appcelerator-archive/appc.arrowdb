@@ -7,24 +7,24 @@ module.exports = {
   name: 'photo',
   objectName: 'Photos',
 
- /**
-  * Remove _syncModelsCanUpdateThis property or set it to false if you want to prevent syncModels.js from changing this file.
-  */
+  /**
+   * Remove _syncModelsCanUpdateThis property or set it to false if you want to prevent syncModels.js from changing this file.
+   */
   _syncModelsCanUpdateThis: true,
 
- /**
-  * indicate that the model was generated
-  */
+  /**
+   * indicate that the model was generated
+   */
   generated: true,
 
- /**
-  * if this model is visible
-  */
+  /**
+   * if this model is visible
+   */
   visible: true,
 
- /*
-  Fields for this model.
-  */
+  /*
+   Fields for this model.
+   */
   fields: {
     'filename': {
       // "originalType": "String",
@@ -49,6 +49,11 @@ module.exports = {
       // "originalType": "Array",
       'type': Array,
       'description': 'Single-element array containing the collection this photo is a part of, if any.'
+    },
+    "collection_id": {
+      // "originalType": "String",
+      "type": String,
+      "description": "Id of the collection this photo is a part of, if any."
     },
     'md5': {
       // "originalType": "String",
@@ -139,9 +144,9 @@ module.exports = {
       'description': 'Synchronous photo sizes to upload. See [Photo Uploading & Resizing](http://docs.appcelerator.com/arrowdb/latest/#!/guide/photosizes).\n\nThe literal name for this parameter is `photo_sync_sizes[]`. This parameter can be specified\nmultiple times, once for each photo size that must be created before the request returns.\n\nFor example:\n\n    "photo_sync_sizes[]=preview"\n'
     }
   },
-   /*
-    Methods for this model.
-    */
+  /*
+   Methods for this model.
+   */
   methodMeta: {
     'delete': {
       'summary': 'Delete a Photo',
@@ -484,7 +489,7 @@ module.exports = {
 
   },
 
-  _prepareParams: function prepareParams (method, instance, params, defaultValue) {
+  _prepareParams: function prepareParams(method, instance, params, defaultValue) {
     params || (params = {})
     switch (method) {
       case 'update':
