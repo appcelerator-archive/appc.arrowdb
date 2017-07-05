@@ -22,7 +22,7 @@ scan-retire.json
 *.tgz
 .DS_Store
 conf/local.js
-./lib
+dist
 ._*
 _tmp
 undefined.metadata

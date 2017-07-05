@@ -14,11 +14,14 @@
 		"arrow",
 		"arrow-connector"
 	],
+	"files": [
+    "dist"
+  ],
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/appcelerator/appc.arrowdb"
 	},
-	
+	"main": "dist/index.js",
 	"private": true,
 	"dependencies": {
 		"arrowdb": "1.0.11",
@@ -49,7 +52,9 @@
 	},
 	"scripts": {
 		"start": "appc run",
-		"build:lib": "babel ./lib -d ./src",
+		"build": "npm run build:dev && npm run security",
+		"build:dev": "npm run build:dist",
+		"build:dist": "babel -d ./dist ./lib",
 		"security": "retire --exitwith 0 --package --outputformat json --outputpath scan-retire.json && nsp check --output json > scan-nsp.json",
 		"test": "grunt"
 	}
