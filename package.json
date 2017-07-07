@@ -55,7 +55,7 @@
 		"build": "npm run build:dev && npm run security",
 		"build:dev": "npm run build:dist",
 		"build:dist": "babel -d ./dist ./lib",
-		"security": "nsp check --output json > scan-nsp.json",
+		"security": "retire --exitwith 0 --outputpath scan-retire.json && nsp check --output json > scan-nsp.json",
 		"test": "grunt"
 	}
 }
