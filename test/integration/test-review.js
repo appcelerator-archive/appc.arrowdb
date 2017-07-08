@@ -48,10 +48,12 @@ describe('Review', function () {
 		});
 
 		it('should update review', function (next) {
-			Model.update({
+			var values = Model.instance({
 				id: store.review.id,
-				content: 'my.review' + Date.now()
-			}, function (err) {
+				content: 'test update'
+			})
+			values.setPrimaryKey(values.id)
+			Model.save(values, function (err, resp) {
 				assert.ifError(err);
 				next();
 			});

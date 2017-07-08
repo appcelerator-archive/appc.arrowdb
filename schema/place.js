@@ -565,16 +565,16 @@ module.exports = {
 
   },
 
-  _prepareParams: function prepareParams(method, instance, params, defaultValue) {
+  _prepareParams: function prepareParams (method, instance, params, defaultValue) {
     params || (params = {})
-    var params
     switch (method) {
       case 'update':
         defaultValue.place_id = instance.getPrimaryKey()
         return defaultValue
       case 'delete':
-        params.place_id = instance.getPrimaryKey()
-        return params
+        return {
+          place_id: instance.getPrimaryKey()
+        }
     }
     return defaultValue
   },

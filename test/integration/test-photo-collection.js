@@ -24,7 +24,7 @@ describe('PhotoCollection', function () {
 		// Create user models which should be used like chat participants.
 		PhotoModel.create({
 			photo: fs.createReadStream(__dirname + '/testfile.jpg'),
-			photo_sizes: { preview: '120x120#' },
+			photo_sizes: {preview: '120x120#'},
 			'photo_sync_sizes[]': 'preview'
 		}, function (err, instance) {
 			// Store photo for later usage
@@ -52,7 +52,7 @@ describe('PhotoCollection', function () {
 			should(instances).have.lengthOf(1);
 			should(instances[0]).have.property('name');
 			should(instances[0]).have.property('cover_photo_id');
-
+			
 			// Store photoCollection for later usage
 			store.photoCollection = instances[0];
 
@@ -63,12 +63,12 @@ describe('PhotoCollection', function () {
 	it('should create a photo and assign it to collection', function (next) {
 		PhotoModel.create({
 			photo: fs.createReadStream(__dirname + '/testfile.jpg'),
-			photo_sizes: { preview: '120x120#' },
+			photo_sizes: {preview: '120x120#'},
 			'photo_sync_sizes[]': 'preview',
 			collection_id: store.photoCollection.id
 		}, function (err, instance) {
 			assert.ifError(err);
-
+			
 			// Store photo for later usage
 			store.photos.push(instance);
 

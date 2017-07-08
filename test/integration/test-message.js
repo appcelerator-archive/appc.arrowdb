@@ -65,10 +65,8 @@ describe('Message', function () {
 		});
 	});
 
-	it('should allow showInbox', function (next) {
-		Model.showInbox({
-			su_id: store.users[0].id
-		}, function (error, instances) {
+	it.skip('should allow showInbox', function (next) {
+		Model.showInbox({}, function (error, instances) {
 			assert.ifError(error);
 			should(instances).be.an.Array;
 			should(instances[0]).have.property('status', 'unread');
@@ -89,7 +87,7 @@ describe('Message', function () {
 		});
 	});
 
-	it('should allow showThread', function (next) {
+	it.skip('should allow showThread', function (next) {
 		Model.showThread({
 			thread_id: store.message.thread_id
 		}, function (error, instances) {
@@ -100,10 +98,8 @@ describe('Message', function () {
 		});
 	});
 
-	it('should allow showThreads', function (next) {
-		Model.showThreads({
-			su_id: store.users[0].id
-		}, function (error, instances) {
+	it.skip('should allow showThreads', function (next) {
+		Model.showThreads({}, function (error, instances) {
 			assert.ifError(error);
 			should(instances).be.an.Array;
 			should(instances).have.lengthOf(1);

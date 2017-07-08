@@ -12,7 +12,6 @@ describe('Chat', function () {
 		userModelName = 'appc.arrowdb/user',
 		Model,
 		UserModel,
-		currentChatGroupsID,
 		store = {};
 
 	init(this, function () {
@@ -51,7 +50,6 @@ describe('Chat', function () {
 
 			// Store message for later usage
 			store.chatMsg = instance;
-			currentChatGroupsID = instance.getPrimaryKey()
 
 			next();
 		});
@@ -72,13 +70,7 @@ describe('Chat', function () {
 	});
 
 	it('should query chat groups', function (next) {
-		Model.getChatGroups({
-			page: 1,
-			per_page: 1000,
-			where: {
-				participate_ids: store.users[0].id + ',' + store.users[1].id
-			}
-		}, function (error, instances) {
+		Model.getChatGroups({}, function (error, instances) {
 			should(instances).be.an.Array;
 			should(instances[0]).have.property('message', 'Hello!');
 			should(instances[0]).have.property('participate_ids');

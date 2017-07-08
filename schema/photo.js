@@ -50,10 +50,10 @@ module.exports = {
       'type': Array,
       'description': 'Single-element array containing the collection this photo is a part of, if any.'
     },
-    "collection_id": {
+    'collection_id': {
       // "originalType": "String",
-      "type": String,
-      "description": "Id of the collection this photo is a part of, if any."
+      'type': String,
+      'description': 'Id of the collection this photo is a part of, if any.'
     },
     'md5': {
       // "originalType": "String",
@@ -489,7 +489,7 @@ module.exports = {
 
   },
 
-  _prepareParams: function prepareParams(method, instance, params, defaultValue) {
+  _prepareParams: function prepareParams (method, instance, params, defaultValue) {
     params || (params = {})
     switch (method) {
       case 'update':
