@@ -340,12 +340,44 @@ describe('Custom Objects', function () {
 				done();
 			});
 		});
+
+		it('should create models via batch operation', function(done) {
+			var values = [];
+			for (var i = 0; i < 50; i++) {
+				values.push({
+					name: 'Batch Apple ' + (i + 1),
+					color: 'red'
+				});
+			}
+			FruitModel.create(values, function (err, result) {
+				assert.ifError(err);
+				should(result.received).equal(50);
+				should(result.inserted).equal(50);
+				initialCount += 50;
+				done();
+			});
+		});
+
+		it('should report error when exceeding the batch create limit', function(done) {
+			var values = [];
+			for (var i = 0; i < 105; i++) {
+				values.push({
+					name: 'Batch Apple ' + (i + 1),
+					color: 'red'
+				});
+			}
+
+			FruitModel.create(values, function (err, result) {
+				err.should.be.equal('100 objects batch create limit exceeded');
+				done();
+			});
+		});
 	});
 
-	describe('FindAll and FindOne', function () {
+	describe('FindAll and FindByID', function () {
 		it('should find the custom object by id', function (done) {
 			assert(testFruit);
-			FruitModel.findOne(testFruit.getPrimaryKey(), function (err, fruit) {
+			FruitModel.findByID(testFruit.getPrimaryKey(), function (err, fruit) {
 				assert.ifError(err);
 				assertFruit(fruit);
 				should(fruit.name).equal(testFruit.name);
@@ -355,7 +387,7 @@ describe('Custom Objects', function () {
 		});
 
 		it('should not find any custom objects with a invalid id', function (done) {
-			FruitModel.findOne('this_id_is_invalid', function (err, results) {
+			FruitModel.findByID('this_id_is_invalid', function (err, results) {
 				should(err).not.be.ok;
 				should(results).not.be.ok;
 				done();
@@ -511,6 +543,19 @@ describe('Custom Objects', function () {
 				done();
 			});
 		});
+
+		it('should show custom object via connector\'s method', function (done) {
+			this.connector.show(testFruit, {
+				classname: 'fruit',
+				id: testFruit.getPrimaryKey()
+			}, function (err, fruit) {
+				assert.ifError(err);
+				assertFruit(fruit);
+				should(fruit.name).equal(testFruit.name);
+				should(fruit.color).equal(testFruit.color);
+				done();
+			});
+		});
 	});
 
 	describe('Delete', function () {
@@ -563,7 +608,7 @@ describe('Custom Objects', function () {
 			assert(testFruit);
 			testFruit.set('color', 'blue');
 			testFruit.update(function (err, instance) {
-				should(err).be.not.ok;
+				err.should.be.equal('One or more invalid object id(s): ["' + testFruit.getPrimaryKey() + '"]');
 				should(instance).be.not.ok;
 				done();
 			});
@@ -631,7 +676,7 @@ describe('Custom Objects', function () {
 	});
 
 	describe('Delete All', function () {
-		it.skip('should delete all custom objects', function (done) {
+		it('should delete all custom objects', function (done) {
 			var fruits = [];
 
 			async.times(3, function (n, next) {
@@ -645,17 +690,31 @@ describe('Custom Objects', function () {
 			}, function (err) {
 				assert.ifError(err);
 
-				FruitModel.deleteAll(function (err) {
-					assert.ifError(err);
-
-					setTimeout(function () {
+				var retries = 0;
+				var timeout = 500;
+				function checkCustomObjectCountAfterDelay() {
+					if (retries > 10) {
+						return done(new Error('Custom objects not deleted after waiting for ' + retries * timeout + 'ms.'));
+					}
+					setTimeout(function() {
 						FruitModel.count(function (err, count) {
 							assert.ifError(err);
 							should(count).be.a.Number;
-							should(count).equal(0);
-							done();
+							if (count !== 0) {
+								retries++;
+								checkCustomObjectCountAfterDelay();
+							} else {
+								done();
+							}
 						});
-					}, 5000);
+					}, timeout);
+				}
+
+				FruitModel.deleteAll(function (err) {
+					assert.ifError(err);
+
+					// Batch delete is async so we wait a little before counting
+					checkCustomObjectCountAfterDelay();
 				});
 			});
 		});

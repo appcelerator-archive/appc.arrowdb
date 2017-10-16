@@ -15,8 +15,11 @@ module.exports = {
 			// Create models for the built in ArrowDB types that can be used in your API.
 			generateModelsFromSchema: true,
 
-			// Whether or not to generate APIs based on the methods in generated models. 
-			modelAutogen: false
+			// Whether or not to generate APIs based on the methods in generated models.
+			modelAutogen: false,
+
+			// Wether or not to use batch create/delete
+			batchOperationsEnabled: true
 		}
 	}
 };

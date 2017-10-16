@@ -10,8 +10,8 @@ module.exports = function (grunt) {
 					ignoreLeaks: false,
 					check: {
 						statements: 85,
-						branches: 80,
-						functions: 89,
+						branches: 79,
+						functions: 88,
 						lines: 85
 					}
 				}

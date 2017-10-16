@@ -1,10 +1,29 @@
-._*
-.DS_Store
-node_modules
-_tmp
+# Logs
 logs
 *.log
-*.tgz
-conf/local.js
-undefined.metadata
+
+# Dependency directories
+node_modules
+
+# Coverage
 coverage
+
+# vscode directory
+.vscode/*
+
+# nyc test coverage
+.nyc_output
+
+# retire and nsp files
+scan-nsp.json
+scan-retire.json
+
+# Others
+*.tgz
+.DS_Store
+conf/local.js
+dist
+._*
+_tmp
+undefined.metadata
+npm-debug.log.*

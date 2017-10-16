@@ -193,7 +193,7 @@ module.exports = {
 			"summary": "Get a Value",
 			"description": "Gets the value of a key-value pair.  If the value is string, the KeyValue object is returned in JSON format. If the value is binary, the value is returned directly **without** a JSON wrapper and the content type is set to \"application/octct-stream\". ",
 			"authRequired": false,
-			"instance": true,
+			"instance": false,
 			"adminRequired": false,
 			"response": {
 				"singleElement": true,
@@ -227,7 +227,7 @@ module.exports = {
 			"summary": "Set a string or binary value",
 			"description": "Sets a string or binary value referenced by the key name. The size of the value can be up to 2M, and the key name length can be up to 256 characters. The default value type is String. ",
 			"authRequired": true,
-			"instance": true,
+			"instance": false,
 			"adminRequired": false,
 			"response": {
 				"singleElement": true,
@@ -324,11 +324,11 @@ module.exports = {
 		params || (params = {});
 		switch (method) {
 			case 'update':
-				defaultValue.key_value_id = instance.getPrimaryKey();
+				defaultValue.name = instance.get('name');
 				return defaultValue;
 			case 'delete':
 				return {
-					key_value_id: instance.getPrimaryKey()
+					name: instance.get('name')
 				};
 		}
 		return defaultValue;

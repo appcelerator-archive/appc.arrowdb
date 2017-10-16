@@ -7,6 +7,8 @@ require('./_base');
 
 describe('Connector', function () {
 
+	init(this, function () {});
+
 	it('should require a minimum version of Arrow', function () {
 		var mockConnector = {
 			Capabilities: {},
@@ -32,4 +34,34 @@ describe('Connector', function () {
 		}).not.throw();
 	});
 
+	it('should fetch config', function (done) {
+		var mockConnector = Object.create({
+			config: {
+				requireSessionLogin: true
+			},
+			cacheInit: function () {}
+		});
+
+		this.connector.fetchConfig.call(mockConnector, function (err, result) {
+			should(result).be.an.Object;
+			should(result).equal(mockConnector.config);
+			done();
+		});
+	});
+
+	it('should return basedb', function (done) {
+		var basedb = this.connector.getDB();
+		should(basedb).be.an.Object;
+		done();
+	});
+
+	it('should return db', function (done) {
+		var mockConnector = Object.create({
+			db: this.connector.baseDB
+		});
+
+		var db = this.connector.getDB.call(mockConnector);
+		should(db).be.an.Object;
+		done();
+	});
 });

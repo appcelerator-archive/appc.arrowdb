@@ -70,20 +70,6 @@ module.exports = {
 			]
 		}
 	},
-
-	_prepareParams: function prepareParams(method, instance, params, defaultValue) {
-		params || (params = {});
-		switch (method) {
-			case 'update':
-				defaultValue.email_id = instance.getPrimaryKey();
-				return defaultValue;
-			case 'delete':
-				return {
-					email_id: instance.getPrimaryKey()
-				};
-		}
-		return defaultValue;
-	},
-
+  
 	actions: []
 };
