@@ -608,7 +608,7 @@ describe('Custom Objects', function () {
 			assert(testFruit);
 			testFruit.set('color', 'blue');
 			testFruit.update(function (err, instance) {
-				should(err).be.not.ok;
+				err.should.be.equal('One or more invalid object id(s): ["' + testFruit.getPrimaryKey() + '"]');
 				should(instance).be.not.ok;
 				done();
 			});
@@ -690,18 +690,31 @@ describe('Custom Objects', function () {
 			}, function (err) {
 				assert.ifError(err);
 
-				FruitModel.deleteAll(function (err) {
-					assert.ifError(err);
-
-					// Batch delete is async so we wait a little before counting
+				var retries = 0;
+				var timeout = 500;
+				function checkCustomObjectCountAfterDelay() {
+					if (retries > 10) {
+						return done(new Error('Custom objects not deleted after waiting for ' + retries * timeout + 'ms.'));
+					}
 					setTimeout(function() {
 						FruitModel.count(function (err, count) {
 							assert.ifError(err);
 							should(count).be.a.Number;
-							should(count).equal(0);
-							done();
+							if (count !== 0) {
+								retries++;
+								checkCustomObjectCountAfterDelay();
+							} else {
+								done();
+							}
 						});
-					}, 1000);
+					}, timeout);
+				}
+
+				FruitModel.deleteAll(function (err) {
+					assert.ifError(err);
+
+					// Batch delete is async so we wait a little before counting
+					checkCustomObjectCountAfterDelay();
 				});
 			});
 		});

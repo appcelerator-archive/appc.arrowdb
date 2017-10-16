@@ -1,7 +1,7 @@
 {
 	"name": "appc.arrowdb",
 	"description": "ArrowDB connector",
-	"version": "1.2.1",
+	"version": "1.2.3",
 	"author": "Jeff Haynie",
 	"maintainers": [
 		"Jeff Haynie <jhaynie@appcelerator.com>",
@@ -14,14 +14,14 @@
 		"arrow",
 		"arrow-connector"
 	],
+	"files": [
+    "dist"
+  ],
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/appcelerator/appc.arrowdb"
 	},
-	"scripts": {
-		"start": "appc run",
-		"test": "grunt"
-	},
+	"main": "dist/index.js",
 	"private": true,
 	"dependencies": {
 		"arrowdb": "1.0.11",
@@ -32,6 +32,12 @@
 	},
 	"devDependencies": {
 		"arrow": "^*",
+		"babel-cli": "^6.11.4",
+    "babel-core": "^6.0.0",
+    "babel-istanbul": "^0.12.1",
+    "babel-polyfill": "^6.13.0",
+    "babel-preset-es2015": "^6.0.15",
+    "babel-preset-stage-2": "^6.22.0",
 		"grunt": "^0.4.5",
 		"grunt-contrib-clean": "^0.6.0",
 		"grunt-contrib-jshint": "^0.11.2",
@@ -39,7 +45,17 @@
 		"istanbul": "^0.4.1",
 		"js-yaml": "^3.2.5",
 		"mocha": "^2.3.4",
+		"nsp": "^2.6.3",
+		"retire": "^1.2.12",
 		"request": "^2.66.0",
 		"should": "^4.5.1"
+	},
+	"scripts": {
+		"start": "appc run",
+		"build": "npm run build:dev && npm run security",
+		"build:dev": "npm run build:dist",
+		"build:dist": "babel -d ./dist ./lib",
+		"security": "retire --exitwith 0 --outputpath scan-retire.json && nsp check --output json > scan-nsp.json",
+		"test": "grunt"
 	}
 }
