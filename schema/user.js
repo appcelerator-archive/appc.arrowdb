@@ -246,7 +246,7 @@ module.exports = {
 			},
 			"parameters": [
 				{
-					"name": "login",
+					"name": "username",
 					"description": "Email address or username of the user to login.",
 					"type": "String"
 				},
