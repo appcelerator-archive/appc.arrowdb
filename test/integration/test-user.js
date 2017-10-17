@@ -37,10 +37,11 @@ describe('User', function () {
 		tests.update(modelName, {first_name: 'Dawson', last_name: 'Toth'});
 
 		it('should update users properly over REST', function (done) {
+
 			var urlToHit = 'http://localhost:' + server.port + '/api/' + modelName,
 				auth = {
-					user: server.config.apikey,
-					password: ''
+					user: this.connector.config.username,
+					password: this.connector.config.password
 				};
 
 			Model.create([

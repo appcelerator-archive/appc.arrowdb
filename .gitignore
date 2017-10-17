@@ -9,3 +9,5 @@ conf/local.js
 undefined.metadata
 coverage
 npm-debug.log.*
+.nyc_output
+.vscode

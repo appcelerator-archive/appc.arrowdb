@@ -19,10 +19,10 @@
 		"url": "https://github.com/appcelerator/appc.arrowdb"
 	},
 	"scripts": {
-		"start": "appc run",
+		"start": "appc run -l debug",
 		"lint": "standard --fix",
 		"security": "retire --exitwith 0 --outputpath scan-retire.txt && nsp check --output writefile --warn-only",
-		"clean": "rimraf ./tmp",
+		"clean": "rimraf ./tmp scan-retire.txt",
 		"test": "npm run security && npm run test:unit && npm run clean",
 		"test:coverage": "nyc check-coverage --lines 0--functions 0 --branches 0--statements 0",
 		"test:unit": "tap ./test/unit/* --color --bail --coverage --coverage-report=html && npm run test:coverage",

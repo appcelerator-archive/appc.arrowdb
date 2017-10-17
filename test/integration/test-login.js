@@ -19,11 +19,11 @@ describe('Login', function () {
 		urlToHit;
 
 	before(function (cb) {
-		auth = {
-			user: this.server.config.apikey,
-			password: ''
-		};
 		connector = this.connector;
+		auth = {
+			user: connector.config.username,
+			password: connector.config.password
+		};
 		server = this.server;
 		connector.config.requireSessionLogin = true;
 		urlToHit = 'http://localhost:' + server.port + '/api/appc.arrowdb/user';

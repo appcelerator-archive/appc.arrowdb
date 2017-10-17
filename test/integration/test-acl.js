@@ -20,8 +20,8 @@ describe('ACL', function () {
 
 	init(this, function () {
 		auth = {
-			user: this.server.config.apikey,
-			password: ''
+			user: this.connector.config.username,
+			password: this.connector.config.password
 		};
 		Model = this.connector.getModel(modelName);
 		server = this.server;
