@@ -55,7 +55,7 @@
 		"build": "npm run build:dev && npm run security",
 		"build:dev": "npm run build:dist",
 		"build:dist": "babel -d ./dist ./lib",
-		"security": "retire --exitwith 0 --outputpath scan-retire.json && npm audit --registry https://registry.npmjs.org --json > scan-audit.json || true",
+		"security": "retire --exitwith 0 --package --includemeta --outputformat json --outputpath scan-retire.json && npm audit --registry https://registry.npmjs.org --json > scan-audit.json || true",
 		"test": "grunt"
 	}
 }
