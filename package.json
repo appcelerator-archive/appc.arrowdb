@@ -46,7 +46,7 @@
 		"js-yaml": "^3.2.5",
 		"mocha": "^2.3.4",
 		"nsp": "^2.6.3",
-		"retire": "^1.2.12",
+		"retire": "^2.0.0",
 		"request": "^2.66.0",
 		"should": "^4.5.1"
 	},
@@ -55,7 +55,7 @@
 		"build": "npm run build:dev && npm run security",
 		"build:dev": "npm run build:dist",
 		"build:dist": "babel -d ./dist ./lib",
-		"security": "retire --exitwith 0 --package --includemeta --outputformat json --outputpath scan-retire.json && npm audit --registry https://registry.npmjs.org --json > scan-audit.json || true",
+		"security": "retire --exitwith 0 --package --outputformat json --outputpath scan-retire.json && npm audit --registry https://registry.npmjs.org --json > scan-audit.json || true",
 		"test": "grunt"
 	}
 }
