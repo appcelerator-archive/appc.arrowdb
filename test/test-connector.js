@@ -49,10 +49,10 @@ describe('Connector', function () {
 		});
 	});
 
-	it('should return basedb', function (done) {
-		var basedb = this.connector.getDB();
-		should(basedb).be.an.Object;
-		done();
+	it('should throw error', function () {
+		should(function() {
+			this.connector.getDB();
+		}).throw();
 	});
 
 	it('should return db', function (done) {
